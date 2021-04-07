@@ -42,7 +42,7 @@ app.get('/list', async function (req, res) {
 app.post('/list', async function (req, res) {
   var m=validateParam(req);
   if(m!="")
-    res.send(m);
+    res.send({message:m});
   else  
     return list(req.get('host'),req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
 });
@@ -72,11 +72,11 @@ function list(myhost,host,site,project,tokenName,tokenValue,res){
     authenticate(host,site,tokenName,tokenValue).then(async (resa)=>{
       try {
         if(resa.error)
-          res.send(resa.error);
+          res.send({message:resa.error});
         else{
           var vs=await dumpViewPics(resa.token,host,resa.siteid,project);
           if(vs==null){
-            res.send(`Project not found "${project}"`);
+            res.send({message:`Project not found "${project}"`});
             return;
           }
           var jso=[]
@@ -91,11 +91,11 @@ function list(myhost,host,site,project,tokenName,tokenValue,res){
           res.json(jso);
         }  
       } catch (err) {
-        res.send("ERROR "+err);
+        res.send({message:err});
       }
     });
   } catch (error){
-    res.send("ERROR "+error);
+    res.send({message:error});
   }
 }
 function deleteImg(){
