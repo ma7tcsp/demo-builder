@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 const bodyParser = require('body-parser');
 const https = require('https');
+const http = require('http');
 var xml2js  = require('xml2js');
 var cors = require('cors');
 var fs = require('fs');
@@ -44,13 +45,23 @@ app.post('/list', async function (req, res) {
   if(m!="")
     res.send({message:m});
   else  
-    return list(req.get('host'),req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
+    return list(req.protocol+'://' +req.get('host'),req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
 });
 
 function validateParam(req){
   var mess=""
   if(!req.body.host){
     mess+="Missing 'host' key in post body"
+  }
+  if(req.body.host){
+    try {
+      const url = new URL(req.body.host);
+      // console.log(url.hostname); 
+      // console.log(url.port); 
+      // console.log(url.protocol); 
+    } catch (error) {
+      mess+="Host error "+error +', requires full URL with port if not 80 or 443 like http://toto.com:8080';
+    }
   }
   if(!req.body.site){
     mess+="<br>Missing 'site' key in post body"
@@ -67,14 +78,18 @@ function validateParam(req){
   return mess;
 
 }
-function list(myhost,host,site,project,tokenName,tokenValue,res){
+function list(myhost,rawhost,site,project,tokenName,tokenValue,res){
   try{
-    authenticate(host,site,tokenName,tokenValue).then(async (resa)=>{
+    const url = new URL(rawhost);
+    var hostname=url.hostname;
+    var protocol=url.protocol.replace(":","");
+    var port=protocol=="https"?url.port==""?443:url.port:url.port==""?80:url.port;
+    authenticate(hostname,protocol,port,site,tokenName,tokenValue).then(async (resa)=>{
       try {
         if(resa.error)
           res.send({message:resa.error});
         else{
-          var vs=await dumpViewPics(resa.token,host,resa.siteid,project);
+          var vs=await dumpViewPics(protocol,port,resa.token,hostname,resa.siteid,project);
           if(vs==null){
             res.send({message:`Project not found "${project}"`});
             return;
@@ -136,7 +151,7 @@ async function looping(interval){
     }
   }, interval);
 }
-function getImage(token, host,siteid, pat,viewid,wid) {
+function getImage(protocol,port,token, host,siteid, pat,viewid,wid) {
     return new Promise((resolve, reject)=>{
 	    //optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views/" + viewid + "/image?maxAge=1&resolution=high");
       optionspath = encodeURI("/api/3.9/sites/" + siteid + "/workbooks/"+wid+"/views/" + viewid + "/previewImage");
@@ -145,7 +160,7 @@ function getImage(token, host,siteid, pat,viewid,wid) {
       const https = require('https');
       const options = {
         hostname: host,
-        port: 443,
+        port: port,
         path: optionspath,
         encoding: 'null',
         method: 'GET',
@@ -153,7 +168,8 @@ function getImage(token, host,siteid, pat,viewid,wid) {
           'x-tableau-auth': token
         }
       }
-      const req = https.get(options, res => {
+      var proto=protocol=="https"?https:http;
+      const req = proto.request(options, res => {
         res.on('data', function(chunk) {
           imgdata.push(chunk)
         })
@@ -177,14 +193,14 @@ function getFolder(pat){
   }
   return "public/"+pat;
 }
-function dumpViewPics(token,host,site,project){
+function dumpViewPics(protocol,port,token,host,site,project){
   return new Promise(async (resolve, reject)=>{
-    var pid=await getProjects(token,host,site,project);
+    var pid=await getProjects(protocol,port,token,host,site,project);
     if(pid==null){
       resolve(pid);
       return;
     }
-    var views=await getViews(token,host,site,pid);
+    var views=await getViews(protocol,port,token,host,site,pid);
     var existing=[];
     var mypath=getFolder(site+ hashCode(project));
     fs.readdir(mypath, (err, files) => {
@@ -201,7 +217,7 @@ function dumpViewPics(token,host,site,project){
       });
       var allImg=[];
       missingViews.map((v)=>{
-        allImg.push(getImage(token,host,site,mypath,v.id,v.wid));
+        allImg.push(getImage(protocol,port,token,host,site,mypath,v.id,v.wid));
         console.log(v.id, "thumbnail has been added!")
       })
       Promise.all(allImg).then(()=>{
@@ -230,21 +246,22 @@ function dumpViewPics(token,host,site,project){
     });
   })
 }
-function getProjects(token, host,siteid, projectName) {
+function getProjects(protocol,port,token, host,siteid, projectName) {
   return new Promise((resolve, reject)=>{
     optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects");
     var xmldata = "";
     const https = require('https');
     const options = {
       hostname: host,
-      port: 443,
+      port: port,
       path: optionspath,
       method: 'GET',
       headers: {
         'x-tableau-auth': token
       }
     }
-    const req = https.request(options, res => {
+    var proto=protocol=="https"?https:http;
+    const req = proto.request(options, res => {
       res.on('data', function(chunk) {
         xmldata += chunk;
       })
@@ -255,7 +272,7 @@ function getProjects(token, host,siteid, projectName) {
             var res = parsedXml.tsResponse.projects[0].project;
             var id=null
             res.map((p)=>{
-              if(p.$.name==projectName)
+              if(p.$.name.toLowerCase()==projectName.toLowerCase())
                 id=p.$.id;
             })
             resolve (id);
@@ -269,7 +286,7 @@ function getProjects(token, host,siteid, projectName) {
     req.end()
   })
 }
-function getViews(token,host,siteid,projectID) {
+function getViews(protocol,port,token,host,siteid,projectID) {
   return new Promise((resolve, reject)=>{
     var vs=[];
     optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views");
@@ -277,14 +294,15 @@ function getViews(token,host,siteid,projectID) {
     const https = require('https');
     const options = {
       hostname: host,
-      port: 443,
+      port: port,
       path: optionspath,
       method: 'GET',
       headers: {
         'x-tableau-auth': token
       }
     }
-    const req = https.request(options, res => {
+    var proto=protocol=="https"?https:http;
+    const req = proto.request(options, res => {
       res.on('data', function(chunk) {
         xmldata += chunk;
       })
@@ -293,11 +311,12 @@ function getViews(token,host,siteid,projectID) {
         parser.parseString(xmldata, function(err, parsedXml) {
           if(parsedXml.tsResponse.views){
             var res = parsedXml.tsResponse.views[0].view;
-            res.map((v)=>{
-              if(projectID && v.$ && v.project[0].$.id==projectID){
-              vs.push({"id":v.$.id,"wid":v.workbook[0].$.id,"name":v.$.name,"url":v.$.contentUrl});
-              }
-            })
+            if(res)
+              res.map((v)=>{
+                if(projectID && v.$ && v.project[0].$.id==projectID){
+                vs.push({"id":v.$.id,"wid":v.workbook[0].$.id,"name":v.$.name,"url":v.$.contentUrl});
+                }
+              })
             resolve (vs);
           }
           else{
@@ -310,14 +329,15 @@ function getViews(token,host,siteid,projectID) {
     req.end()
   })
 }
-function authenticate(host,site,tokenName,tokenValue) {
+function authenticate(host,protocol,port,site,tokenName,tokenValue) {
   return new Promise((resolve, reject)=>{
     try {
       var xmldata = "";
+      site=site.toLowerCase()=="default"?"":site;
       var postdata = `<tsRequest><credentials personalAccessTokenName='${tokenName}' personalAccessTokenSecret='${tokenValue}'><site contentUrl='${site}' /></credentials></tsRequest>`;
       var options = {
         hostname: `${host}`,
-        port: 443,
+        port: port,
         path: '/api/3.9/auth/signin',
         method: 'POST',
         headers: {
@@ -325,7 +345,8 @@ function authenticate(host,site,tokenName,tokenValue) {
           'Content-Length':postdata.length
         }
       }
-      const req = https.request(options, res => {
+      var proto=protocol=="https"?https:http;
+      const req = proto.request(options, res => {
         res.on('data', function(chunk) {
           xmldata += chunk;
         })
