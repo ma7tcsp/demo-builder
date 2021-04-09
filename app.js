@@ -18,10 +18,10 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
 }
+
 app.listen(port, function () {
   console.log('Example app listening on port '+port);
 });
-
 app.get('/refresh', async function (req, res) {
   try {
     await deleteImg();
@@ -203,45 +203,52 @@ function dumpViewPics(protocol,port,token,host,site,project){
     var views=await getViews(protocol,port,token,host,site,pid);
     var existing=[];
     var mypath=getFolder(site+ hashCode(project));
+    //need to manage a copy
     fs.readdir(mypath, (err, files) => {
       files.forEach(file => {
         existing.push(file)
       });
-      var missingViews = views.filter(function(val) {
-        var found=false;
-        existing.map((ff)=>{
-          if(ff.indexOf(val.id)!=-1)
-            found=true;
-        })
-        return !found;
-      });
+      var missingViews = []
+      if(views)
+        missingViews=views.filter(function(val) {
+          var found=false;
+          existing.map((ff)=>{
+            if(ff.indexOf(val.id)!=-1)
+              found=true;
+          })
+          return !found;
+        });
       var allImg=[];
-      missingViews.map((v)=>{
-        allImg.push(getImage(protocol,port,token,host,site,mypath,v.id,v.wid));
-        console.log(v.id, "thumbnail has been added!")
-      })
+      if(missingViews)
+        missingViews.map((v)=>{
+          allImg.push(getImage(protocol,port,token,host,site,mypath,v.id,v.wid));
+          console.log(v.id, "thumbnail has been added!")
+        })
       Promise.all(allImg).then(()=>{
         resolve(views);
       })
-      var extraFiles = existing.filter(function(val) {
-        var isThere=true;
-        views.map((vv)=>{
-          if(val.indexOf(vv.id)!=-1){
-            isThere= false
-            return;
+      var extraFiles = []
+      if(views){
+        extraFiles= existing.filter(function(val) {
+          var isThere=true;
+          views.map((vv)=>{
+            if(val.indexOf(vv.id)!=-1){
+              isThere= false
+              return;
+            }
+              
+          })
+          return isThere;
+        });
+        extraFiles.map((del)=>{
+          try {
+            fs.unlinkSync(mypath+del);
+            console.log(del,"thumbnail has been deleted!")
+          } catch(err) {
+            console.error(err)
           }
-            
         })
-        return isThere;
-      });
-      extraFiles.map((del)=>{
-        try {
-          fs.unlinkSync(mypath+del);
-          console.log(del,"thumbnail has been deleted!")
-        } catch(err) {
-          console.error(err)
-        }
-      })
+      }
 
     });
   })
@@ -314,13 +321,51 @@ function getViews(protocol,port,token,host,siteid,projectID) {
             if(res)
               res.map((v)=>{
                 if(projectID && v.$ && v.project[0].$.id==projectID){
-                vs.push({"id":v.$.id,"wid":v.workbook[0].$.id,"name":v.$.name,"url":v.$.contentUrl});
+                  console.log(v.workbook[0].$)
+                  vs.push({"id":v.$.id,"wid":v.workbook[0].$.id,"name":v.$.name,"url":v.$.contentUrl});
                 }
               })
             resolve (vs);
           }
           else{
             console.log("err in getviews",projectID);
+            resolve (null);
+          }
+        });
+      })
+    })
+    req.end()
+  })
+}
+function getWorkbook(protocol,port,token,host,siteid,projectID) {
+  return new Promise((resolve, reject)=>{
+    var vs=[];
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views");
+    var xmldata = "";
+    const https = require('https');
+    const options = {
+      hostname: host,
+      port: port,
+      path: optionspath,
+      method: 'GET',
+      headers: {
+        'x-tableau-auth': token
+      }
+    }
+    var proto=protocol=="https"?https:http;
+    const req = proto.request(options, res => {
+      res.on('data', function(chunk) {
+        xmldata += chunk;
+      })
+      res.on('end', function() {
+        var parser = new xml2js.Parser();
+        parser.parseString(xmldata, function(err, parsedXml) {
+          if(parsedXml.tsResponse.views){
+            
+            resolve ();
+          }
+          else{
+            console.log("err in getWorkbook",projectID);
             resolve (null);
           }
         });
