@@ -92,13 +92,13 @@ function listProjects(rawhost,site,tokenName,tokenValue,res){
           res.send({message:resa.error});
         else{
           var projs=await getProjects(protocol,port,resa.token,hostname,resa.siteid);
-          if(projs==null){
+          if(projs==null || projs.length==0){
             res.send({message:`No Project found...`});
             return;
           }
           var jso=[]
-          projs.map((p)=>{
-            jso.push(p.project[0].$);
+          projs[0].project.map((p)=>{
+            jso.push(p.$);
           })
           res.json(jso);
         }  
