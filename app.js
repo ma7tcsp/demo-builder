@@ -10,8 +10,6 @@ var fs = require('fs');
 const { unlink } = require('fs/promises');
 const { json } = require('express');
 Stream = require('stream').Transform;
-//I+xY1SYEQ7K3BX/SmchsLg==:gVjDyWBEklrXnB8AfGEVmoQplXADoaUJ Tony
-//qATEmPhkR9uW74NVs9FLYA==:ZTROORX8u5beCBPxZG6hUg8XkLGLpaGv Av
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 let port = process.env.PORT;
@@ -63,9 +61,6 @@ function validateParam(req,for_img){
   if(req.body.host){
     try {
       const url = new URL(req.body.host);
-      // console.log(url.hostname); 
-      // console.log(url.port); 
-      // console.log(url.protocol); 
     } catch (error) {
       mess+="Host error "+error +', requires full URL with port if not 80 or 443 like http://toto.com:8080';
     }
@@ -103,7 +98,6 @@ function listProjects(rawhost,site,tokenName,tokenValue,res){
           }
           var jso=[]
           projs.map((p)=>{
-            console.log(p.project[0].$)
             jso.push(p.project[0].$);
           })
           res.json(jso);
