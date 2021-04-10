@@ -41,14 +41,21 @@ app.get('/list', async function (req, res) {
   return list(req.get('host'),'eu-west-1a.online.tableau.com','avevatraining',"Advanced Analytics",'aveva','qATEmPhkR9uW74NVs9FLYA==:ZTROORX8u5beCBPxZG6hUg8XkLGLpaGv',res);
 });
 app.post('/list', async function (req, res) {
-  var m=validateParam(req);
+  var m=validateParam(req,true);
   if(m!="")
     res.send({message:m});
   else  
     return list(req.protocol+'://' +req.get('host'),req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
+})
+app.post('/projects', async function (req, res) {
+  var m=validateParam(req);
+  if(m!="")
+    res.send({message:m});
+    else  
+      return listProjects(req.body.host,req.body.site,req.body.tokenName,req.body.tokenValue,res);
 });
 
-function validateParam(req){
+function validateParam(req,for_img){
   var mess=""
   if(!req.body.host){
     mess+="Missing 'host' key in post body"
@@ -66,7 +73,7 @@ function validateParam(req){
   if(!req.body.site){
     mess+="<br>Missing 'site' key in post body"
   }
-  if(!req.body.project){
+  if(for_img && !req.body.project){
     mess+="<br>Missing 'project' key in post body"
   }
   if(!req.body.tokenName){
@@ -77,6 +84,37 @@ function validateParam(req){
   }
   return mess;
 
+}
+function listProjects(rawhost,site,tokenName,tokenValue,res){
+  try{
+    const url = new URL(rawhost);
+    var hostname=url.hostname;
+    var protocol=url.protocol.replace(":","");
+    var port=protocol=="https"?url.port==""?443:url.port:url.port==""?80:url.port;
+    authenticate(hostname,protocol,port,site,tokenName,tokenValue).then(async (resa)=>{
+      try {
+        if(resa.error)
+          res.send({message:resa.error});
+        else{
+          var projs=await getProjects(protocol,port,resa.token,hostname,resa.siteid);
+          if(projs==null){
+            res.send({message:`No Project found...`});
+            return;
+          }
+          var jso=[]
+          projs.map((p)=>{
+            console.log(p.project[0].$)
+            jso.push(p.project[0].$);
+          })
+          res.json(jso);
+        }  
+      } catch (err) {
+        res.send({message:err});
+      }
+    });
+  } catch (error){
+    res.send({message:error});
+  }
 }
 function list(myhost,rawhost,site,project,tokenName,tokenValue,res){
   try{
@@ -135,21 +173,6 @@ function hashCode(str) {
     hash |= 0; 
   }
   return hash;
-};
-async function looping(interval){
-  setInterval(async () => {
-    try {
-      authenticate().then(async (res)=>{
-        try {
-          var v=await dumpViewPics(res.token,res.siteid);
-        } catch (error) {
-          console.log("err in dump")
-        }
-      });
-    } catch (error) {
-      console.log("err in auth or dump")
-    }
-  }, interval);
 }
 function getImage(protocol,port,token, host,siteid, pat,viewid,wid) {
     return new Promise((resolve, reject)=>{
@@ -195,7 +218,7 @@ function getFolder(pat){
 }
 function dumpViewPics(protocol,port,token,host,site,project){
   return new Promise(async (resolve, reject)=>{
-    var pid=await getProjects(protocol,port,token,host,site,project);
+    var pid=await getProject(protocol,port,token,host,site,project);
     if(pid==null){
       resolve(pid);
       return;
@@ -253,7 +276,42 @@ function dumpViewPics(protocol,port,token,host,site,project){
     });
   })
 }
-function getProjects(protocol,port,token, host,siteid, projectName) {
+function getProjects(protocol,port,token, host,siteid) {
+  return new Promise((resolve, reject)=>{
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects");
+    var xmldata = "";
+    const https = require('https');
+    const options = {
+      hostname: host,
+      port: port,
+      path: optionspath,
+      method: 'GET',
+      headers: {
+        'x-tableau-auth': token
+      }
+    }
+    var proto=protocol=="https"?https:http;
+    const req = proto.request(options, res => {
+      res.on('data', function(chunk) {
+        xmldata += chunk;
+      })
+      res.on('end', function() {
+        var parser = new xml2js.Parser();
+        parser.parseString(xmldata, function(err, parsedXml) {
+          if(parsedXml.tsResponse.projects){
+            var res = parsedXml.tsResponse.projects;
+            resolve (res);
+          }
+          else{
+            resolve (null);
+          }
+          });
+      })
+    })
+    req.end()
+  })
+}
+function getProject(protocol,port,token, host,siteid, projectName) {
   return new Promise((resolve, reject)=>{
     optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects");
     var xmldata = "";
