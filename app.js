@@ -10,6 +10,7 @@ var fs = require('fs');
 const { unlink } = require('fs/promises');
 const { json } = require('express');
 Stream = require('stream').Transform;
+const PAGE_SIZE=1000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 let port = process.env.PORT;
@@ -217,10 +218,19 @@ function dumpViewPics(protocol,port,token,host,site,project){
       resolve(pid);
       return;
     }
-    var views=await getViews(protocol,port,token,host,site,pid);
+    var pageNumber=1;
+    var vs=await getViews(protocol,port,token,host,site,pid,pageNumber);
+    var retrieved=0;
+    var allViews=[]
+    while (retrieved<vs.total){
+      var temp= await getViews(protocol,port,token,host,site,pid,pageNumber);
+      retrieved+=temp.retrieved;
+      allViews=allViews.concat(temp.views);
+      pageNumber=pageNumber+1;
+    }
+    views=allViews;
     var existing=[];
     var mypath=getFolder(site+ hashCode(project));
-    //need to manage a copy
     fs.readdir(mypath, (err, files) => {
       files.forEach(file => {
         existing.push(file)
@@ -272,7 +282,7 @@ function dumpViewPics(protocol,port,token,host,site,project){
 }
 function getProjects(protocol,port,token, host,siteid) {
   return new Promise((resolve, reject)=>{
-    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects");
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects?pageSize="+PAGE_SIZE);
     var xmldata = "";
     const https = require('https');
     const options = {
@@ -307,7 +317,7 @@ function getProjects(protocol,port,token, host,siteid) {
 }
 function getProject(protocol,port,token, host,siteid, projectName) {
   return new Promise((resolve, reject)=>{
-    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects");
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/projects?pageSize="+PAGE_SIZE);
     var xmldata = "";
     const https = require('https');
     const options = {
@@ -345,10 +355,10 @@ function getProject(protocol,port,token, host,siteid, projectName) {
     req.end()
   })
 }
-function getViews(protocol,port,token,host,siteid,projectID) {
+function getViews(protocol,port,token,host,siteid,projectID,pageNumber) {
   return new Promise((resolve, reject)=>{
     var vs=[];
-    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views?pageSize=1000");
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views?pageSize="+PAGE_SIZE+"&pageNumber="+pageNumber);
     var xmldata = "";
     const https = require('https');
     const options = {
@@ -376,7 +386,7 @@ function getViews(protocol,port,token,host,siteid,projectID) {
                   vs.push({"id":v.$.id,"wid":v.workbook[0].$.id,"name":v.$.name,"url":v.$.contentUrl});
                 }
               })
-            resolve (vs);
+            resolve ({views:vs,retrieved:res.length,total:parsedXml.tsResponse.pagination?parsedXml.tsResponse.pagination[0].$.totalAvailable:0});
           }
           else{
             console.log("err in getviews",projectID);
