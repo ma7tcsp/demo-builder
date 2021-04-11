@@ -348,7 +348,7 @@ function getProject(protocol,port,token, host,siteid, projectName) {
 function getViews(protocol,port,token,host,siteid,projectID) {
   return new Promise((resolve, reject)=>{
     var vs=[];
-    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views?pageSize=5000");
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views?pageSize=1000");
     var xmldata = "";
     const https = require('https');
     const options = {
