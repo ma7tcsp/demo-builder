@@ -7,10 +7,9 @@ const http = require('http');
 var xml2js  = require('xml2js');
 var cors = require('cors');
 var fs = require('fs');
-const { unlink } = require('fs/promises');
 const { json } = require('express');
 Stream = require('stream').Transform;
-const PAGE_SIZE=1000;
+const PAGE_SIZE=200;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 let port = process.env.PORT;
@@ -37,7 +36,8 @@ app.get('/refresh', async function (req, res) {
   }
 })
 app.get('/list', async function (req, res) {
-  return list(req.get('host'),'eu-west-1a.online.tableau.com','avevatraining',"Advanced Analytics",'aveva','qATEmPhkR9uW74NVs9FLYA==:ZTROORX8u5beCBPxZG6hUg8XkLGLpaGv',res);
+  //return list(req.get('host'),'https://eu-west-1a.online.tableau.com','alteirac',"default",'thumb','2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5',res);
+  return listWorkbooks('https://eu-west-1a.online.tableau.com','alteirac',"default",'thumb','2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5',res);
 });
 app.post('/list', async function (req, res) {
   var m=validateParam(req,true);
@@ -52,6 +52,13 @@ app.post('/projects', async function (req, res) {
     res.send({message:m});
     else  
       return listProjects(req.body.host,req.body.site,req.body.tokenName,req.body.tokenValue,res);
+});
+app.post('/workbooks', async function (req, res) {
+  var m=validateParam(req);
+  if(m!="")
+    res.send({message:m});
+    else  
+      return listWorkbooks(req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
 });
 
 function validateParam(req,for_img){
@@ -80,6 +87,49 @@ function validateParam(req,for_img){
   }
   return mess;
 
+}
+function listWorkbooks(rawhost,site,projectName,tokenName,tokenValue,res){
+  try{
+    const url = new URL(rawhost);
+    var hostname=url.hostname;
+    var protocol=url.protocol.replace(":","");
+    var port=protocol=="https"?url.port==""?443:url.port:url.port==""?80:url.port;
+    authenticate(hostname,protocol,port,site,tokenName,tokenValue).then(async (resa)=>{
+      try {
+        if(resa.error)
+          res.send({message:resa.error});
+        else{
+          //manage project pagination TODO
+          var pid=await getProject(protocol,port,resa.token,hostname,resa.siteid,projectName);
+          if(pid==null){
+            res.send({message:`No Project '${projectName}' found...`});
+            return;
+          }
+          var pageNumber=1;
+          var allWkbs=[];
+          var wkbs=await getWorkbooks(protocol,port,resa.token,hostname,resa.siteid,pid,pageNumber);
+          allWkbs=allWkbs.concat(wkbs.workbooks);
+          pageNumber=pageNumber+1;
+          var retrieved=wkbs.retrieved;
+          while (retrieved<parseInt(wkbs.total)){
+            var temp= await getWorkbooks(protocol,port,resa.token,hostname,resa.siteid,pid,pageNumber);
+            retrieved+=temp.retrieved;
+            allWkbs=allWkbs.concat(temp.workbooks);
+            pageNumber=pageNumber+1;
+          }
+          if(allWkbs==null || (allWkbs && allWkbs.length==0)){
+            res.send({message:`No Workbook found...`});
+            return;
+          }
+          res.json(allWkbs);
+        }  
+      } catch (err) {
+        res.send({message:err});
+      }
+    });
+  } catch (error){
+    res.send({message:error});
+  }
 }
 function listProjects(rawhost,site,tokenName,tokenValue,res){
   try{
@@ -213,22 +263,8 @@ function getFolder(pat){
 }
 function dumpViewPics(protocol,port,token,host,site,project){
   return new Promise(async (resolve, reject)=>{
-    var pid=await getProject(protocol,port,token,host,site,project);
-    if(pid==null){
-      resolve(pid);
-      return;
-    }
-    var pageNumber=1;
-    var vs=await getViews(protocol,port,token,host,site,pid,pageNumber);
-    var retrieved=0;
-    var allViews=[]
-    while (retrieved<vs.total){
-      var temp= await getViews(protocol,port,token,host,site,pid,pageNumber);
-      retrieved+=temp.retrieved;
-      allViews=allViews.concat(temp.views);
-      pageNumber=pageNumber+1;
-    }
-    views=allViews;
+    var vs=await getViewsPerWorkbook(protocol,port,token,host,site,project);
+    views=vs.views;
     var existing=[];
     var mypath=getFolder(site+ hashCode(project));
     fs.readdir(mypath, (err, files) => {
@@ -387,6 +423,91 @@ function getViews(protocol,port,token,host,siteid,projectID,pageNumber) {
                 }
               })
             resolve ({views:vs,retrieved:res.length,total:parsedXml.tsResponse.pagination?parsedXml.tsResponse.pagination[0].$.totalAvailable:0});
+          }
+          else{
+            console.log("err in getviews",projectID);
+            resolve (null);
+          }
+        });
+      })
+    })
+    req.end()
+  })
+}
+function getWorkbooks(protocol,port,token,host,siteid,projectID,pageNumber) {
+  return new Promise((resolve, reject)=>{
+    var wkb=[];
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/workbooks?pageSize="+PAGE_SIZE+"&pageNumber="+pageNumber);
+    var xmldata = "";
+    const https = require('https');
+    const options = {
+      hostname: host,
+      port: port,
+      path: optionspath,
+      method: 'GET',
+      headers: {
+        'x-tableau-auth': token
+      }
+    }
+    var proto=protocol=="https"?https:http;
+    const req = proto.request(options, res => {
+      res.on('data', function(chunk) {
+        xmldata += chunk;
+      })
+      res.on('end', function() {
+        var parser = new xml2js.Parser();
+        parser.parseString(xmldata, function(err, parsedXml) {
+           if(parsedXml.tsResponse && parsedXml.tsResponse.workbooks){
+            var res = parsedXml.tsResponse.workbooks[0].workbook;
+            if(res)
+              res.map((w)=>{
+                if(projectID && w.$ && w.project[0].$.id==projectID){
+                  wkb.push({"id":w.$.id,"pid":w.project[0].$.id,"name":w.$.name,"url":w.$.contentUrl,"showTabs":w.$.showTabs});
+                }
+              })
+            resolve ({workbooks:wkb,retrieved:res.length,total:parsedXml.tsResponse.pagination?parsedXml.tsResponse.pagination[0].$.totalAvailable:0});
+          }
+          else{
+            console.log("err in getviews",projectID);
+            resolve (null);
+          }
+        });
+      })
+    })
+    req.end()
+  })
+}
+function getViewsPerWorkbook(protocol,port,token,host,siteid,wkbid){
+  return new Promise((resolve, reject)=>{
+    var vs=[];
+    optionspath = encodeURI("/api/3.9/sites/" + siteid + "/workbooks/" +wkbid+"/views");
+    var xmldata = "";
+    const https = require('https');
+    const options = {
+      hostname: host,
+      port: port,
+      path: optionspath,
+      method: 'GET',
+      headers: {
+        'x-tableau-auth': token
+      }
+    }
+    var proto=protocol=="https"?https:http;
+    const req = proto.request(options, res => {
+      res.on('data', function(chunk) {
+        xmldata += chunk;
+      })
+      res.on('end', function() {
+        var parser = new xml2js.Parser();
+        parser.parseString(xmldata, function(err, parsedXml) {
+          if(parsedXml.tsResponse.views){
+            var res = parsedXml.tsResponse.views[0].view;
+            if(res)
+              res.map((v)=>{
+                console.log(v);
+                vs.push({"id":v.$.id,"wid":wkbid,"name":v.$.name,"url":v.$.contentUrl});
+              })
+            resolve ({views:vs,retrieved:res.length});
           }
           else{
             console.log("err in getviews",projectID);
