@@ -97,5 +97,6 @@ text-align: right;
 }
 
 .footer{
-  margin-top: 1px;
+  margin-top: 20px;
+  height: 40px;
 }
