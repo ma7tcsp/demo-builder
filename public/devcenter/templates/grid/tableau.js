@@ -1,10 +1,16 @@
 var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
 
+// var tab_server = [
+//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/Accounttracking/Accounttracking",
+//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/demo/Shipping",
+//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/demo/Forecast",
+//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/SuperstoredemoStoryTest/SalesbyProduct"
+// ]
 var tab_server = [
-  "https://eu-west-1a.online.tableau.com/t/alteirac/views/Accounttracking/Accounttracking",
-  "https://eu-west-1a.online.tableau.com/t/alteirac/views/demo/Shipping",
-  "https://eu-west-1a.online.tableau.com/t/alteirac/views/demo/Forecast",
-  "https://eu-west-1a.online.tableau.com/t/alteirac/views/SuperstoredemoStoryTest/SalesbyProduct"
+  "",
+  "",
+  "",
+  ""
 ]
 var tab_filter=[[],[],[],[]];
 var tab_web=[[],[],[],[]];
@@ -19,6 +25,8 @@ function loadVizInit () {
 }
 function loadVizByIndex (index,force) {
   var url = tab_server[index];
+  if(url=="")
+    return;
   document.getElementsByClassName("webedit")[0].style.display = "none";
   document.getElementsByClassName("askdata")[0].style.display = "none";
   if(tab_ask[index] && tab_ask[index].val!=""){
