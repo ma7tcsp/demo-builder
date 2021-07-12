@@ -1,0 +1,169 @@
+.intro{
+  overflow: auto;
+  height: calc(100% - 0px);
+  background-color: white;
+}
+
+#thumb{
+  width: 55%;
+  margin: auto;
+}
+
+section.thumbnail-grid {
+  margin: auto;
+}
+
+.container {
+ max-width: 1400px;
+}
+
+p.description.foot {
+  height: 1px;
+  margin-top: 10px;
+}
+
+h1 {
+ font-size: 2em;
+ line-height: 1;
+}
+
+figure {
+ margin: 0;
+ padding: 0;
+}
+
+img {
+ max-width: 100%;
+}
+
+
+.thumbnail-grid ul {
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ /* justify-content: space-between; */
+}
+ 
+/*.thumbnail-grid li {
+ margin-right: 1.33%;
+ width: 24%;
+}
+
+.thumbnail-grid li:nth-child(4n) {
+ margin-right: 0;
+}
+*/
+ 
+.sections {
+  border-bottom-style: solid;
+  border-bottom-color: var(--main-bg-color);
+  border-bottom-width: 2px;
+  margin-top: 20px;
+  font-size: larger;
+  color: #717a87;
+}
+
+.thumbnail-grid li {
+  width: 24%;
+  margin: 20px;
+  /* border-right-style: solid;
+  border-right-color: rgba(0, 0, 0, 0.05);
+  border-right-width: 2px; */
+}
+
+
+.thumbnail-grid .description {
+ font-size: .75em;
+ position: relative;
+ padding-right: 25%;
+ font: 0.9em/0.9 Helvetica, Arial, Verdana, sans-serif;
+ color: #717a87;
+}
+
+.thumbnail-grid .price {
+  position: absolute;
+  right: 10;
+  top: 0;
+  text-align: right;
+  width: 33%;
+  font-size: 20px;
+  color: #717a87;
+}
+
+
+.thumbnail-grid .thumbnail {
+ position: relative;	/* Set the container for the images */
+ box-shadow: -2px 5px 15px #00000017;
+ border-radius: 10px;
+}
+
+.thumbnail-grid img {
+  border-radius: 10px;
+   display: block; /* Get rid of tiny space below images */
+   margin-bottom: .3em;
+}
+
+.overlay {
+  border-radius: 10px;
+ /* Set up the overlay text and background */
+ background-color: var(--main-bg-color);
+ width: 100%;
+ height: 100%;
+ position: absolute;
+ opacity: 0;
+ 
+ color: white;
+ font-weight: bold;
+ font-size: 1vw;
+ padding-top: 5%;
+ text-align: center;
+}
+
+.overlay:hover {
+   opacity: 1;
+}
+.thumbnail-grid .overlay {
+   transition: 1s all;
+}
+ 
+/* Style header and footer */
+header {
+ padding: 2em 0;
+}
+
+footer {
+ border-top: 1px solid rgba(200,200,200,.5);
+ padding: 1em 0;
+}
+
+
+/* Utility classes */
+.alignright {
+ float: right;
+ margin-left: 1.5em;
+}
+.alignleft {
+ float: left;
+ margin-right: 1.5em;
+}
+
+
+/* Content Links */
+a:link, a:visited {
+ color: black;
+ text-decoration: none;
+ cursor: pointer;
+}
+
+a:hover, a:active {
+ color: gray;
+}
+
+.price-lock{
+  position: absolute;
+  top: 0;
+  width: 33%;
+  font-size: 16px;
+  color:#717a87;
+}
+

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <script type="text/javascript" src="dist/tableau-2.7.0.js"></script> -->
+    <script type="text/javascript" src="https://online.tableau.com/javascripts/api/tableau-2.7.0.min.js"></script>
+    <script src="https://unpkg.com/magic-grid/dist/magic-grid.min.js"></script>
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <link href="css/main.css" rel="stylesheet" >
+    <link href="css/nano.min.css" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/switch.css?tm=50">
+    <link rel="stylesheet" type="text/css" href="css/modal.css?tm=50">
+    <link rel="stylesheet" type="text/css" href="css/jspanel.min.css?tm=50">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.min.js"></script> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script type="text/javascript" src="dist/micromodal.min.js?tm=50"></script>
+    <script type="text/javascript" src="dist/jspanel.min.js"></script>
+    <script src="dist/DragDropTouch.js"></script>
+    <script src="dist/editable.js"></script>
+    <script src="dist/fileSaver.js"></script>
+    <script src="dist/pickr.min.js"></script>
+    <script src="main.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Just an idea test">
+    <title>Dev-Center</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+</head>
+<body onload="init()">
+<div class="page-wrapper chiller-theme toggled">
+  <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+    <i class="fas fa-bars little-burger"></i>
+  </a>
+  <nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+      <div class="sidebar-brand">
+        <a class="nosel" href="#">DEMO-BUILDER</a>
+        <div id="close-sidebar">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+      <!-- <div class="sidebar-header">
+        <div class="user-pic">
+          <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+            alt="User picture">
+        </div>
+        <div class="user-info">
+          <span class="user-name">Jhon
+            <strong>Smith</strong>
+          </span>
+          <span class="user-role">Administrator</span>
+          <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+        </div>
+      </div> -->
+
+      <div class="sidebar-search">
+        <div>
+          <div class="input-group">
+            <input autocomplete="off" id="search" onkeyup="filterViewList()" type="text" class="form-control search-menu" placeholder="Search...">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <div class="sidebar-menu">
+        <ul>
+            <li class="header-menu">
+                <span class="nosel">Settings</span>
+            </li>
+                <li onclick="showSettings()">
+                    <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <span class="nosel">Server Connection</span>
+                    </a>
+                </li>
+                <li class="sidebar-dropdown tdropdown">
+                  <a href="#">
+                  <i class="fa fa-globe"></i>
+                  <span class="templateName nosel">Web Template</span>
+                  <span class="badge badge-pill badge-primary tnum"></span>
+                  </a>
+                  <div class="sidebar-submenu tdropsub">
+                  <ul class="templateList">
+                    <div id="basic" class="active thumb templ" onclick="switchTemplate('templates/grid/index.html',this)">
+                      <div class="nosel thumb_text">Grid</div>
+                      <i class="check fa fa-check"></i> 
+                    </div>
+                    <div id="grid" class="thumb templ" onclick="switchTemplate('templates/basic/index.html',this)">
+                      <div class="nosel thumb_text">Basic</div>
+                      <i class="check fa fa-check"></i> 
+                    </div>
+                    <div id="creative" class="thumb templ" onclick="switchTemplate('templates/lightboot/examples/dashboard.html',this)">
+                      <div class="nosel thumb_text">Creative</div>
+                      <i class="check fa fa-check"></i> 
+                    </div>
+                    <div id="amd" class="thumb templ" onclick="switchTemplate('templates/amd/index.html',this)">
+                      <div class="nosel thumb_text">Amd</div>
+                      <i class="check fa fa-check"></i> 
+                    </div>
+                    <div id="amd" class="thumb templ" onclick="switchTemplate('templates/market/index.html',this)">
+                      <div class="nosel thumb_text">Market</div>
+                      <i class="check fa fa-check"></i> 
+                    </div>
+                  </ul>
+                  </div>
+                </li>
+            <li class="header-menu">
+            <span class="nosel">Server Content</span>
+            </li>  
+                <li class="sidebar-dropdown pdropdown">
+                    <a href="#">
+                    <i class="fa fa-folder"></i>
+                    <span class="projname nosel">Projects</span>
+                    <span class="badge badge-pill badge-primary pnum"></span>
+                    </a>
+                    <div class="sidebar-submenu pdropsub">
+                    <ul class="projects">
+                    </ul>
+                    </div>
+                </li>
+            
+            <li class="header-menu">
+                <span class="nosel">Project Content</span>
+            </li>
+                  <li class="sidebar-dropdown wbdropdown">
+                      <a href="#">
+                      <i class="fa fa-book"></i>
+                      <span class="nosel">Workbooks</span>
+                      <div class="loadwb spinner-border text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <span class="badge badge-pill badge-primary wbnum"></span>
+                      </a>
+                      <div class="sidebar-submenu wbdropsub">
+                      <ul class="twb">
+                      </ul>
+                      </div>
+                  </li>
+
+            <li class="header-menu">
+                <span class="nosel">Workbook Content</span>
+            </li>
+                <li class="sidebar-dropdown vdropdown">
+                    <a href="#">
+                    <i class="fa fa-chart-line"></i>
+                    <span class="nosel">Views</span>
+                    <div class="loadview spinner-border text-success" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <span class="badge badge-pill badge-primary vnum"></span>
+                    </a>
+                    <div class="sidebar-submenu vdropsub">
+                    <ul class="tb">
+                    </ul>
+                    </div>
+                </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <!-- <iframe id="template" src="templates/lightboot/examples/dashboard.html" height="100%" width="100%" style="border-style: none;"></iframe> -->
+    <iframe id="template" src="templates/grid/index.html" height="100%" width="100%" style="border-style: none;"></iframe>
+  </main>
+
+</div>
+
+<div class="force modal micromodal-slide" style="height: 100%;"id="modal-settings" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+      <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <header class="modal__header">
+          <h2 class="modal__title" id="modal-1-title">
+            GLOBAL SETTINGS
+          </h2>
+          <!-- <button class="modal__close" aria-label="Close modal" data-micromodal-close></button> -->
+          <button data-micromodal-close type="button" class="jsPanel-btn jsPanel-btn-close jsPanel-btn-md" aria-label="Close" style="color: rgb(255, 255, 255);"><svg data-micromodal-close focusable="false" class="jsPanel-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path data-micromodal-close fill="currentColor" d="M13.7,11l6.1-6.1c0.4-0.4,0.4-0.9,0-1.3l-1.4-1.4c-0.4-0.4-0.9-0.4-1.3,0L11,8.3L4.9,2.3C4.6,1.9,4,1.9,3.7,2.3L2.3,3.7 C1.9,4,1.9,4.6,2.3,4.9L8.3,11l-6.1,6.1c-0.4,0.4-0.4,0.9,0,1.3l1.4,1.4c0.4,0.4,0.9,0.4,1.3,0l6.1-6.1l6.1,6.1 c0.4,0.4,0.9,0.4,1.3,0l1.4-1.4c0.4-0.4,0.4-0.9,0-1.3L13.7,11z"></path></svg></button>
+        </header>
+        <main class="modal__content" id="modal-3-content" style="display: flex;flex-wrap: wrap;">
+            <details open>
+                <summary>Server Settings</summary>
+                <div class="settings_block">
+                    <label for="servurl" class="label_settings">Server URL: </label>
+                    <input  id="servurl" class="input input_settings" required="true">
+                </div>
+                <div class="settings_block">
+                    <label class="label_settings" for="siteName">Site Name: </label>
+                    <input id="siteName" class="input input_settings" required="true">
+                </div>
+                <div class="settings_block">
+                    <label class="label_settings" for="tokName">Token Name: </label>
+                    <input id="tokName" class="input input_settings" required="true">
+                </div>
+                <div class="settings_block">
+                    <label class="label_settings" for="tokValue">Token Value: </label>
+                    <input type="password" id="tokValue" class="input input_settings" required="true">
+                </div>
+                <!-- <div class="settings_block">
+                    <label class="label_settings" for="wedit">Sync Filters: </label>
+                    <label class="switch">
+                    <input id="sync" type="checkbox">
+                    <span class="slider round"></span>
+                    </label>
+                </div> -->
+            </details>
+            <details>
+            <summary>Save/Restore Settings</summary>
+            <div class="panel_border">
+              <label class="label_settings"></label>
+              <div class="file_drop">
+                <div id="drop_zone" class="box__input" ondrop="dropFile(event)" ondragover="allowDrop(event)">
+                  <input type="file" id="file" class="box__file">
+                  <label class="text_drop" for="file"><li style="width: 35px;" class="fas fa-upload"></li><strong>Choose a file to restore</strong><span class="box__dragndrop"> or drag it here</span>.</label>
+                  </div>
+              </div>
+              <button class="exportBtn modal__btn modal__btn-primary" onclick="saveToFile()">Export Current Settings...</button>
+            </div>
+          </details>
+        </main>
+        <footer class="modal__footer">
+          <button class="modal__btn modal__btn-primary" onclick="saveSettings()"> Save </button>
+          <button class="gogo modal__btn" data-micromodal-close aria-label="Close">Cancel</button>
+        </footer>
+      </div>
+    </div>
+</div> 
+
+
+</body>
+
+</html>

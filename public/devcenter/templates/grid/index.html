@@ -1,0 +1,45 @@
+<html>
+<head>
+<link rel="stylesheet" href="layout.css">
+<link rel="stylesheet" href="page.css">
+<script src="https://eu-west-1a.online.tableau.com/javascripts/api/tableau-2.7.0.min.js"></script>
+<script src="tableau.js"></script>
+<script src="embedrocks.js"></script>
+<title>Tableau Example</title>
+</head>
+<body onload="loadVizInit()">
+<div class="grid-container">
+  
+  <div class="LeftPad"></div>
+  <div class="RightPad"></div>
+
+  <div class="Header">
+    <div class="logo" onclick="parent.showTemplateSettings()">
+      <div><img id="builder-img-1" class="log img-editable" src="tableau-white.png"/></div>
+      <div class="person editable" id="builder-text-12">
+        User, Generic
+      </div>
+    </div>
+  </div>
+
+  <div class="ButtonBar">
+    <a id="builder-text-1" class="editable" href="#" onclick="loadVizByIndex(0)">Viz 1</a>
+    <a id="builder-text-2" class="editable" href="#" onclick="loadVizByIndex(1)">Viz 2</a>
+    <a id="builder-text-3" class="editable" href="#" onclick="loadVizByIndex(2)">Viz 3</a>
+    <a id="builder-text-4" class="editable" href="#" onclick="loadVizByIndex(3)">Viz P</a>
+    <a id="builder-text-5" class="editable" href="#" onclick="resetViz(4)">Reset Viz</a>
+    <a id="builder-text-7" class="editable" href="#" onclick="dataDownload()">Data Download</a>
+    <a id="builder-text-8" class="editable" href="#" onclick="saveView()">Save View</a>
+    <a id="builder-text-9" class="editable webedit" href="#" onclick="launchEdit()">Wedit</a>
+    <a id="builder-text-9" class="editable askdata" href="#" onclick="launchAsk()">Toggle Ask</a>
+  </div>
+
+  <div class="Content">
+      <div id="tableauViz" class="dropplace"></div>
+  </div>
+
+
+  <div class="Footer"><ul><li class="editable" id="builder-text-10">Terms & Conditions</li><li id="builder-text-11" class="editable">Privacy Policy</li></ul></div>
+</div>
+</body>
+</html>

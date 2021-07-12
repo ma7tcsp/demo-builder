@@ -1,0 +1,101 @@
+:root {
+--header-bg-color: #35588c;
+--button-bg-color: #6883a9;
+--content-bg-color: #ffffff;
+--footer-bg-color: #35588c;
+--btnhover-bg-color:#ff6d02;
+
+--header-tx-color: white;
+--button-tx-color: white;
+--content-tx-color: white;
+--footer-tx-color: white;
+--btnhover-tx-color:white;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.grid-container {
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: 0.1fr 2.8fr 0.1fr;
+  grid-template-rows: 0.08fr 0.04fr auto 0.03fr;
+  gap: 0px 0px;
+  grid-template-areas: "Header Header Header" "ButtonBar ButtonBar ButtonBar" "LeftPad MainContent RightPad" "Footer Footer Footer";
+}
+
+.ButtonBar { grid-area: ButtonBar; }
+
+.Footer { grid-area: Footer; }
+
+.Header { grid-area: Header; }
+
+.Content { grid-area: MainContent; }
+
+.LeftPad { grid-area: LeftPad; }
+
+.RightPad { grid-area: RightPad; }
+
+
+.Header {
+  background-color: var(--header-bg-color);
+  color: var(--header-tx-color);
+  padding-top: 2px;
+  padding-left: 2px;
+  padding-bottom: 2px;
+}
+.ButtonBar {
+  background-color: var(--button-bg-color);
+  color: var(--button-tx-color);
+}
+.Footer {
+  background-color: var(--footer-bg-color);
+  color: var(--footer-tx-color);
+  padding-right: 30px;
+  display: flex;
+  align-items: center;
+}
+.Content {
+  background-color: var(--content-bg-color);
+  color: var(--content-tx-color);
+}
+.log{
+  max-height: 50px;
+  width: auto;
+  margin: 10px;
+}
+.logo {
+  width: 100%;
+  height: 100%;
+  color: var(--header-tx-color);
+  display: flex;
+}
+.person {
+  margin: auto 20px auto auto;
+}
+
+.tandc {
+  text-align: center;
+  align-items: center;
+  color: #ffffff;
+}
+
+.footer > ul > li { 
+  display: inline;
+margin-left: 30px;
+color: var(--footer-tx-color);
+}
+
+.footer > ul {
+margin: 0px;
+width: 100%;
+text-align: right;
+}
+
+.footer{
+  margin-top: 1px;
+}
