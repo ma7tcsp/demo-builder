@@ -1025,27 +1025,6 @@ function injectStyle(docu){
       }
   }
 }
-//TODEL
-function getFilters(filters){
-  var filterStore = [];
-  globalNumberFilters = filters.length;
-  for (filter of filters){
-    var tmp_fieldName = filter.getFieldName();
-    var tmp_uniqueValues = [];
-    if(filter.getFilterType()=='categorical')
-      if(filter.getAppliedValues && filter.getAppliedValues()){
-        for (j = 0; j < filter.getAppliedValues().length; j++){
-          if(!tmp_uniqueValues.includes(JSON.stringify({"id":tmp_fieldName, "text":filter.getAppliedValues()[j].value})))
-            tmp_uniqueValues.push(JSON.stringify({"id":tmp_fieldName, "text":filter.getAppliedValues()[j].value}));
-        };
-        filterStore.push(tmp_uniqueValues);
-      }
-      else{
-        console.log("err",filter);
-      }
-  }
-  return filterStore
-}
 function getCurrentServerInfo(){
   var ret={host:localStorage.getItem("SERVER_URL"),site:localStorage.getItem("SITE_NAME")}
   return ret;

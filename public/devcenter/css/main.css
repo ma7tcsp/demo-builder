@@ -319,7 +319,7 @@ body {
   position: fixed;
   top: 0;
   left: -300px;
-  z-index: 999;
+  z-index: 99;
 }
 
 .sidebar-wrapper ul {
