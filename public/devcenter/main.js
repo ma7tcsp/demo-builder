@@ -57,7 +57,7 @@ async function init(){
       }
     }, 150);
   });
-  $("#close-sidebar").click(function () {
+  $("#close-sidebar .fa-bars").click(function () {
     $(".page-wrapper").removeClass("toggled");
   });
   $("#show-sidebar").click(function () {
@@ -256,7 +256,7 @@ function restoreFromFile(files) {
 function getProjects(){
   var details=getData();
   var formBody = formize(details)
-  fetch("https://intense-shelf-48952.herokuapp.com/projects", {
+  fetch("/projects", {
   //  fetch("http://localhost:3000/projects", {  
     method: "POST", 
     headers: {
@@ -274,7 +274,7 @@ function getWorkbooks(projName){
   var details=getData();
   details.project=projName;
   var formBody = formize(details)
-  fetch("https://intense-shelf-48952.herokuapp.com/workbooks", {
+  fetch("/workbooks", {
   // fetch("http://localhost:3000/workbooks", {  
     method: "POST", 
     headers: {
@@ -292,7 +292,7 @@ function getViews(projName){
   var details=getData();
   details.project=projName;
   var formBody = formize(details)
-  fetch("https://intense-shelf-48952.herokuapp.com/list", {
+  fetch("/list", {
     // fetch("http://localhost:3000/list", {  
     method: "POST", 
     headers: {
@@ -1172,6 +1172,33 @@ function contrastFontColor(hexcolor){
 	var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	return (yiq >= 128) ? 'black' : 'white';
 };
+function exportTemplate(){
+  const options = {
+    headers: {
+    }
+  };
+   fetch('/zip?tpname=grid', options)
+    .then( res => res.blob() )
+    .then( blob => {
+      saveFile(blob,"grid-site.zip")
+    });
+}
+function saveFile(blob, filename) {
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 0)
+  }
+}
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
   if (this.length === 0) return hash;

@@ -8,6 +8,7 @@ var xml2js  = require('xml2js');
 var cors = require('cors');
 var fs = require('fs');
 const { json } = require('express');
+const archiver = require('archiver');
 Stream = require('stream').Transform;
 const PAGE_SIZE=200;
 app.use(cors());
@@ -564,5 +565,25 @@ function authenticate(host,protocol,port,site,tokenName,tokenValue) {
   })
   
 }
+
+app.get('/zip', function(req, res) {
+  var tp=req.query.tpname || 'grid';
+  var zname=req.query.zname || 'demobuilder-grid.zip';
+  const archive = archiver('zip');
+
+  archive.on('error', function(err) {
+    res.status(500).send({error: err.message});
+  });
+
+  archive.on('end', function() {
+    
+  });
+
+  res.attachment(zname);
+  archive.pipe(res);
+
+  archive.directory(__dirname + '/public/devcenter/templates/'+tp, '');
+  archive.finalize();
+});
 
 app.use(express.static(path.join(__dirname, "/public")));

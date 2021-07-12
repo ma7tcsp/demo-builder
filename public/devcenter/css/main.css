@@ -1,3 +1,10 @@
+
+#close-sidebar .fa-bars {
+  position: absolute;
+  top: 14px;
+  left: 23px;
+}
+
 div.jsPanel-title {
   color: #818896!important;
   font-weight: bolder!important;
@@ -722,7 +729,7 @@ ul.tb,ul.twb {
     color: #bdbdbd;
 }
 
-.page-wrapper.chiller-theme.toggled #close-sidebar:hover {
+.page-wrapper.chiller-theme.toggled #close-sidebar i:hover {
     color: #ffffff;
 }
 
