@@ -727,7 +727,7 @@ function showTemplateSettings(){
     }
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
-      <img class="wload" height="150px" width="210px" src="${el}.png" >
+      <img class="wload" height="150px" width="210px" src="${el!=""?el+'.png':"/newView.png"}" >
       <div class="filterboxes">
         <label class="tpb">Ask Data:</label><br>
         <input class="askdata" varindex="${id}" type="text" placeholder="Type URL Here..." value="${getRepoVal("askdata",id)==""||getRepoVal("askdata",id)==null?"":getRepoVal("askdata",id)}"><br><br>
