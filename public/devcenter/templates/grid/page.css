@@ -19,6 +19,9 @@
   padding-top: 10px;
 }
 
+.ButtonBar a{
+  transition: all 0.5s;
+}
 .ButtonBar a:hover {
   background-color: var(--btnhover-bg-color);
   color: var(--btnhover-tx-color);

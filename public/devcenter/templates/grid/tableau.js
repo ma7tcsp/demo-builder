@@ -29,7 +29,7 @@ function loadVizByIndex (index,force) {
     return;
   document.getElementsByClassName("webedit")[0].style.display = "none";
   document.getElementsByClassName("askdata")[0].style.display = "none";
-  if(tab_ask[index] && tab_ask[index].val!=""){
+  if(tab_ask[index] && tab_ask[index].val && tab_ask[index].val!=""){
     document.getElementsByClassName("askdata")[0].style.display = "block";
   }
   var stop=false;

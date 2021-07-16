@@ -579,7 +579,7 @@ function parseForCSSVar(docu){
               css = css[1].replace('}','').split(';');
               for (var i = 0; i < css.length; i++) {
                 var prop = css[i].split(':');
-                if (prop.length == 2 && prop[0].indexOf('--') == 1 && prop[0].indexOf('-tx-')==-1) {
+                if (prop.length == 2 && prop[0].indexOf('--') == 1 ) {
                   var key=prop[0].replaceAll(" ","");
                   var val=prop[1].replaceAll(" ","")
                   if(checkRepoKeyExist('color',key)){
@@ -845,7 +845,7 @@ function saveTemplateSettings(close){
       viewsModified=true;
     saveToRepo("askdata",index,ask);
   })
-  restoreWebEdit();
+  restoreAskData();
 
   $("#viewlist .webedit").each((index,el)=>{
     var ck=el.checked==true?"true":"false";
@@ -854,7 +854,7 @@ function saveTemplateSettings(close){
       viewsModified=true;
     saveToRepo("webedit",index,ck);
   })
-  restoreAskData();
+  restoreWebEdit();
 
   var mv=[];
   $("#viewlist .views").each((index,el)=>{
@@ -863,7 +863,7 @@ function saveTemplateSettings(close){
   saveToRepo('view','view',mv);
   $("#colorlist .color").each((index,el)=>{
     document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc"), $(el).prop("value"));
-    document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc").replace("-bg-","-tx-"), contrastFontColor($(el).prop("value")));
+    //document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc").replace("-bg-","-tx-"), contrastFontColor($(el).prop("value")));
     saveToRepo('color',$(el).attr("varc"),$(el).prop("value"));
     restoreColorInIframes({key:$(el).attr("varc"),val:$(el).prop("value")});
   })
@@ -918,7 +918,7 @@ function restoreColorInIframes(el){
   iframes.forEach(function(iframe) {
     try {
       iframe.contentWindow.document.documentElement.style.setProperty(el.key, el.val);
-      iframe.contentWindow.document.documentElement.style.setProperty(el.key.replace("-bg-","-tx-"), contrastFontColor(el.val));
+      //iframe.contentWindow.document.documentElement.style.setProperty(el.key.replace("-bg-","-tx-"), contrastFontColor(el.val));
     } catch (error) {
       console.log(error)
     }
@@ -946,7 +946,7 @@ function restoreTexts(){
 function restoreColors(){
   getStorageByType("color").map((el)=>{
     document.getElementById('template').contentWindow.document.documentElement.style.setProperty(el.key, el.val);
-    document.getElementById('template').contentWindow.document.documentElement.style.setProperty(el.key.replace("-bg-","-tx-"), contrastFontColor(el.val));
+    //document.getElementById('template').contentWindow.document.documentElement.style.setProperty(el.key.replace("-bg-","-tx-"), contrastFontColor(el.val));
     restoreColorInIframes(el);
   })
 }

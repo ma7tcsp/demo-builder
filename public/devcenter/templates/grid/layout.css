@@ -4,13 +4,13 @@
 --content-bg-color: #ffffff;
 --footer-bg-color: #35588c;
 --btnhover-bg-color:#ff6d02;
-
---header-tx-color: white;
---button-tx-color: white;
---content-tx-color: white;
---footer-tx-color: white;
---btnhover-tx-color:white;
+--header-tx-color: #ffffff;
+--button-tx-color: #ffffff;
+--content-tx-color: #ffffff;
+--footer-tx-color: #ffffff;
+--btnhover-tx-color:#ffffff;
 }
+
 html, body {
     width: 100%;
     height: 100%;
