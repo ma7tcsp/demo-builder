@@ -1,6 +1,8 @@
 var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
 
+//BEGIN
 
+//END
 
 function loadVizInit () {
   loadVizByIndex(0);
@@ -188,6 +190,7 @@ function getParametersForViz(index){
   })
 }
 function applyFilter(filterName,value) {
+  //Region name is the parameter "filtername"
   activeSheet.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
   document.querySelector(`div[mid='${filterName}']`).classList.remove("show")
 }

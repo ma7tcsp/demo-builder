@@ -49,6 +49,7 @@ html, body {
 .Content {
   background-color: var(--content-bg-color);
   color: var(--content-tx-color);
+  margin-top: 10px;
 }
 .log{
   max-height: 50px;
