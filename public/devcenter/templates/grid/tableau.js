@@ -1,24 +1,6 @@
 var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
 
-// var tab_server = [
-//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/Accounttracking/Accounttracking",
-//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/demo/Shipping",
-//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/demo/Forecast",
-//   "https://eu-west-1a.online.tableau.com/t/alteirac/views/SuperstoredemoStoryTest/SalesbyProduct"
-// ]
-var tab_server = [
-  "",
-  "",
-  "",
-  ""
-]
-var tab_filter=[[],[],[],[]];
-var tab_web=[[],[],[],[]];
-var tab_ask=[[],[],[],[]];
-var tab_param=[[],[],[],[]];
 
-var tab_all_filters=[[],[],[],[]];
-var tab_all_params=[[],[],[],[]];
 
 function loadVizInit () {
   loadVizByIndex(0);

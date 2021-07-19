@@ -1,4 +1,5 @@
 var express = require('express');
+var Flickr = require('flickr-sdk');
 var app = express();
 var path = require('path');
 const bodyParser = require('body-parser');
@@ -13,6 +14,14 @@ Stream = require('stream').Transform;
 const PAGE_SIZE=200;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+var flickr = new Flickr("9213318e4c399937cd7e87a728cb7493");
+
+
+//DEBUG
+console.log = function() {}
+
+
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
@@ -566,6 +575,22 @@ function authenticate(host,protocol,port,site,tokenName,tokenValue) {
   
 }
 
+app.get('/pict', function(req, res) {
+  flickr.photos.search({
+    text: decodeURIComponent(req.query.search),
+    extras:'url_o'
+  }).then(function (result) {
+    var p="";
+    result.body.photos.photo.map((el)=>{
+      if(el.url_o)
+        p+=`<img class='searchres' src=${el.url_o}>`
+    })
+    res.send(p);
+  }).catch(function (err) {
+    console.error('bonk', err);
+  });
+})
+
 app.get('/zip', function(req, res) {
   var tp=req.query.tpname || 'grid';
   var zname=req.query.zname || 'demobuilder-grid.zip';
@@ -587,3 +612,11 @@ app.get('/zip', function(req, res) {
 });
 
 app.use(express.static(path.join(__dirname, "/public")));
+
+
+// FlikR
+// Key: 
+//9213318e4c399937cd7e87a728cb7493
+
+// Secret:
+// 0bbb936c78cc2575

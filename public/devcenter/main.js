@@ -697,10 +697,30 @@ function parseForImage(docu){
   }
   return imgs;
 }
+function addSearchListener(){
+  $(".searchpict").on('keyup', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      $("#modal-pict-content").empty();
+      showModal('modal-pict');
+      fetch('/pict?search='+encodeURIComponent($(e.currentTarget).val()))
+      .then( res => res.text() )
+      .then( (tx) => {
+        $("#modal-pict-content").empty();
+        $("#modal-pict-content").append(tx);
+        $(".searchres").attr("varc",$(e.currentTarget).attr("varc"))
+        $(".searchres").on('click',(e)=>{
+          $(".searchres").removeClass("selected")
+          $(e.currentTarget).addClass("selected");
+        })
+      });
+    }
+  });
+}
 function showTemplateSettings(){
   if($(panelSet).is(":visible")==true)
     return;
   $(".pcr-app").remove();
+  
   createSettingsPanel();
   pickers=[];
   $("#viewlist").empty();
@@ -747,13 +767,17 @@ function showTemplateSettings(){
   $("#imglist").append("<summary>Images Settings</summary>");
   parseForImage(document.getElementById('template').contentWindow.document).map((el)=>{
     var node=`
-    <div  class="settings_block">
+    <div  class="settings_block pictsettings">
         <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i> <label class="label_settings">${el.variable.replace(currentTemplate+'-','')} </label>
-        <input varc="${el.variable}" class="imgs input input_settings" required="true" value="${el.img}">
+        <div class="picgroup">
+          <input varc="${el.variable}" class="imgs input input_settings searchpict" required="true" placeholder="Search images...">
+          <input varc="${el.variable}" class="imgs input input_settings sh" required="true" value="${el.img}">
+        </div>
     </div>
     `
     $("#imglist").append(node);
   })
+  addSearchListener();
   $("#colorlist").empty();
   $("#colorlist").append("<summary>Color Settings</summary>");
   parseForCSSVar(document.getElementById('template').contentWindow.document).map((el,index)=>{
@@ -1177,6 +1201,13 @@ function saveFile(blob, filename) {
       document.body.removeChild(a);
     }, 0)
   }
+}
+function selectedPict(){
+ var jur=$(".searchres.selected");
+ var ur=jur.prop("src");
+ var tg=$(`.imgs.input.sh[varc='${jur.attr("varc")}']`)
+ tg.val(ur);
+ MicroModal.close('modal-pict');
 }
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
