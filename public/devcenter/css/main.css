@@ -72,7 +72,7 @@ details[open] > summary {
   list-style: none;
 }
 .wload{
-    background: url('../loaderb.gif') no-repeat;
+    background: url('../loader.svg') no-repeat;
     background-position-x: center;
     aspect-ratio: 2;
     background-size: contain;
