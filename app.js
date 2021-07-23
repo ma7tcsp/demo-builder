@@ -19,7 +19,7 @@ var flickr = new Flickr("9213318e4c399937cd7e87a728cb7493");
 
 
 //DEBUG
-console.log = function() {}
+//console.log = function() {}
 
 
 let port = process.env.PORT;
@@ -647,6 +647,7 @@ app.post('/zip', async function (req, res) {
   //change tp files here
   let vv=JSON.parse(ret.view)[0].val;
   //let vvArr=vv.replace(/([^,]*)(,|$)/g, "\"$1\"$2");
+  console.log("HEY",vv)
   let vvArr=('"'+vv.replaceAll(",",'","')+'"')
   vvArr="var tab_server = ["+vvArr+"];"
   let ff=JSON.parse(ret.filter)[0].val;
