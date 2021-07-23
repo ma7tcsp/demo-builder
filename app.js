@@ -648,7 +648,8 @@ app.post('/zip', async function (req, res) {
   let vv=JSON.parse(ret.view)[0].val;
   //let vvArr=vv.replace(/([^,]*)(,|$)/g, "\"$1\"$2");
   console.log("HEY",vv)
-  let vvArr=('"'+vv.replaceAll(",",'","')+'"')
+  //let vvArr=('"'+vv.replaceAll(",",'","')+'"')
+  let vvArr='"'+vv.replace(/,/g, '","')+'"';
   vvArr="var tab_server = ["+vvArr+"];"
   let ff=JSON.parse(ret.filter)[0].val;
   let pp=JSON.parse(ret.parameter)[0].val;
