@@ -131,3 +131,24 @@ function clearFiltersMenu(){
   const removeElements = (elms) => elms.forEach(el => el.remove());
   removeElements( document.querySelectorAll(".filter_dropdown") );
 }
+
+function restoreImgs(){
+  tab_img.map((el)=>{
+    if(document.getElementById(el.key))
+      document.getElementById(el.key).setAttribute('src',el.val);
+  })
+}
+
+function restoreTexts(){
+  tab_text.map((el)=>{
+    if(document.getElementById(el.key))
+      document.getElementById(el.key).innerHTML=decodeURIComponent(el.val);
+  })
+}
+
+function initialize(){
+  if(typeof(tab_img)!="undefined"){
+    restoreImgs();
+    restoreTexts();
+  }
+}

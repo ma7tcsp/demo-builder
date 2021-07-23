@@ -1198,15 +1198,6 @@ function exportTemplate(){
     .then( blob => {
        saveFile(blob,"grid-site.zip")
     });
-  // const options = {
-  //   headers: {
-  //   }
-  // };
-  //  fetch('/zip?tpname=grid', options)
-  //   .then( res => res.blob() )
-  //   .then( blob => {
-  //     saveFile(blob,"grid-site.zip")
-  //   });
 }
 function saveFile(blob, filename) {
   if (window.navigator.msSaveOrOpenBlob) {

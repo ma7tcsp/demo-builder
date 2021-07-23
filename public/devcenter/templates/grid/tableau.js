@@ -1,6 +1,7 @@
 var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
 
 function loadVizInit () {
+  initialize();
   loadVizByIndex(0);
 }
 function loadVizByIndex (index,force) {

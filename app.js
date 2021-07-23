@@ -605,6 +605,21 @@ function writeTofile(content,filepath){
     console.error(err)
   }
 }
+function variabilized(raw){
+  let war=[];
+  JSON.parse(raw).map((el)=>{
+    war.push(el);
+  })
+  return JSON.stringify(war)
+}
+function generateCSS(arr){
+  var css=":root {\r\n";
+  arr.map((el)=>{
+    css+=el.key+":"+el.val+';\r\n'
+  })
+  css+="}";
+  return css;
+}
 app.get('/pict', function(req, res) {
   flickr.photos.search({
     text: decodeURIComponent(req.query.search),
@@ -621,58 +636,31 @@ app.get('/pict', function(req, res) {
   });
 })
 
-app.get('/zip', function(req, res) {
-  var tp=req.query.tpname || 'grid';
-  var zname=req.query.zname || 'demobuilder-grid.zip';
-  const archive = archiver('zip');
-
-  archive.on('error', function(err) {
-    res.status(500).send({error: err.message});
-  });
-
-  archive.on('end', function() {
-    
-  });
-
-  res.attachment(zname);
-  archive.pipe(res);
-
-  archive.directory(__dirname + '/public/devcenter/templates/'+tp, '');
-  archive.finalize();
-});
-
 app.post('/zip', async function (req, res) {
   let ret=req.body;
   let tmp=copyTemplate();
-  //change tp files here
   let vv=JSON.parse(ret.view)[0].val;
-  //let vvArr=vv.replace(/([^,]*)(,|$)/g, "\"$1\"$2");
-  console.log("HEY",vv)
-  //let vvArr=('"'+vv.replaceAll(",",'","')+'"')
   let vvArr='"'+vv.replace(/,/g, '","')+'"';
   vvArr="var tab_server = ["+vvArr+"];"
   let ff=JSON.parse(ret.filter)[0].val;
   let pp=JSON.parse(ret.parameter)[0].val;
+  let war=variabilized(ret.webedit);
+  let aar=variabilized(ret.askdata);
+  let ttr=variabilized(ret.text);
+  let imr=variabilized(ret.img);
 
-  let war=[];
-  JSON.parse(ret.webedit).map((el)=>{
-    war.push(el);
-  })
-  war=JSON.stringify(war)
-  let aar=[];
-  JSON.parse(ret.askdata).map((el)=>{
-    aar.push(el);
-  })
-  aar=JSON.stringify(aar)
   vvArr+=`
   var tab_filter=${ff};
   var tab_web=${war};
   var tab_ask=${aar};
   var tab_param=${pp}; 
-  
+  var tab_text=${ttr};
+  var tab_img=${imr};
   var tab_all_filters=[[],[],[],[]];
   var tab_all_params=[[],[],[],[]];`
   writeTofile(vvArr,tmp+"/lib/config.js")
+
+  writeTofile(generateCSS(JSON.parse(ret.color)),tmp+"/css/config.css")
 
   var tp=req.query.tpname || 'grid';
   var zname=req.query.zname || 'demobuilder-grid.zip';
@@ -692,7 +680,6 @@ app.post('/zip', async function (req, res) {
   archive.directory(tmp, '');
   archive.finalize();
 });
-
 
 app.use(express.static(path.join(__dirname, "/public")));
 
