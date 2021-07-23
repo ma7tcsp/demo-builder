@@ -98,9 +98,9 @@ function showWebEditIfExist(index){
   var ids;
   tab_web.map((el,id)=>{
     if(el.key==String(index))
-      ids=id;
+      ids=el;
   })
-  if(tab_web[ids].val=="true")
+  if(ids && ids.val && ids.val=="true")
     document.getElementsByClassName("webedit")[0].style.display = "block";
 }
 
@@ -108,9 +108,9 @@ function showAskIfExist(index){
   var ids;
   tab_ask.map((el,id)=>{
     if(el.key==String(index))
-      ids=id;
+      ids=el;
   })
-  if(tab_ask[ids] && tab_ask[ids].val && tab_ask[ids].val!=""){
+  if(ids && ids.val && ids.val!=""){
     document.getElementsByClassName("askdata")[0].style.display = "block";
   }
 }
@@ -122,8 +122,7 @@ function navigateToSheet(workbook,sheetName,index){
     removeElements( document.querySelectorAll(".filter_dropdown") );
     getFiltersForViz(index);
     getParametersForViz(index);
-    if(tab_web[index].val=="true")
-      document.getElementsByClassName("webedit")[0].style.display = "block";
+    showWebEditIfExist(index);
   });
 }
 
