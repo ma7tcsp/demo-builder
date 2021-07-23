@@ -1,6 +1,5 @@
 var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
 
-
 function loadVizInit () {
   loadVizByIndex(0);
 }
@@ -29,8 +28,7 @@ function loadVizByIndex (index,force) {
           activeSheet = workbook.getActiveSheet();
           getFiltersForViz(index);
           getParametersForViz(index);
-          if(tab_web[index].val=="true")
-            document.getElementsByClassName("webedit")[0].style.display = "block";
+          showWebEditIfExist(index);
         }
     }
     if(url)
@@ -38,12 +36,10 @@ function loadVizByIndex (index,force) {
   }
 }
 function loadViz (placeholderDiv, url, options) {
-  if (viz) {
-      viz.dispose();
-  }
+  if(viz)
+    viz.dispose();
   viz = new tableau.Viz(placeholderDiv, url, options);
-  const removeElements = (elms) => elms.forEach(el => el.remove());
-  removeElements( document.querySelectorAll(".filter_dropdown") );
+  clearFiltersMenu();
 }
 function launchAsk(){
   if(askindex!=-1){
@@ -53,9 +49,7 @@ function launchAsk(){
   }
   var containerDiv = document.getElementById("tableauViz");
   document.getElementsByClassName("webedit")[0].style.display = "none";
-  var ask_options = {
-    width: '100%',
-    height: '100%',
+  var ask_options = {width: '100%',height: '100%',
   };
   viz.getCurrentUrlAsync().then(function(current_url){
     var index=tab_server.indexOf(current_url.split("?")[0]);
@@ -67,8 +61,7 @@ function launchAsk(){
 function launchEdit() {
   var containerDiv = document.getElementById("tableauViz");
   viz.getCurrentUrlAsync().then(function(current_url){
-    document.getElementsByClassName("webedit")[0].style.display = "none";
-    document.getElementsByClassName("askdata")[0].style.display = "none";
+    hideEditAsk()
     edit_url = current_url.split('?')[0].replace('/views', '/authoring');                  
     edit_options = {hideTabs: true,hideToolbar: true,width: '100%',height: '100%',
       onFirstInteractive: function () {

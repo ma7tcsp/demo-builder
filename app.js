@@ -206,17 +206,22 @@ function list(myhost,rawhost,site,project,tokenName,tokenValue,res){
     res.send({message:error});
   }
 }
+function deleteFolder(ptt){
+  fs.rmdir(ptt, { recursive: true }, (err) => {
+    if (err) {
+        throw err;
+    }
+  });
+}
 function deleteImg(){
   return new Promise( (resolve, reject)=>{
-    const directory = "public/img/";
-    var allDelete=[]
-    fs.readdir(directory, (err, files) => {
-      if (err) throw err;
-      for (const file of files) {
-        allDelete.push(unlink(path.join(directory, file)))
-      }
-      Promise.all(allDelete).then(()=>resolve());
-    });
+    const directory = "public/";
+    // fs.rmdir(directory, { recursive: true }, (err) => {
+    //   resolve();
+    //   if (err) {
+    //       throw err;
+    //   }
+    // });
   })
 }
 function hashCode(str) {
@@ -266,7 +271,7 @@ function getImage(protocol,port,token, host,siteid, pat,viewid,wid) {
     })
 }
 function getFolder(pat){
-  if (!fs.existsSync("public/"+pat)) {
+  if (!fs.existsSync("public/"+ pat)) {
     fs.mkdirSync("public/"+pat);
   }
   return "public/"+pat;
@@ -574,7 +579,32 @@ function authenticate(host,protocol,port,site,tokenName,tokenValue) {
   })
   
 }
+function copyTemplate(tpname){
+  tpname=tpname||"grid";
+  let from= __dirname + '/public/devcenter/templates/'+tpname;
+  let to=Date.now().toString();
+  copyFolderSync(from,to);
+  return to;
 
+}
+function copyFolderSync(from, to) {
+  if (!fs.existsSync(to)) 
+    fs.mkdirSync(to)
+  fs.readdirSync(from).forEach(element => {
+      if (fs.lstatSync(path.join(from, element)).isFile()) {
+          fs.copyFileSync(path.join(from, element), path.join(to, element));
+      } else {
+          copyFolderSync(path.join(from, element), path.join(to, element));
+      }
+  });
+}
+function writeTofile(content,filepath){
+  try {
+    const data = fs.writeFileSync(filepath, content);
+  } catch (err) {
+    console.error(err)
+  }
+}
 app.get('/pict', function(req, res) {
   flickr.photos.search({
     text: decodeURIComponent(req.query.search),
@@ -610,6 +640,57 @@ app.get('/zip', function(req, res) {
   archive.directory(__dirname + '/public/devcenter/templates/'+tp, '');
   archive.finalize();
 });
+
+app.post('/zip', async function (req, res) {
+  let ret=req.body;
+  let tmp=copyTemplate();
+  //change tp files here
+  let vv=JSON.parse(ret.view)[0].val;
+  //let vvArr=vv.replace(/([^,]*)(,|$)/g, "\"$1\"$2");
+  let vvArr=('"'+vv.replaceAll(",",'","')+'"')
+  vvArr="var tab_server = ["+vvArr+"];"
+  let ff=JSON.parse(ret.filter)[0].val;
+  let pp=JSON.parse(ret.parameter)[0].val;
+
+  let war=[];
+  JSON.parse(ret.webedit).map((el)=>{
+    war.push(el);
+  })
+  war=JSON.stringify(war)
+  let aar=[];
+  JSON.parse(ret.askdata).map((el)=>{
+    aar.push(el);
+  })
+  aar=JSON.stringify(aar)
+  vvArr+=`
+  var tab_filter=${ff};
+  var tab_web=${war};
+  var tab_ask=${aar};
+  var tab_param=${pp}; 
+  
+  var tab_all_filters=[[],[],[],[]];
+  var tab_all_params=[[],[],[],[]];`
+  writeTofile(vvArr,tmp+"/lib/config.js")
+
+  var tp=req.query.tpname || 'grid';
+  var zname=req.query.zname || 'demobuilder-grid.zip';
+  const archive = archiver('zip');
+
+  archive.on('error', function(err) {
+    res.status(500).send({error: err.message});
+  });
+
+  archive.on('end', function() {
+    deleteFolder(tmp);
+  });
+
+  res.attachment(zname);
+  archive.pipe(res);
+
+  archive.directory(tmp, '');
+  archive.finalize();
+});
+
 
 app.use(express.static(path.join(__dirname, "/public")));
 

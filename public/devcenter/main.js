@@ -1176,15 +1176,37 @@ function contrastFontColor(hexcolor){
 	return (yiq >= 128) ? 'black' : 'white';
 };
 function exportTemplate(){
-  const options = {
+  let a=getStorageByType("webedit");
+  let b=getStorageByType("askdata");
+  let c=getStorageByType("parameter");
+  let d=getStorageByType("filter");
+  let e=getStorageByType("view");
+  let f=getStorageByType("img");
+  let g=getStorageByType("text");
+  let h=getStorageByType("color");
+  var all={"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h)}
+  var formBody = formize(all);
+  console.log(formBody)
+  fetch("/zip", {
+    method: "POST", 
     headers: {
-    }
-  };
-   fetch('/zip?tpname=grid', options)
-    .then( res => res.blob() )
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formBody
+  }).then( res => 
+    res.blob() )
     .then( blob => {
-      saveFile(blob,"grid-site.zip")
+       saveFile(blob,"grid-site.zip")
     });
+  // const options = {
+  //   headers: {
+  //   }
+  // };
+  //  fetch('/zip?tpname=grid', options)
+  //   .then( res => res.blob() )
+  //   .then( blob => {
+  //     saveFile(blob,"grid-site.zip")
+  //   });
 }
 function saveFile(blob, filename) {
   if (window.navigator.msSaveOrOpenBlob) {

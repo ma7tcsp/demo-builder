@@ -94,8 +94,23 @@ function hideEditAsk(){
   document.getElementsByClassName("askdata")[0].style.display = "none";
 }
 
+function showWebEditIfExist(index){
+  var ids;
+  tab_web.map((el,id)=>{
+    if(el.key==String(index))
+      ids=id;
+  })
+  if(tab_web[ids].val=="true")
+    document.getElementsByClassName("webedit")[0].style.display = "block";
+}
+
 function showAskIfExist(index){
-  if(tab_ask[index] && tab_ask[index].val && tab_ask[index].val!=""){
+  var ids;
+  tab_ask.map((el,id)=>{
+    if(el.key==String(index))
+      ids=id;
+  })
+  if(tab_ask[ids] && tab_ask[ids].val && tab_ask[ids].val!=""){
     document.getElementsByClassName("askdata")[0].style.display = "block";
   }
 }
@@ -110,4 +125,9 @@ function navigateToSheet(workbook,sheetName,index){
     if(tab_web[index].val=="true")
       document.getElementsByClassName("webedit")[0].style.display = "block";
   });
+}
+
+function clearFiltersMenu(){
+  const removeElements = (elms) => elms.forEach(el => el.remove());
+  removeElements( document.querySelectorAll(".filter_dropdown") );
 }
