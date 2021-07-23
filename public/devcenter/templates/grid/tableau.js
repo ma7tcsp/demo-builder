@@ -1,8 +1,5 @@
 var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
 
-//BEGIN
-
-//END
 
 function loadVizInit () {
   loadVizByIndex(0);
@@ -11,38 +8,22 @@ function loadVizByIndex (index,force) {
   var url = tab_server[index];
   if(url=="")
     return;
-  document.getElementsByClassName("webedit")[0].style.display = "none";
-  document.getElementsByClassName("askdata")[0].style.display = "none";
-  if(tab_ask[index] && tab_ask[index].val && tab_ask[index].val!=""){
-    document.getElementsByClassName("askdata")[0].style.display = "block";
-  }
-  var stop=false;
+  hideEditAsk();
+  showAskIfExist(index);
+  var isSameWorkbook=false;
   if(workbook && !force){
     var sheets = workbook.getPublishedSheetsInfo();
     sheets.map((sh)=>{
       if(sh.getUrl()==url){
         console.log("ACTIVATE INSTEAD OF LOAD !!")
-        workbook.activateSheetAsync(sh.getName()).then(()=>{
-          activeSheet = workbook.getActiveSheet();
-          const removeElements = (elms) => elms.forEach(el => el.remove());
-          removeElements( document.querySelectorAll(".filter_dropdown") );
-          getFiltersForViz(index);
-          getParametersForViz(index);
-          if(tab_web[index].val=="true")
-            document.getElementsByClassName("webedit")[0].style.display = "block";
-        });
-        stop=true;
+        navigateToSheet(workbook,sh.getName());
+        isSameWorkbook=true;
       }
     })
   }
-  if(!stop){
+  if(!isSameWorkbook){
     placeholderDiv = document.getElementById("tableauViz");
-    options = {
-        width: '100%',
-        height: '100%',
-        hideTabs: true,
-        hideToolbar: true,
-        showShareOptions: false,
+    options = {width: '100%',height: '100%',hideTabs: true,hideToolbar: true,showShareOptions: false,
         onFirstInteractive: function () {
           workbook = viz.getWorkbook();
           activeSheet = workbook.getActiveSheet();
@@ -89,11 +70,7 @@ function launchEdit() {
     document.getElementsByClassName("webedit")[0].style.display = "none";
     document.getElementsByClassName("askdata")[0].style.display = "none";
     edit_url = current_url.split('?')[0].replace('/views', '/authoring');                  
-    edit_options = {
-      hideTabs: true,
-      hideToolbar: true,
-      width: '100%',
-      height: '100%',
+    edit_options = {hideTabs: true,hideToolbar: true,width: '100%',height: '100%',
       onFirstInteractive: function () {
           var iframe = document.querySelectorAll('iframe')[0];
           iframe.onload = function(){
@@ -107,92 +84,9 @@ function launchEdit() {
     loadViz (containerDiv, edit_url, edit_options);          
   })
 }
-function showFilterBox(el){
-  document.querySelector(`div[mid='${el}']`).classList.toggle("show");
-  document.querySelectorAll(`.dropdown-content`).forEach((dd)=>{if(dd.getAttribute("mid")!=el)dd.classList.remove("show")});
-}
-function displayFilter(fil){
-  var links="";
-  fil.getAppliedValues().map((val)=>{
-    var found=false;
-    document.querySelectorAll(`[filName="${fil.getFieldName()}"]`).forEach((el)=>{
-      if(el.text==val.value)
-        found=true;
-    })
-    if(!found ){
-      links+=`<a filName="${fil.getFieldName()}" href="#" class="filter-entry" onclick="applyFilter('${fil.getFieldName()}','${val.value}')">${val.value}</a>`;
-    }
-  })
-  var list=`
-  <span class="filter_dropdown">
-    <a id="builder-text-${fil.getFieldName()}" class="editable" onclick="showFilterBox('${fil.getFieldName()}')" href="#">${fil.getFieldName()}</a>
-    <div mid="${fil.getFieldName()}" class="dropdown-content">
-    ${links}
-    </div>
-  </span>`
-  if(document.querySelector(`div[mid='${fil.getFieldName()}']`)==null){
-    document.getElementsByClassName("ButtonBar")[0].innerHTML+=list;
-  }
-  else{
-    document.querySelector(`div[mid='${fil.getFieldName()}']`).innerHTML+=links;
-  }
-}
-function getFiltersForViz(index){
-  activeSheet.getFiltersAsync().then((current_filter)=>{
-    tab_all_filters[index]={filters:current_filter,viz:viz};
-    current_filter.map((f)=>{
-      tab_filter[index].map((cf)=>{
-        if(cf==f.getFieldName()){
-          displayFilter(f);
-        }
-      })
-    })
-    window.parent.restoreTexts();
-  })
-}
-function displayParameter(param){
-  var links="";
-  param.getAllowableValues().map((val)=>{
-    var found=false;
-    document.querySelectorAll(`[paramName="${param.getName()}"]`).forEach((el)=>{
-      if(el.text==val.value)
-        found=true;
-    })
-    if(!found ){
-      links+=`<a paramName="${param.getName()}" href="#" class="filter-entry" onclick="applyParam('${param.getName()}','${val.value}')">${val.value}</a>`;
-    }
-  })
-  var list=`
-  <span class="filter_dropdown">
-    <a id="builder-text-${param.getName()}" class="editable" onclick="showFilterBox('${param.getName()}')" href="#">${param.getName()}</a>
-    <div mid="${param.getName()}" class="dropdown-content">
-    ${links}
-    </div>
-  </span>`
-  if(document.querySelector(`div[mid='${param.getName()}']`)==null){
-    document.getElementsByClassName("ButtonBar")[0].innerHTML+=list;
-  }
-  else{
-    document.querySelector(`div[mid='${param.getName()}']`).innerHTML+=links;
-  }
-}
-function getParametersForViz(index){
-  workbook.getParametersAsync().then((current_param)=>{
-    tab_all_params[index]={parameters:current_param,viz:viz};
-    current_param.map((f)=>{
-      tab_param[index].map((cf)=>{
-        if(cf==f.getName()){
-          displayParameter(f);
-        }
-      })
-    })
-    window.parent.restoreTexts();
-  })
-}
 function applyFilter(filterName,value) {
-  //Region name is the parameter "filtername"
   activeSheet.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
-  document.querySelector(`div[mid='${filterName}']`).classList.remove("show")
+  hideDropDownList(filterName);
 }
 function resetViz() {
   viz.revertAllAsync();

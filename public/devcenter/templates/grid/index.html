@@ -1,12 +1,13 @@
 <html>
 <head>
-  <link rel="stylesheet" href="config.css">
-<link rel="stylesheet" href="layout.css">
-<link rel="stylesheet" href="page.css">
+  <link rel="stylesheet" href="css/config.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/page.css">
 <script src="https://eu-west-1a.online.tableau.com/javascripts/api/tableau-2.7.0.min.js"></script>
-<script src="config.js"></script>
+<script src="lib/config.js"></script>
+<script src="lib/advanced.js"></script>
 <script src="tableau.js"></script>
-<script src="embedrocks.js"></script>
+<script src="lib/embedrocks.js"></script>
 <title>Tableau Example</title>
 </head>
 <body onload="loadVizInit()">
@@ -17,7 +18,7 @@
 
   <div class="Header">
     <div class="logo">
-      <div><img id="builder-img-1" class="log img-editable" src="tableau-white.png"/></div>
+      <div><img id="builder-img-1" class="log img-editable" src="img/tableau-white.png"/></div>
       <div class="person editable" id="User-text">
         {User}
       </div>
