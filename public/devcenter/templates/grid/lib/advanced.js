@@ -117,6 +117,14 @@ function showAskButtonIfExist(index){
   }
 }
 
+function getElementIndexByIndex(arr,index){
+  var ids=-1;
+  arr.map((el,id)=>{
+    if(el.key==String(index))
+      ids=id;
+  })
+  return ids
+}
 function navigateToSheet(workbook,sheetName,index){
   workbook.activateSheetAsync(sheetName).then(()=>{
     activeSheet=workbook.getActiveSheet();  

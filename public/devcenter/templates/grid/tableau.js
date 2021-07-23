@@ -53,9 +53,9 @@ function launchAsk(){
   var ask_options = {width: '100%',height: '100%',
   };
   viz.getCurrentUrlAsync().then(function(current_url){
-    var index=tab_server.indexOf(current_url.split("?")[0]);
-    askindex=index;
-    loadViz (containerDiv, tab_ask[index].val, ask_options);    
+    var indexv=tab_server.indexOf(current_url.split("?")[0]);
+    askindex=indexv;
+    loadViz (containerDiv, tab_ask[getElementIndexByIndex(tab_ask,indexv)].val, ask_options);    
   })
   
 }
