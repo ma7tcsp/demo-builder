@@ -100,7 +100,7 @@ function showAskIfExist(index){
   }
 }
 
-function navigateToSheet(workbook,sheetName){
+function navigateToSheet(workbook,sheetName,index){
   workbook.activateSheetAsync(sheetName).then(()=>{
     activeSheet=workbook.getActiveSheet();  
     const removeElements = (elms) => elms.forEach(el => el.remove());

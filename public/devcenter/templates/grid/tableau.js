@@ -16,7 +16,7 @@ function loadVizByIndex (index,force) {
     sheets.map((sh)=>{
       if(sh.getUrl()==url){
         console.log("ACTIVATE INSTEAD OF LOAD !!")
-        navigateToSheet(workbook,sh.getName());
+        navigateToSheet(workbook,sh.getName(),index);
         isSameWorkbook=true;
       }
     })
