@@ -8,8 +8,8 @@ function loadVizByIndex (index,force) {
   var url = tab_server[index];
   if(url=="")
     return;
-  hideEditAsk();
-  showAskIfExist(index);
+  hideEditAskButton();
+  showAskButtonIfExist(index);
   var isSameWorkbook=false;
   if(workbook && !force){
     var sheets = workbook.getPublishedSheetsInfo();
@@ -49,7 +49,7 @@ function launchAsk(){
     return;
   }
   var containerDiv = document.getElementById("tableauViz");
-  document.getElementsByClassName("webedit")[0].style.display = "none";
+  hideEditButton()
   var ask_options = {width: '100%',height: '100%',
   };
   viz.getCurrentUrlAsync().then(function(current_url){
@@ -62,7 +62,7 @@ function launchAsk(){
 function launchEdit() {
   var containerDiv = document.getElementById("tableauViz");
   viz.getCurrentUrlAsync().then(function(current_url){
-    hideEditAsk()
+    hideEditAskButton()
     edit_url = current_url.split('?')[0].replace('/views', '/authoring');                  
     edit_options = {hideTabs: true,hideToolbar: true,width: '100%',height: '100%',
       onFirstInteractive: function () {

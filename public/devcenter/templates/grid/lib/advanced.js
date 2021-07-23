@@ -89,11 +89,13 @@ function hideDropDownList(filterName){
   document.querySelector(`div[mid='${filterName}']`).classList.remove("show")
 }
 
-function hideEditAsk(){
+function hideEditAskButton(){
   document.getElementsByClassName("webedit")[0].style.display = "none";
   document.getElementsByClassName("askdata")[0].style.display = "none";
 }
-
+function hideEditButton(){
+  document.getElementsByClassName("webedit")[0].style.display = "none";
+}
 function showWebEditIfExist(index){
   var ids;
   tab_web.map((el,id)=>{
@@ -104,7 +106,7 @@ function showWebEditIfExist(index){
     document.getElementsByClassName("webedit")[0].style.display = "block";
 }
 
-function showAskIfExist(index){
+function showAskButtonIfExist(index){
   var ids;
   tab_ask.map((el,id)=>{
     if(el.key==String(index))
