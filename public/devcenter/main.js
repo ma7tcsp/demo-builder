@@ -65,9 +65,6 @@ async function init(){
   $("#show-sidebar").click(function () {
     $(".page-wrapper").addClass("toggled");
   });
-  $('.slider-arrow').click(function(){
-    toogleFilters();
-});
   if(localStorage.getItem("VERSION")!=VERSION){
     var r=await restoreFromUrl(DEFAULT_SETTINGS,false);
   }
@@ -76,42 +73,6 @@ async function init(){
     getProjects();
   currentTemplate="templates/grid/index.html";  
   restoreViz();
-}
-function collapseFilters(){
-  $( ".panel-filter" ).animate({
-        top: "-5000px"
-    }, 500, function() {
-    });
-    $( ".slider-arrow" ).animate({
-      top: "0px"
-    }, 500, function() {
-    });
-  $(".slider-arrow").removeClass('show').addClass('hide');
-  //$( ".panel-filter" ).hide();
-}
-function toogleFilters(){
-  if($(".slider-arrow").hasClass('show')){
-    $( ".panel-filter" ).animate({
-        top: "-"+($(".panel-filter").height())
-    }, 700, function() {
-        });
-    // $( ".slider-arrow" ).animate({
-    //     top: "0px"
-    // }, 700, function() {
-    //     });
-    $(".slider-arrow").removeClass('show').addClass('hide');
-  }
-  else {   	
-    // $( ".slider-arrow").animate({
-    //     top: $(".panel-filter").height()
-    // }, 700, function() {
-    //     });
-    $( ".panel-filter" ).animate({
-        top: "0px"
-    }, 700, function() {
-        });
-    $(".slider-arrow").removeClass('hide').addClass('show');    
-  }
 }
 function checkSettings(){
   return localStorage.getItem("SERVER_URL")!="" && localStorage.getItem("SITE_NAME") !="" 
@@ -429,7 +390,6 @@ function closeAllMenu(){
   $(".sidebar-submenu").hide();
 }
 function switchTemplate(tpName,ev){
-  collapseFilters();
   if(ev){
     $(".thumb.templ").removeClass("active");
     $(ev).addClass("active");
@@ -554,6 +514,9 @@ function initPicker(id,col){
 function collapseDetailsPanelAuto(){
   $('details.top').click(function (event) {
     $('details.top').not(this).removeAttr("open");  
+  });
+  $('details.scn').click(function (event) {
+    $('details.scn').not(this).removeAttr("open");  
   });
 }
 function getRepoVal(type,key){
@@ -722,10 +685,7 @@ function addSearchListener(){
   $("#modal-pict-content").on('scroll', function (e) {
     var sc=$("#modal-pict-content").scrollTop();
     var ms=$("#modal-pict-content").prop("scrollHeight");
-    console.log(sc,ms);
     if(sc==(ms-$("#modal-pict-content").height()) && (getMaxLoadedPage() +1)<=getMinAllPages()){
-      console.log(getMaxLoadedPage());
-      //if(((sc/200)+1)>maxp){
         fetch('/pict?page='+(getMaxLoadedPage() +1)+'&search='+curSearch)
         .then( res => res.text() )
         .then( (tx) => {
@@ -736,7 +696,6 @@ function addSearchListener(){
             $(e.currentTarget).addClass("selected");
           })
         });
-      //}
     }
   })
   $(".searchpict").on('keyup', function (e) {
@@ -791,16 +750,26 @@ function showTemplateSettings(){
     }
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
-      <img class="wload" height="150px" width="210px" src="${el!=""?el+'.png':"/newView.png"}" >
+      <img class="wload" height="250px" width="310px" src="${el!=""?el+'.png':"/newView.png"}" >
       <div class="filterboxes">
-        <label class="tpb">Ask Data:</label><br>
-        <input class="askdata" varindex="${id}" type="text" placeholder="Type URL Here..." value="${getRepoVal("askdata",id)==""||getRepoVal("askdata",id)==null?"":getRepoVal("askdata",id)}"><br><br>
-        <label class="tpb">Web Edit:</label><br>
-        <input class="webedit" varindex="${id}" type="checkbox" ${getRepoVal("webedit",id)=="true"?"checked":""}> <label> Activated</label><br><br>
-        <label class="tpb">Filters:</label>
+
+        <details class="scn">
+        <summary class="tpb">Ask Data:</summary>
+        <input class="askdata" varindex="${id}" type="text" placeholder="Type URL Here..." value="${getRepoVal("askdata",id)==""||getRepoVal("askdata",id)==null?"":getRepoVal("askdata",id)}">
+        </details>
+        
+        <details class="scn">
+        <summary class="tpb">Web Edit:</summary>
+        <input class="webedit" varindex="${id}" type="checkbox" ${getRepoVal("webedit",id)=="true"?"checked":""}> <label> Activated</label>
+        </details>
+        
+        <details class="scn">
+        <summary class="tpb">Filters:</summary>
         <ul>
           ${nodefilter}
         </ul>
+        </details>
+
       </div>
     </div>
     `
@@ -845,7 +814,7 @@ function showTemplateSettings(){
     `
     $("#textlist").append(node);
   })
-  //showModal('modal-tpset');
+  collapseDetailsPanelAuto();
 }
 function initFilterRepo(){
   var ff=JSON.parse(getRepoVal("filter","filter")==null?null:getRepoVal("filter","filter").replaceAll("'",'"'));
