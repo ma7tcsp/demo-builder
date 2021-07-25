@@ -58,7 +58,7 @@ details[open] > summary {
   border-radius: 5px;
 }
 .filterboxes{
-  margin-top: 5px;
+  margin-top: -20px;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
