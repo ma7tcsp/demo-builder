@@ -623,12 +623,14 @@ function generateCSS(arr){
 app.get('/pict', function(req, res) {
   flickr.photos.search({
     text: decodeURIComponent(req.query.search),
-    extras:'url_o'
+    extras:'url_o',
+    per_page:20,
+    page:req.query.page?req.query.page:1
   }).then(function (result) {
     var p="";
     result.body.photos.photo.map((el)=>{
       if(el.url_o)
-        p+=`<img class='searchres' src=${el.url_o}>`
+        p+=`<img pages="${result.body.photos.pages}" page="${result.body.photos.page}" loading=lazy class='searchres' src=${el.url_o}>`
     })
     res.send(p);
   }).catch(function (err) {

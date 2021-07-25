@@ -4,7 +4,7 @@
   border-color: red;
 }
 .searchres{
-  max-height: 50px;
+  height: 100px;
   width: auto;
   padding: 5px;
   cursor: pointer;
@@ -160,7 +160,8 @@
   color: rgba(0,0,0,.8);
   margin-top: 2rem;
   margin-bottom: 2rem;
-  
+  height: 200px;
+  overflow: auto;
 }
 
 .modal__btn {

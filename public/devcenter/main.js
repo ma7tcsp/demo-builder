@@ -8,6 +8,8 @@ var magicGrid;
 var pickers=[];
 var panelSet;
 var viewsModified=false;
+var curSearch;
+var curSearchVarC; 
 //WORK-AROUND FOR VIZ BEING IN IFRAME
 Window.prototype._addEventListener = Window.prototype.addEventListener;
 Window.prototype.addEventListener = function(a, b, c) {
@@ -697,10 +699,52 @@ function parseForImage(docu){
   }
   return imgs;
 }
+function getMaxLoadedPage(){
+  var mx=0;
+  $(".searchres").each((id,element) => {
+    var p=$(element).attr("page");
+    mx=Math.max(mx,parseInt(p)); 
+  });
+  return mx;
+}
+function isAllPageLoaded(){
+  return getMaxLoadedPage()==getMinAllPages();
+}
+function getMinAllPages(){
+  var mx=100000;
+  $(".searchres").each((id,element) => {
+    var p=$(element).attr("pages");
+    mx=Math.min(mx,parseInt(p)); 
+  });
+  return mx;
+}
 function addSearchListener(){
+  $("#modal-pict-content").on('scroll', function (e) {
+    var sc=$("#modal-pict-content").scrollTop();
+    var ms=$("#modal-pict-content").prop("scrollHeight");
+    console.log(sc,ms);
+    if(sc==(ms-$("#modal-pict-content").height()) && (getMaxLoadedPage() +1)<=getMinAllPages()){
+      console.log(getMaxLoadedPage());
+      //if(((sc/200)+1)>maxp){
+        fetch('/pict?page='+(getMaxLoadedPage() +1)+'&search='+curSearch)
+        .then( res => res.text() )
+        .then( (tx) => {
+          $("#modal-pict-content").append(tx);
+          $(".searchres").attr("varc",curSearchVarC)
+          $(".searchres").on('click',(e)=>{
+            $(".searchres").removeClass("selected")
+            $(e.currentTarget).addClass("selected");
+          })
+        });
+      //}
+    }
+  })
   $(".searchpict").on('keyup', function (e) {
     if (e.key === 'Enter' || e.keyCode === 13) {
+      curSearch=encodeURIComponent($(e.currentTarget).val());
+      curSearchVarC=$(e.currentTarget).attr("varc");
       $("#modal-pict-content").empty();
+      maxp=1;
       showModal('modal-pict');
       fetch('/pict?search='+encodeURIComponent($(e.currentTarget).val()))
       .then( res => res.text() )
