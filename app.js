@@ -70,7 +70,67 @@ app.post('/workbooks', async function (req, res) {
     else  
       return listWorkbooks(req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
 });
+app.get('/pict', function(req, res) {
+  flickr.photos.search({
+    text: decodeURIComponent(req.query.search),
+    extras:'url_o',
+    per_page:20,
+    page:req.query.page?req.query.page:1
+  }).then(function (result) {
+    var p="";
+    result.body.photos.photo.map((el)=>{
+      if(el.url_o)
+        p+=`<img pages="${result.body.photos.pages}" page="${result.body.photos.page}" loading=lazy class='searchres' src=${el.url_o}>`
+    })
+    res.send(p);
+  }).catch(function (err) {
+    console.error('bonk', err);
+  });
+})
+app.post('/zip', async function (req, res) {
+  let ret=req.body;
+  let tmp=copyTemplate();
+  let vv=JSON.parse(ret.view)[0].val;
+  let vvArr='"'+vv.replace(/,/g, '","')+'"';
+  vvArr="var tab_server = ["+vvArr+"];"
+  let ff=JSON.parse(ret.filter)[0].val;
+  let pp=JSON.parse(ret.parameter)[0].val;
+  let war=variabilized(ret.webedit);
+  let aar=variabilized(ret.askdata);
+  let ttr=variabilized(ret.text);
+  let imr=variabilized(ret.img);
 
+  vvArr+=`
+  var tab_filter=${ff};
+  var tab_web=${war};
+  var tab_ask=${aar};
+  var tab_param=${pp}; 
+  var tab_text=${ttr};
+  var tab_img=${imr};
+  var tab_all_filters=[[],[],[],[]];
+  var tab_all_params=[[],[],[],[]];`
+  writeTofile(vvArr,tmp+"/lib/config.js")
+
+  writeTofile(generateCSS(JSON.parse(ret.color)),tmp+"/css/config.css")
+
+  var tp=req.query.tpname || 'grid';
+  var zname=req.query.zname || 'demobuilder-grid.zip';
+  const archive = archiver('zip');
+
+  archive.on('error', function(err) {
+    res.status(500).send({error: err.message});
+  });
+
+  archive.on('end', function() {
+    deleteFolder(tmp);
+  });
+
+  res.attachment(zname);
+  archive.pipe(res);
+
+  archive.directory(tmp, '');
+  archive.finalize();
+});
 function validateParam(req,for_img){
   var mess=""
   if(!req.body.host){
@@ -620,68 +680,6 @@ function generateCSS(arr){
   css+="}";
   return css;
 }
-app.get('/pict', function(req, res) {
-  flickr.photos.search({
-    text: decodeURIComponent(req.query.search),
-    extras:'url_o',
-    per_page:20,
-    page:req.query.page?req.query.page:1
-  }).then(function (result) {
-    var p="";
-    result.body.photos.photo.map((el)=>{
-      if(el.url_o)
-        p+=`<img pages="${result.body.photos.pages}" page="${result.body.photos.page}" loading=lazy class='searchres' src=${el.url_o}>`
-    })
-    res.send(p);
-  }).catch(function (err) {
-    console.error('bonk', err);
-  });
-})
-
-app.post('/zip', async function (req, res) {
-  let ret=req.body;
-  let tmp=copyTemplate();
-  let vv=JSON.parse(ret.view)[0].val;
-  let vvArr='"'+vv.replace(/,/g, '","')+'"';
-  vvArr="var tab_server = ["+vvArr+"];"
-  let ff=JSON.parse(ret.filter)[0].val;
-  let pp=JSON.parse(ret.parameter)[0].val;
-  let war=variabilized(ret.webedit);
-  let aar=variabilized(ret.askdata);
-  let ttr=variabilized(ret.text);
-  let imr=variabilized(ret.img);
-
-  vvArr+=`
-  var tab_filter=${ff};
-  var tab_web=${war};
-  var tab_ask=${aar};
-  var tab_param=${pp}; 
-  var tab_text=${ttr};
-  var tab_img=${imr};
-  var tab_all_filters=[[],[],[],[]];
-  var tab_all_params=[[],[],[],[]];`
-  writeTofile(vvArr,tmp+"/lib/config.js")
-
-  writeTofile(generateCSS(JSON.parse(ret.color)),tmp+"/css/config.css")
-
-  var tp=req.query.tpname || 'grid';
-  var zname=req.query.zname || 'demobuilder-grid.zip';
-  const archive = archiver('zip');
-
-  archive.on('error', function(err) {
-    res.status(500).send({error: err.message});
-  });
-
-  archive.on('end', function() {
-    deleteFolder(tmp);
-  });
-
-  res.attachment(zname);
-  archive.pipe(res);
-
-  archive.directory(tmp, '');
-  archive.finalize();
-});
 
 app.use(express.static(path.join(__dirname, "/public")));
 

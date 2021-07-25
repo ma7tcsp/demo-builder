@@ -783,7 +783,7 @@ function showTemplateSettings(){
     <div  class="settings_block pictsettings">
         <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i> <label class="label_settings">${el.variable.replace(currentTemplate+'-','')} </label>
         <div class="picgroup">
-          <input varc="${el.variable}" class="imgs input input_settings searchpict" required="true" placeholder="Search images...">
+          <input varc="${el.variable}" class="imgs input input_settings searchpict" required="true" placeholder="Search for images or paste url below...">
           <input varc="${el.variable}" class="imgs input input_settings sh" required="true" value="${el.img}">
         </div>
     </div>
