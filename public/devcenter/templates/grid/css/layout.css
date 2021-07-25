@@ -6,6 +6,14 @@ html, body {
     font-family: sans-serif;
 }
 
+.headrer_right{
+  display: flex;
+}
+.usrpic {
+  height: 17px;
+  margin-right: 10px;
+}
+
 .grid-container {
   min-height: 100%;
   display: grid;
