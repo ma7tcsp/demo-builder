@@ -19,7 +19,7 @@ var flickr = new Flickr("9213318e4c399937cd7e87a728cb7493");
 
 
 //DEBUG
-//console.log = function() {}
+console.log = function() {}
 
 
 let port = process.env.PORT;
