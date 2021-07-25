@@ -1,4 +1,7 @@
-
+.advanced{
+  text-align: initial;
+  padding-left: 20px;
+}
 #close-sidebar .fa-bars {
   position: absolute;
   top: 14px;
