@@ -5,7 +5,7 @@ html, body {
     margin: 0;
     font-family: sans-serif;
 }
-
+ 
 .headrer_right{
   display: flex;
 }
@@ -32,26 +32,26 @@ html, body {
 .RightPad { grid-area: RightPad; }
 
 .Header {
-  background-color: var(--header-bg-color);
-  color: var(--header-tx-color);
+  background-color: var(--Header-Background);
+  color: var(--Header-Text);
   padding-top: 2px;
   padding-left: 2px;
   padding-bottom: 2px;
 }
 .ButtonBar {
-  background-color: var(--button-bg-color);
-  color: var(--button-tx-color);
+  background-color: var(--Button-Background);
+  color: var(--Button-Text);
 }
 .Footer {
-  background-color: var(--footer-bg-color);
-  color: var(--footer-tx-color);
+  background-color: var(--Footer-Background);
+  color: var(--Footer-Text);
   padding-right: 30px;
   display: flex;
   align-items: center;
 }
 .Content {
-  background-color: var(--content-bg-color);
-  color: var(--content-tx-color);
+  background-color: var(--Content-Background);
+  color: var(--Content-Text);
   margin-top: 10px;
 }
 .log{
@@ -62,7 +62,7 @@ html, body {
 .logo {
   width: 100%;
   height: 100%;
-  color: var(--header-tx-color);
+  color: var(--Header-Text);
   display: flex;
 }
 .person {
@@ -78,7 +78,7 @@ html, body {
 .footer > ul > li { 
   display: inline;
 margin-left: 30px;
-color: var(--footer-tx-color);
+color: var(--Footer-Text);
 }
 
 .footer > ul {

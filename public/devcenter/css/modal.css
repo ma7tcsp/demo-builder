@@ -54,6 +54,9 @@
   width: 30%;
   height: 25px;
   margin-top: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .input_settings {
   width: 70%;

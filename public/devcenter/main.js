@@ -816,9 +816,10 @@ function showTemplateSettings(eve){
   $("#imglist").empty();
   $("#imglist").append("<summary>Images Settings</summary>");
   parseForImage(document.getElementById('template').contentWindow.document).map((el)=>{
+    var cpLabel=capitalizeIt(el.variable.replace(currentTemplate+'-','').replaceAll("-"," ") );
     var node=`
     <div  class="settings_block pictsettings">
-        <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i> <label class="label_settings">${el.variable.replace(currentTemplate+'-','').replaceAll("-"," ")} </label>
+        <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i> <label class="label_settings">${cpLabel} </label>
         <div class="picgroup">
           <input varc="${el.variable}" class="imgs input input_settings searchpict" required="true" placeholder="Search for images or paste url below...">
           <input varc="${el.variable}" class="imgs input input_settings sh" required="true" value="${el.img}">
@@ -831,9 +832,10 @@ function showTemplateSettings(eve){
   $("#colorlist").empty();
   $("#colorlist").append("<summary>Colour Settings</summary>");
   parseForCSSVar(document.getElementById('template').contentWindow.document).map((el,index)=>{
+    //<i onclick="highlightElementbyCSSColor('${el.value}')" class="fas target fa-bullseye"></i>
     var node=`
     <div class="settings_block">
-      <i onclick="highlightElementbyCSSColor('${el.value}')" class="fas target fa-bullseye"></i><label class="label_settings">${el.variable.replaceAll("-"," ")} </label>
+      <label class="label_settings">${el.variable.replaceAll("-"," ")} </label>
       <input varc="${el.variable}" style="background-color:${el.value};" id="color${index}" class="color input input_settings" required="true" value="${el.value}">
     </div>
     `
@@ -1290,6 +1292,10 @@ function selectedPict(){
  var tg=$(`.imgs.input.sh[varc='${jur.attr("varc")}']`)
  tg.val(ur);
  MicroModal.close('modal-pict');
+}
+function capitalizeIt(str) {
+  var lower = str.toLowerCase();
+  return str.charAt(0).toUpperCase() + lower.slice(1);
 }
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
