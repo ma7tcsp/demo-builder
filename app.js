@@ -99,6 +99,7 @@ app.post('/zip', async function (req, res) {
   let aar=variabilized(ret.askdata);
   let ttr=variabilized(ret.text);
   let imr=variabilized(ret.img);
+  let acr=variabilized(ret.action);
 
   vvArr+=`
   var tab_filter=${ff};
@@ -107,6 +108,7 @@ app.post('/zip', async function (req, res) {
   var tab_param=${pp}; 
   var tab_text=${ttr};
   var tab_img=${imr};
+  var tab_action=${acr}
   var tab_all_filters=[[],[],[],[]];
   var tab_all_params=[[],[],[],[]];`
   writeTofile(vvArr,tmp+"/lib/config.js")
