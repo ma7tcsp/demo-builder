@@ -10,7 +10,6 @@ function loadVizByIndex (index,force) {
     return;
   hideEditAskButton();
   hideActionButton();
-  showAskButtonIfExist(index);
   var isSameWorkbook=false;
   if(workbook && !force){
     var sheets = workbook.getPublishedSheetsInfo();
@@ -30,7 +29,7 @@ function loadVizByIndex (index,force) {
           getFiltersForViz(index);
           getParametersForViz(index);
           showWebEditIfExist(index);
-          //showActionIfExist(index);
+          showActionIfExist(index);
           viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
         }
     }
@@ -82,12 +81,16 @@ function launchEdit() {
 }
 function launchAction(){
   var textOnly=[];
+  if(!selectedMarks)
+    window.open('http://google.com/search?q=There is no text values in your selection, or simply no selection :-)');
   selectedMarks.map((el)=>{
     if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){
       if(!textOnly.includes(el))
         textOnly.push(el);
     }
   })
+  if(textOnly.length==0)
+    window.open('http://google.com/search?q=There is no text values in your selection, or simply no selection :-)');
   if(lengthInUtf8Bytes(textOnly.join(" "))<1024)
     window.open('http://google.com/search?q='+textOnly.join(" "));
   else
@@ -98,15 +101,6 @@ function onMarksSelection(marksEvent) {
 }
 function reportSelectedMarks(marks) {
   var curmarks = marks;
-  if(curmarks.length>0){
-    viz.getCurrentUrlAsync().then (function(current_url){
-      var index=tab_server.indexOf(current_url.split("?")[0]);
-      showActionIfExist(index);
-    })
-  }
-  else{
-    hideActionButton();
-  }
   selectedMarks=[];
   for (var markIndex = 0; markIndex < curmarks.length; markIndex++) {
     var pairs = curmarks[markIndex].getPairs();
