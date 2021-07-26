@@ -95,7 +95,7 @@ function launchAction(){
   if(textOnly.length==0)
     window.open('http://google.com/search?q=There is no text values in your selection, or simply no selection :-)');
   if(lengthInUtf8Bytes(textOnly.join(" "))<1024)
-    window.open('http://google.com/search?q='+textOnly.join(" "));
+    window.open('http://google.com/search?q='+encodeURIComponent(textOnly.join(" ")));
   else
   window.open('http://google.com/search?q='+"Too much elements in your selection :-) Reduce please!");  
 }
