@@ -1,3 +1,6 @@
+html, body{
+  overflow: hidden;
+}
 .advanced{
   text-align: initial;
   padding-left: 20px;
