@@ -399,8 +399,6 @@ function switchTemplate(tpName,ev){
   disposeAllViz();
   $("#container").empty();
   restoreViz();
-  //$(".tb").scrollTop(0);
-  //getViews(vname);
 }
 function showViews(vname,ev){
   $(".thumb.wkb").removeClass("active");
@@ -1223,7 +1221,6 @@ function exportTemplate(){
   let j=getStorageByType("action");
   var all={"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
   var formBody = formize(all);
-  console.log(formBody)
   fetch("/zip", {
     method: "POST", 
     headers: {
