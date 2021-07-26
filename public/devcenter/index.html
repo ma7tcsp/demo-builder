@@ -37,8 +37,6 @@
         <a class="nosel" style="text-align: center" href="#"> DEMO-BUILDER</a>
         <div id="close-sidebar">
           <i class="fas fa-bars"></i>
-          <i class="fas fa-cogs" onclick="showTemplateSettings()"></i>
-          <i class="fas fa-download" onclick="exportTemplate()"></i>
         </div>
       </div>
       <!-- <div class="sidebar-header">
@@ -56,21 +54,7 @@
             <span>Online</span>
           </span>
         </div>
-      </div> -->
-
-      <div class="sidebar-search">
-        <div>
-          <div class="input-group">
-            <input autocomplete="off" id="search" onkeyup="filterViewList()" type="text" class="form-control search-menu" placeholder="Search...">
-            <div class="input-group-append">
-              <span class="input-group-text">
-                <i class="fa fa-search" aria-hidden="true"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+      </div> -->      
 
       <div class="sidebar-menu">
         <ul>
@@ -91,10 +75,21 @@
                   </a>
                   <div class="sidebar-submenu tdropsub">
                   <ul class="templateList">
-                    <div id="basic" class="active thumb templ" onclick="switchTemplate('templates/grid/index.html',this)">
-                      <div class="nosel thumb_text">Learning</div>
-                      <i class="check fa fa-check"></i> 
-                    </div>
+                    <details class="templ thumb_text basic" open>
+                      <summary>Light</summary>
+                      <div id="basic" class="active thumb templ" onclick="switchTemplate('templates/grid/index.html',this)">
+                        <i class="tpiconF fas fa-cogs" onclick="showTemplateSettings(event)"></i>
+                        <i class="tpicon fas fa-download" onclick="exportTemplate(event)"></i>
+                        <div class="nosel thumb_text">Horizontal</div>
+                        <i class="check fa fa-check"></i> 
+                      </div>
+                      <div id="basicV" class="thumb templ" onclick="switchTemplate('templates/grid/index.html',this)">
+                        <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
+                        <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
+                        <div class="nosel thumb_text">Vertical</div>
+                        <i class="check fa fa-check"></i> 
+                      </div>
+                    </details>  
                     <details class="templ thumb_text advanced">
                       <summary>Avanced</summary>
                       <!-- <div id="nope" class="thumb templ" onclick="switchTemplate('templates/basic/index.html',this)">
@@ -117,6 +112,18 @@
                   </ul>
                   </div>
                 </li>
+                <div class="sidebar-search topmarg">
+                  <div>
+                    <div class="input-group">
+                      <input autocomplete="off" id="search" onkeyup="filterViewList()" type="text" class="form-control search-menu" placeholder="Search...">
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>    
             <li class="header-menu">
             <span class="nosel">Server Content</span>
             </li>  
@@ -131,7 +138,6 @@
                     </ul>
                     </div>
                 </li>
-            
             <li class="header-menu">
                 <span class="nosel">Project Content</span>
             </li>

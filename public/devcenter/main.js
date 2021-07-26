@@ -41,11 +41,32 @@ async function init(){
       marg=316;
     $(".tb").css("max-height",marg);
   };
-  $(".sidebar-dropdown > a").click(function () {
-    $(".sidebar-submenu").slideUp(150);
+  $(".sidebar-dropdown.tdropdown > a").click(function () {
+    $(".sidebar-submenu:not(.tdropsub)").slideUp(150);
     setTimeout(() => {
       if ($(this).parent().hasClass("active")) {
-        $(".sidebar-dropdown").removeClass("active");
+        $(this).parent().removeClass("active");
+        $(".sidebar-submenu.tdropsub").slideUp(150);
+      } else {
+        $(this).next(".sidebar-submenu").slideDown(200);
+        $(this).parent().addClass("active");
+        $(".sidebar-submenu .thumb.templ").css("display","flex");
+        $(".sidebar-submenu details").css("display","block");
+        $(".sidebar-submenu details summary").css("display","list-item");
+        $(".sidebar-dropdown:not(.tdropdown)").removeClass("active");
+      }
+    }, 150);
+  })
+  $(".sidebar-dropdown:not(.tdropdown) > a").click(function () {
+    $(".sidebar-submenu:not(.tdropsub)").slideUp(150);
+    $(".sidebar-submenu.tdropsub").slideDown(200);
+    setTimeout(() => {
+      $(".sidebar-submenu .thumb.templ:not(.active)").css("display","none");
+      $(".sidebar-submenu details").css("display","none");
+      $(".sidebar-submenu details[open]:has(> .active)").css("display","block");
+      $(".sidebar-submenu details[open]:has(> .active) summary").css("display","none");
+      $(".sidebar-submenu.tdropsub").addClass("active");
+      if ($(this).parent().hasClass("active")) {
         $(this).parent().removeClass("active");
       } else {
         $(".sidebar-dropdown").removeClass("active");
@@ -56,6 +77,7 @@ async function init(){
           ev.fake=true;
           window.dispatchEvent(ev);
         }
+
       }
     }, 150);
   });
@@ -73,6 +95,14 @@ async function init(){
     getProjects();
   currentTemplate="templates/grid/index.html";  
   restoreViz();
+}
+function highlightElementbyCSSColor(color) {
+  var elms = document.getElementById('template').contentWindow.document.querySelectorAll("*");
+  Array.prototype.forEach.call(elms, function(elm) {
+    var clr = elm.style.color || "";
+    clr = clr.replace(/\s/g, "").toLowerCase();
+    console.log(getComputedStyle(elm).color)
+  });
 }
 function checkSettings(){
   return localStorage.getItem("SERVER_URL")!="" && localStorage.getItem("SITE_NAME") !="" 
@@ -393,6 +423,9 @@ function switchTemplate(tpName,ev){
   if(ev){
     $(".thumb.templ").removeClass("active");
     $(ev).addClass("active");
+    $(".sidebar-menu .sidebar-submenu details .fas").hide();
+    $(ev).find("i").show();
+
   }
   $("#template").prop("src",tpName);
   currentTemplate=tpName;
@@ -717,7 +750,8 @@ function addSearchListener(){
     }
   });
 }
-function showTemplateSettings(){
+function showTemplateSettings(eve){
+  eve.stopPropagation()
   if($(panelSet).is(":visible")==true)
     return;
   $(".pcr-app").remove();
@@ -784,7 +818,7 @@ function showTemplateSettings(){
   parseForImage(document.getElementById('template').contentWindow.document).map((el)=>{
     var node=`
     <div  class="settings_block pictsettings">
-        <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i> <label class="label_settings">${el.variable.replace(currentTemplate+'-','')} </label>
+        <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i> <label class="label_settings">${el.variable.replace(currentTemplate+'-','').replaceAll("-"," ")} </label>
         <div class="picgroup">
           <input varc="${el.variable}" class="imgs input input_settings searchpict" required="true" placeholder="Search for images or paste url below...">
           <input varc="${el.variable}" class="imgs input input_settings sh" required="true" value="${el.img}">
@@ -795,11 +829,11 @@ function showTemplateSettings(){
   })
   addSearchListener();
   $("#colorlist").empty();
-  $("#colorlist").append("<summary>Color Settings</summary>");
+  $("#colorlist").append("<summary>Colour Settings</summary>");
   parseForCSSVar(document.getElementById('template').contentWindow.document).map((el,index)=>{
     var node=`
     <div class="settings_block">
-      <label class="label_settings">${el.variable}: </label>
+      <i onclick="highlightElementbyCSSColor('${el.value}')" class="fas target fa-bullseye"></i><label class="label_settings">${el.variable.replaceAll("-"," ")} </label>
       <input varc="${el.variable}" style="background-color:${el.value};" id="color${index}" class="color input input_settings" required="true" value="${el.value}">
     </div>
     `
@@ -811,7 +845,7 @@ function showTemplateSettings(){
   parseForText(document.getElementById('template').contentWindow.document).map((el)=>{
     var node=`
     <div  class="settings_block">
-        <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i><label class="label_settings">${el.variable.replace(currentTemplate+'-','')} </label>
+        <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i><label class="label_settings">${el.variable.replace(currentTemplate+'-','').replaceAll("-"," ")} </label>
         <input varc="${el.variable}" class="texts input input_settings" required="true" value="${decodeURIComponent(el.text)}">
     </div>
     `
@@ -1209,7 +1243,8 @@ function contrastFontColor(hexcolor){
 	var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	return (yiq >= 128) ? 'black' : 'white';
 };
-function exportTemplate(){
+function exportTemplate(eve){
+  eve.stopPropagation();
   let a=getStorageByType("webedit");
   let b=getStorageByType("askdata");
   let c=getStorageByType("parameter");

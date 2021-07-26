@@ -1,7 +1,29 @@
 html, body{
   overflow: hidden;
 }
-.advanced{
+.sidebar-search.topmarg{
+  margin-top: 50px;
+}
+.tdropdown .thumb_text{
+  margin-left: 0px;
+}
+ .thumb .tpicon{
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+.thumb .tpiconF{
+  margin-top: 4px;
+}
+
+.tpiconF:hover,.tpicon:hover{
+  color:white;
+  animation: swing ease-in-out 0.5s 1 alternate;
+}
+i.defaulthidden.fas{
+  display: none;
+}
+.advanced, .basic{
   text-align: initial;
   padding-left: 20px;
 }
