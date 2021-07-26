@@ -81,8 +81,10 @@ function launchEdit() {
 }
 function launchAction(){
   var textOnly=[];
-  if(!selectedMarks)
+  if(!selectedMarks){
     window.open('http://google.com/search?q=There is no text values in your selection, or simply no selection :-)');
+    return;
+  }
   selectedMarks.map((el)=>{
     if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){
       if(!textOnly.includes(el))
