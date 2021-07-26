@@ -81,12 +81,11 @@ function launchEdit() {
   })
 }
 function launchAction(){
-  var textOnly=[];
   if(!selectedMarks){
     window.open('http://google.com/search?q=There is no selection :-)');
     return;
   }
-  textOnly=getOnlyText(selectedMarks,textOnly);
+  var textOnly=getOnlyText(selectedMarks,[]);
   if(textOnly.length==0)
     window.open('http://google.com/search?q=There is no text values in your selection :-)');
   if(lengthInUtf8Bytes(textOnly.join(" "))<1024)

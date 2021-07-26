@@ -2,7 +2,6 @@ function showFilterBox(el){
   document.querySelector(`div[mid='${el}']`).classList.toggle("show");
   document.querySelectorAll(`.dropdown-content`).forEach((dd)=>{if(dd.getAttribute("mid")!=el)dd.classList.remove("show")});
 }
-
 function populateFilterMenu(fil){
   var links="";
   fil.getAppliedValues().map((val)=>{
@@ -29,7 +28,6 @@ function populateFilterMenu(fil){
     document.querySelector(`div[mid='${fil.getFieldName()}']`).innerHTML+=links;
   }
 }
-
 function populateParameterMenu(param){
   var links="";
   param.getAllowableValues().map((val)=>{
@@ -56,7 +54,6 @@ function populateParameterMenu(param){
     document.querySelector(`div[mid='${param.getName()}']`).innerHTML+=links;
   }
 }
-
 function getParametersForViz(index){
   workbook.getParametersAsync().then((current_param)=>{
     tab_all_params[index]={parameters:current_param,viz:viz};
@@ -70,7 +67,6 @@ function getParametersForViz(index){
     window.parent.restoreTexts();
   })
 }
-
 function getFiltersForViz(index){
   activeSheet.getFiltersAsync().then((current_filter)=>{
     tab_all_filters[index]={filters:current_filter,viz:viz};
@@ -84,11 +80,9 @@ function getFiltersForViz(index){
     window.parent.restoreTexts();
   })
 }
-
 function hideDropDownList(filterName){
   document.querySelector(`div[mid='${filterName}']`).classList.remove("show")
 }
-
 function hideEditAskButton(){
   document.getElementsByClassName("webedit")[0].style.display = "none";
   document.getElementsByClassName("askdata")[0].style.display = "none";
@@ -99,7 +93,6 @@ function hideEditButton(){
 function hideActionButton(){
   document.getElementsByClassName("action")[0].style.display = "none";
 }
-
 function showActionIfExist(index){
   var ids;
   tab_action.map((el,id)=>{
@@ -118,7 +111,6 @@ function showWebEditIfExist(index){
   if(ids && ids.val && ids.val=="true")
     document.getElementsByClassName("webedit")[0].style.display = "block";
 }
-
 function showAskButtonIfExist(index){
   var ids;
   tab_ask.map((el,id)=>{
@@ -129,7 +121,6 @@ function showAskButtonIfExist(index){
     document.getElementsByClassName("askdata")[0].style.display = "block";
   }
 }
-
 function getElementIndexByIndex(arr,index){
   var ids=-1;
   arr.map((el,id)=>{
@@ -151,7 +142,6 @@ function navigateToSheet(workbook,sheetName,index){
     // viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
   });
 }
-
 function getOnlyText(from, to){
   from.map((el)=>{
     if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){
@@ -165,14 +155,12 @@ function clearFiltersMenu(){
   const removeElements = (elms) => elms.forEach(el => el.remove());
   removeElements( document.querySelectorAll(".filter_dropdown") );
 }
-
 function restoreImgs(){
   tab_img.map((el)=>{
     if(document.getElementById(el.key))
       document.getElementById(el.key).setAttribute('src',el.val);
   })
 }
-
 function restoreTexts(){
   tab_text.map((el)=>{
     if(document.getElementById(el.key))
