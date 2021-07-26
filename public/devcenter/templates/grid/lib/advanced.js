@@ -96,6 +96,19 @@ function hideEditAskButton(){
 function hideEditButton(){
   document.getElementsByClassName("webedit")[0].style.display = "none";
 }
+function hideActionButton(){
+  document.getElementsByClassName("action")[0].style.display = "none";
+}
+
+function showActionIfExist(index){
+  var ids;
+  tab_action.map((el,id)=>{
+    if(el.key==String(index))
+      ids=el;
+  })
+  if(ids && ids.val && ids.val=="true")
+    document.getElementsByClassName("action")[0].style.display = "block";
+}
 function showWebEditIfExist(index){
   var ids;
   tab_web.map((el,id)=>{
@@ -133,6 +146,7 @@ function navigateToSheet(workbook,sheetName,index){
     getFiltersForViz(index);
     getParametersForViz(index);
     showWebEditIfExist(index);
+    // viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
   });
 }
 
@@ -154,7 +168,10 @@ function restoreTexts(){
       document.getElementById(el.key).innerHTML=decodeURIComponent(el.val);
   })
 }
-
+function lengthInUtf8Bytes(str) {
+  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  return str.length + (m ? m.length : 0);
+}
 function initialize(){
   if(typeof(tab_img)!="undefined"){
     restoreImgs();

@@ -1,4 +1,4 @@
-var viz,workbook, activeSheet, options, placeholderDiv,askindex=-1;
+var viz,workbook, activeSheet, options, placeholderDiv,selectedMarks,askindex=-1;
 
 function loadVizInit () {
   initialize();
@@ -9,6 +9,7 @@ function loadVizByIndex (index,force) {
   if(url=="")
     return;
   hideEditAskButton();
+  hideActionButton();
   showAskButtonIfExist(index);
   var isSameWorkbook=false;
   if(workbook && !force){
@@ -29,6 +30,8 @@ function loadVizByIndex (index,force) {
           getFiltersForViz(index);
           getParametersForViz(index);
           showWebEditIfExist(index);
+          //showActionIfExist(index);
+          viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
         }
     }
     if(url)
@@ -76,6 +79,42 @@ function launchEdit() {
     };
     loadViz (containerDiv, edit_url, edit_options);          
   })
+}
+function launchAction(){
+  var textOnly=[];
+  selectedMarks.map((el)=>{
+    if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){
+      if(!textOnly.includes(el))
+        textOnly.push(el);
+    }
+  })
+  if(lengthInUtf8Bytes(textOnly.join(" "))<1024)
+    window.open('http://google.com/search?q='+textOnly.join(" "));
+  else
+  window.open('http://google.com/search?q='+"Too much elements in your selection :-) Reduce please!");  
+}
+function onMarksSelection(marksEvent) {
+    return marksEvent.getMarksAsync().then(reportSelectedMarks);
+}
+function reportSelectedMarks(marks) {
+  var curmarks = marks;
+  if(curmarks.length>0){
+    viz.getCurrentUrlAsync().then (function(current_url){
+      var index=tab_server.indexOf(current_url.split("?")[0]);
+      showActionIfExist(index);
+    })
+  }
+  else{
+    hideActionButton();
+  }
+  selectedMarks=[];
+  for (var markIndex = 0; markIndex < curmarks.length; markIndex++) {
+    var pairs = curmarks[markIndex].getPairs();
+    for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+        var pair = pairs[pairIndex]; 
+        selectedMarks.push(pair.formattedValue)
+    }
+  }
 }
 function applyFilter(filterName,value) {
   activeSheet.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);

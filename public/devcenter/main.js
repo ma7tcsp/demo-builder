@@ -754,20 +754,25 @@ function showTemplateSettings(){
       <div class="filterboxes">
 
         <details class="scn">
-        <summary class="tpb">Ask Data:</summary>
-        <input class="askdata" varindex="${id}" type="text" placeholder="Type URL Here..." value="${getRepoVal("askdata",id)==""||getRepoVal("askdata",id)==null?"":getRepoVal("askdata",id)}">
+          <summary class="tpb">Filters:</summary>
+          <ul>
+            ${nodefilter}
+          </ul>
+        </details>
+
+        <details class="scn">
+          <summary class="tpb">Web Edit:</summary>
+          <input class="webedit" varindex="${id}" type="checkbox" ${getRepoVal("webedit",id)=="true"?"checked":""}> <label> Activated</label>
+        </details>
+
+        <details class="scn">
+          <summary class="tpb">Ask Data:</summary>
+          <input class="askdata" varindex="${id}" type="text" placeholder="Type URL Here..." value="${getRepoVal("askdata",id)==""||getRepoVal("askdata",id)==null?"":getRepoVal("askdata",id)}">
         </details>
         
         <details class="scn">
-        <summary class="tpb">Web Edit:</summary>
-        <input class="webedit" varindex="${id}" type="checkbox" ${getRepoVal("webedit",id)=="true"?"checked":""}> <label> Activated</label>
-        </details>
-        
-        <details class="scn">
-        <summary class="tpb">Filters:</summary>
-        <ul>
-          ${nodefilter}
-        </ul>
+          <summary class="tpb">Actions:</summary>
+          <input class="action" varindex="${id}" type="checkbox" ${getRepoVal("action",id)=="true"?"checked":""}> <label> Activated</label>
         </details>
 
       </div>
@@ -893,6 +898,15 @@ function saveTemplateSettings(close){
   })
   restoreWebEdit();
 
+  $("#viewlist .action").each((index,el)=>{
+    var ck=el.checked==true?"true":"false";
+    var same=getRepoVal("action",index);
+    if(same!=ck)
+      viewsModified=true;
+    saveToRepo("action",index,ck);
+  })
+  restoreAction();
+
   var mv=[];
   $("#viewlist .views").each((index,el)=>{
     mv.push($(el).attr("value"));
@@ -919,6 +933,14 @@ function saveTemplateSettings(close){
     switchTemplate(currentTemplate);
 
     viewsModified=false;
+  }
+}
+function restoreAction(){
+  var w=getStorageByType("action");
+  if(w){
+    w.map((el)=>{
+      document.getElementById('template').contentWindow.tab_action[parseInt(el.key)]=el;
+    })
   }
 }
 function restoreWebEdit(){
@@ -1009,6 +1031,7 @@ function restoreViz(){
     restoreParameters();
     restoreWebEdit();
     restoreAskData();
+    restoreAction();
     var cur=localStorage.getItem(currentTemplate);
     if(cur==null)
       return;
