@@ -1,0 +1,52 @@
+<html>
+<head>
+  <link rel="stylesheet" href="css/config.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/page.css">
+  <script src="https://eu-west-1a.online.tableau.com/javascripts/api/tableau-2.7.0.min.js"></script>
+  <script src="lib/config.js"></script>
+  <script src="lib/advanced.js"></script>
+  <script src="tableau.js"></script>
+<title>Tableau Example</title>
+</head>
+<body onload="loadVizInit()">
+<div class="grid-container">
+  
+  <div class="LeftPad"></div>
+  <div class="RightPad"></div>
+
+  <div class="Header">
+    <div class="logo">
+      <div><img id="img-logo" class="log img-editable" src="img/tableau-white.png"/></div>
+      <div class="person editable">
+        <div class="headrer_right">
+          <img id="img-avatar" class="usrpic img-editable" src="img/user.png"/>
+          <span id="User-text" class="editable">User</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ButtonBar">
+    <a id="Viz-1-text" class="editable" href="#" onclick="loadVizByIndex(0)">Viz 1</a>
+    <a id="Viz-2-text" class="editable" href="#" onclick="loadVizByIndex(1)">Viz 2</a>
+    <a id="Viz-3-text" class="editable" href="#" onclick="loadVizByIndex(2)">Viz 3</a>
+    <a id="Viz-4-text" class="editable" href="#" onclick="loadVizByIndex(3)">Viz 4</a>
+    <div class="divider">|</div>
+    <a id="Reset-Viz-text" class="editable" href="#" onclick="resetViz(4)">Reset Viz</a>
+    <a id="Download-Data-text" class="editable" href="#" onclick="dataDownload()">Download Data</a>
+    <a id="WebEdit-text" class="editable webedit" href="#" onclick="launchEdit()">WebEdit</a>
+    <a id="AskData-text" class="editable askdata" href="#" onclick="launchAsk()">AskData</a>
+    <a id="Action-text" class="editable action" href="#" onclick="launchAction()">Action</a>
+  </div>
+
+  <div class="Content">
+      <div style="color:black;font-size:50px">NOT IMPLEMENTED YET, COMING SOON !!!</div>
+      <div id="tableauViz" class="dropplace"></div>
+  </div>
+
+
+  <div class="Footer"><ul><li class="editable" id="Terms-text">Terms & Conditions</li><li id="PrivacyPolicy-text" class="editable">Privacy Policy</li></ul></div>
+</div>
+</body>
+</html>

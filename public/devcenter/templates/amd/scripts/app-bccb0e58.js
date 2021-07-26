@@ -1453,8 +1453,8 @@ angular.module("angularMaterialAdmin").run(["$templateCache", function(e) {
   
   `<div layout-gt-md="row">
     <panel-widget flex="" title="Sales Dashboard" class="">
-      <div id="viz-1" class="dropplace" ondrop="parent.drop(event)" ondragover="parent.allowDrop(event)" style="width: calc(100% - 20px);height: 83vh;">
-          Drag a View and Drop Here...
+        <div id="viz-1" class="dropplace" ondrop="parent.drop(event)" ondragover="parent.allowDrop(event)" style="font-size:50px;width: calc(100% - 20px);height: 83vh;">
+            NOT YET IMPLEMENTED, COMING SOON !!!!
       </div>
     </panel-widget>
   </div>
