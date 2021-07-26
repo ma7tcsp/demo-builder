@@ -162,6 +162,7 @@ function saveSettings(){
   if(checkSettings()==true){
     closeAllMenu();
     clearItems();
+    $(".init").show();
     getProjects();
   }  
   MicroModal.close('modal-settings'); 
