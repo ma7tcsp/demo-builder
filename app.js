@@ -108,7 +108,7 @@ app.post('/zip', async function (req, res) {
   var tab_param=${pp}; 
   var tab_text=${ttr};
   var tab_img=${imr};
-  var tab_action=${acr}
+  var tab_action=${acr};
   var tab_all_filters=[[],[],[],[]];
   var tab_all_params=[[],[],[],[]];`
   writeTofile(vvArr,tmp+"/lib/config.js")
