@@ -56,6 +56,10 @@
   display: block;
 }
 
+.usrpic {
+  height: 17px;
+  margin-right: 10px;
+}
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: var(--btnhover-bg-color)}
 

@@ -9,10 +9,6 @@ html, body {
 .headrer_right{
   display: flex;
 }
-.usrpic {
-  height: 17px;
-  margin-right: 10px;
-}
 
 .grid-container {
   min-height: 100%;
