@@ -152,6 +152,15 @@ function navigateToSheet(workbook,sheetName,index){
   });
 }
 
+function getOnlyText(from, to){
+  from.map((el)=>{
+    if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){
+      if(!to.includes(el))
+        to.push(el);
+    }
+  })
+  return to;
+}
 function clearFiltersMenu(){
   const removeElements = (elms) => elms.forEach(el => el.remove());
   removeElements( document.querySelectorAll(".filter_dropdown") );
