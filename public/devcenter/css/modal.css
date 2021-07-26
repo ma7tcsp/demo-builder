@@ -216,6 +216,7 @@ footer.modal__footer {
 }
 summary:focus{
   outline-width: 0px;
+  outline-style:initial;
 }
 .modal__btn-primary {
   background-color: #31353D;
