@@ -1,7 +1,7 @@
 ﻿{
 "VERSION":"1.02",  
-"TOKEN_NAME":"thumb",
-"TOKEN_VALUE":"2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5",
-"SITE_NAME":"alteirac",
-"SERVER_URL":"https://eu-west-1a.online.tableau.com"
+"TOKEN_NAME":"",
+"TOKEN_VALUE":"",
+"SITE_NAME":"",
+"SERVER_URL":""
 }

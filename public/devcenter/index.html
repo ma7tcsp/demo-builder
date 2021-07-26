@@ -61,122 +61,121 @@
             <li class="header-menu">
                 <span class="nosel">Settings</span>
             </li>
-                <li onclick="showSettings()">
-                    <a href="#">
-                    <i class="fa fa-cog"></i>
-                    <span class="nosel">Server Connection</span>
-                    </a>
-                </li>
-                <li class="sidebar-dropdown tdropdown">
-                  <a href="#">
-                  <i class="fa fa-globe"></i>
-                  <span class="templateName nosel">Web Template</span>
-                  <span class="badge badge-pill badge-primary tnum"></span>
-                  </a>
-                  <div class="sidebar-submenu tdropsub">
-                  <ul class="templateList">
-                    <details class="templ thumb_text basic" open>
-                      <summary>Light</summary>
-                      <div id="basic" class="active thumb templ" onclick="switchTemplate('templates/grid/index.html',this)">
-                        <i class="tpiconF fas fa-cogs" onclick="showTemplateSettings(event)"></i>
-                        <i class="tpicon fas fa-download" onclick="exportTemplate(event)"></i>
-                        <div class="nosel thumb_text">Horizontal</div>
-                        <i class="check fa fa-check"></i> 
-                      </div>
-                      <div id="basicV" class="thumb templ" onclick="switchTemplate('templates/gridV/index.html',this)">
-                        <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
-                        <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
-                        <div class="nosel thumb_text">Vertical</div>
-                        <i class="check fa fa-check"></i> 
-                      </div>
-                    </details>  
-                    <details class="templ thumb_text advanced">
-                      <summary>Avanced</summary>
-                      <!-- <div id="nope" class="thumb templ" onclick="switchTemplate('templates/basic/index.html',this)">
-                        <div class="nosel thumb_text">Basic</div>
-                        <i class="check fa fa-check"></i> 
-                      </div> -->
-                      <div id="creative" class="thumb templ" onclick="switchTemplate('templates/lightboot/examples/dashboard.html',this)">
-                        <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
-                        <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
-                        <div class="nosel thumb_text">Creative</div>
-                        <i class="check fa fa-check"></i> 
-                      </div>
-                      <div id="amd" class="thumb templ" onclick="switchTemplate('templates/amd/index.html',this)">
-                        <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
-                        <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
-                        <div class="nosel thumb_text">Amd</div>
-                        <i class="check fa fa-check"></i> 
-                      </div>
-                      <!-- <div id="amd" class="thumb templ" onclick="switchTemplate('templates/market/index.html',this)">
-                        <div class="nosel thumb_text">Market</div>
-                        <i class="check fa fa-check"></i> 
-                      </div> -->
-                    </details>
-                  </ul>
+            <li onclick="showSettings()">
+                <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="nosel">Server Connection</span>
+                </a>
+            </li>
+            <li class="init sidebar-dropdown tdropdown">
+              <a href="#">
+              <i class="fa fa-globe"></i>
+              <span class="templateName nosel">Web Template</span>
+              <span class="badge badge-pill badge-primary tnum"></span>
+              </a>
+              <div class="sidebar-submenu tdropsub">
+              <ul class="templateList">
+                <details class="templ thumb_text basic" open>
+                  <summary>Light</summary>
+                  <div id="basic" class="active thumb templ" onclick="switchTemplate('templates/grid/index.html',this)">
+                    <i class="tpiconF fas fa-cogs" onclick="showTemplateSettings(event)"></i>
+                    <i class="tpicon fas fa-download" onclick="exportTemplate(event)"></i>
+                    <div class="nosel thumb_text">Horizontal</div>
+                    <i class="check fa fa-check"></i> 
                   </div>
-                </li>
-                <div class="sidebar-search topmarg">
-                  <div>
-                    <div class="input-group">
-                      <input autocomplete="off" id="search" onkeyup="filterViewList()" type="text" class="form-control search-menu" placeholder="Search...">
-                      <div class="input-group-append">
-                        <span class="input-group-text">
-                          <i class="fa fa-search" aria-hidden="true"></i>
-                        </span>
-                      </div>
-                    </div>
+                  <div id="basicV" class="thumb templ" onclick="switchTemplate('templates/gridV/index.html',this)">
+                    <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
+                    <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
+                    <div class="nosel thumb_text">Vertical</div>
+                    <i class="check fa fa-check"></i> 
                   </div>
-                </div>    
-            <li class="header-menu">
+                </details>  
+                <details class="templ thumb_text advanced">
+                  <summary>Avanced</summary>
+                  <!-- <div id="nope" class="thumb templ" onclick="switchTemplate('templates/basic/index.html',this)">
+                    <div class="nosel thumb_text">Basic</div>
+                    <i class="check fa fa-check"></i> 
+                  </div> -->
+                  <div id="creative" class="thumb templ" onclick="switchTemplate('templates/lightboot/examples/dashboard.html',this)">
+                    <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
+                    <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
+                    <div class="nosel thumb_text">Creative</div>
+                    <i class="check fa fa-check"></i> 
+                  </div>
+                  <div id="amd" class="thumb templ" onclick="switchTemplate('templates/amd/index.html',this)">
+                    <i class="tpiconF fas fa-cogs defaulthidden" onclick="showTemplateSettings(event)"></i>
+                    <i class="tpicon fas fa-download defaulthidden" onclick="exportTemplate(event)"></i>
+                    <div class="nosel thumb_text">Amd</div>
+                    <i class="check fa fa-check"></i> 
+                  </div>
+                  <!-- <div id="amd" class="thumb templ" onclick="switchTemplate('templates/market/index.html',this)">
+                    <div class="nosel thumb_text">Market</div>
+                    <i class="check fa fa-check"></i> 
+                  </div> -->
+                </details>
+              </ul>
+              </div>
+            </li>
+            <div class="init sidebar-search topmarg">
+              <div>
+                <div class="input-group">
+                  <input autocomplete="off" id="search" onkeyup="filterViewList()" type="text" class="form-control search-menu" placeholder="Search...">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>    
+            <li class="init header-menu">
             <span class="nosel">Server Content</span>
             </li>  
-                <li class="sidebar-dropdown pdropdown">
-                    <a href="#">
-                    <i class="fa fa-folder"></i>
-                    <span class="projname nosel">Projects</span>
-                    <span class="badge badge-pill badge-primary pnum"></span>
-                    </a>
-                    <div class="sidebar-submenu pdropsub">
-                    <ul class="projects">
-                    </ul>
-                    </div>
-                </li>
-            <li class="header-menu">
+            <li class="init sidebar-dropdown pdropdown">
+                <a href="#">
+                <i class="fa fa-folder"></i>
+                <span class="projname nosel">Projects</span>
+                <span class="badge badge-pill badge-primary pnum"></span>
+                </a>
+                <div class="sidebar-submenu pdropsub">
+                <ul class="projects">
+                </ul>
+                </div>
+            </li>
+            <li class="init header-menu">
                 <span class="nosel">Project Content</span>
             </li>
-                  <li class="sidebar-dropdown wbdropdown">
-                      <a href="#">
-                      <i class="fa fa-book"></i>
-                      <span class="nosel">Workbooks</span>
-                      <div class="loadwb spinner-border text-success" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </div>
-                      <span class="badge badge-pill badge-primary wbnum"></span>
-                      </a>
-                      <div class="sidebar-submenu wbdropsub">
-                      <ul class="twb">
-                      </ul>
-                      </div>
-                  </li>
-
-            <li class="header-menu">
+            <li class="init sidebar-dropdown wbdropdown">
+                <a href="#">
+                <i class="fa fa-book"></i>
+                <span class="nosel">Workbooks</span>
+                <div class="loadwb spinner-border text-success" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <span class="badge badge-pill badge-primary wbnum"></span>
+                </a>
+                <div class="sidebar-submenu wbdropsub">
+                <ul class="twb">
+                </ul>
+                </div>
+            </li>
+            <li class="init header-menu">
                 <span class="nosel">Workbook Content</span>
             </li>
-                <li class="sidebar-dropdown vdropdown">
-                    <a href="#">
-                    <i class="fa fa-chart-line"></i>
-                    <span class="nosel">Views</span>
-                    <div class="loadview spinner-border text-success" role="status">
-                      <span class="sr-only">Loading...</span>
-                    </div>
-                    <span class="badge badge-pill badge-primary vnum"></span>
-                    </a>
-                    <div class="sidebar-submenu vdropsub">
-                    <ul class="tb">
-                    </ul>
-                    </div>
-                </li>
+            <li class="init sidebar-dropdown vdropdown">
+                <a href="#">
+                <i class="fa fa-chart-line"></i>
+                <span class="nosel">Views</span>
+                <div class="loadview spinner-border text-success" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <span class="badge badge-pill badge-primary vnum"></span>
+                </a>
+                <div class="sidebar-submenu vdropsub">
+                <ul class="tb">
+                </ul>
+                </div>
+            </li>
         </ul>
       </div>
 
@@ -205,19 +204,11 @@
                 <summary>Server Settings</summary>
                 <div class="settings_block">
                     <label for="servurl" class="label_settings">Server URL: </label>
-                    <input  id="servurl" class="input input_settings" required="true">
+                    <input  id="servurl" class="input input_settings" required="true" placeholder="The server URL">
                 </div>
                 <div class="settings_block">
                     <label class="label_settings" for="siteName">Site Name: </label>
-                    <input id="siteName" class="input input_settings" required="true">
-                </div>
-                <div class="settings_block">
-                    <label class="label_settings" for="tokName">Token Name: </label>
-                    <input id="tokName" class="input input_settings" required="true">
-                </div>
-                <div class="settings_block">
-                    <label class="label_settings" for="tokValue">Token Value: </label>
-                    <input type="password" id="tokValue" class="input input_settings" required="true">
+                    <input id="siteName" class="input input_settings" required="true" placeholder="The site name">
                 </div>
                 <!-- <div class="settings_block">
                     <label class="label_settings" for="wedit">Sync Filters: </label>
@@ -227,6 +218,17 @@
                     </label>
                 </div> -->
             </details>
+            <details open>
+              <summary>Personal Access Token</summary>
+              <div class="settings_block">
+                  <label class="label_settings" for="tokName">Token Name: </label>
+                  <input id="tokName" class="input input_settings" required="true" placeholder="The token name">
+              </div>
+              <div class="settings_block">
+                  <label class="label_settings" for="tokValue">Token Value: </label>
+                  <input type="password" id="tokValue" class="input input_settings" required="true" placeholder="The token value">
+              </div>
+            </details>  
             <details>
             <summary>Save/Restore Settings</summary>
             <div class="panel_border">

@@ -91,8 +91,13 @@ async function init(){
     var r=await restoreFromUrl(DEFAULT_SETTINGS,false);
   }
   initModal();
-  if(checkSettings()==true)
+  if(checkSettings()==true){
+    $(".init").show();
     getProjects();
+  }
+  else{
+    showSettings();
+  }
   currentTemplate="templates/grid/index.html";  
   restoreViz();
 }

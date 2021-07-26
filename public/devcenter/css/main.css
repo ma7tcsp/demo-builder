@@ -1,6 +1,9 @@
 html, body{
   overflow: hidden;
 }
+.init{
+  display: none;
+}
 .sidebar-search.topmarg{
   margin-top: 50px;
 }
