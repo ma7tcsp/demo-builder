@@ -35,7 +35,6 @@ html, body {
 
 .RightPad { grid-area: RightPad; }
 
-
 .Header {
   background-color: var(--header-bg-color);
   color: var(--header-tx-color);
@@ -95,4 +94,12 @@ text-align: right;
 .footer{
   margin-top: 20px;
   height: 40px;
+}
+
+@media (max-width: 800px) {
+  .ButtonBar {
+    overflow:visible!important;
+    display: block!important;
+    min-height:unset!important; 
+  }
 }
