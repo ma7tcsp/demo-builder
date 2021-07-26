@@ -146,7 +146,8 @@ function navigateToSheet(workbook,sheetName,index){
     getFiltersForViz(index);
     getParametersForViz(index);
     showWebEditIfExist(index);
-    showActionIfExist(index)
+    showActionIfExist(index);
+    showAskButtonIfExist(index);
     // viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
   });
 }

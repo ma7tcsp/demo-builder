@@ -30,6 +30,7 @@ function loadVizByIndex (index,force) {
           getParametersForViz(index);
           showWebEditIfExist(index);
           showActionIfExist(index);
+          showAskButtonIfExist(index)
           viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
         }
     }
