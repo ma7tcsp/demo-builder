@@ -1,12 +1,12 @@
 :root {
-  --Header-Background: #35588c;
-  --Header-Text: #ffffff; 
-  --Button-Background: #6883a9;
+  --Header-Background: #35588C;
+  --Header-Text: #FFFFFF;
+  --Button-Background: #6883A9;
+  --Button-Text: #FFFFFF;
   --Button-Background-Hover:#ff6d02;
-  --Button-Text: #ffffff;
   --Button-Text-Hover:#ffffff;
-  --Content-Background: #ffffff;
-  --Content-Text: #ffffff;
-  --Footer-Background: #35588c;
-  --Footer-Text: #ffffff;
+  --Content-Background: #FFFFFF;
+  --Content-Text: #FFFFFF;
+  --Footer-Background: #35588C;
+  --Footer-Text: #FFFFFF
   }
