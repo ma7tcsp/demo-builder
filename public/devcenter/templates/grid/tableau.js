@@ -2,8 +2,8 @@ var viz,workbook, activeSheet, options, placeholderDiv,selectedMarks,askindex=-1
 
 function loadVizInit () {
   initialize();
-  setViewMenuVisibility();
-  loadVizByIndex(0);
+  var firstIndex=setViewMenuVisibility();
+  loadVizByIndex(firstIndex);
 }
 function loadVizByIndex (index,force) {
   var url = tab_server[index];

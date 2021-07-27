@@ -2,6 +2,7 @@
 
 const VERSION="1.02";
 const DEFAULT_SETTINGS="default";
+const NO_FILTER_TEXT = 'Activate View at Least Once to Setup...';
 var currentTemplate;
 var crossMessageHandler;
 var magicGrid;
@@ -756,14 +757,7 @@ function addSearchListener(){
     }
   });
 }
-function showTemplateSettings(eve){
-  eve.stopPropagation()
-  if($(panelSet).is(":visible")==true)
-    return;
-  $(".pcr-app").remove();
-  
-  createSettingsPanel();
-  pickers=[];
+function populateViewsSettings(){
   $("#viewlist").empty();
   $("#viewlist").append("<summary>Views Settings</summary>");
   parseForViews(document.getElementById('template').contentWindow).map((el,id)=>{
@@ -777,9 +771,9 @@ function showTemplateSettings(eve){
     }
     $("#viewlist").append(`<details id="view${id}"></details>`);
     var cur_filter=parseForFilters(document.getElementById('template').contentWindow,id);
-    $(`#view${id}`).append(`<summary>View ${id+1}</summary>`);
+    $(`#view${id}`).append(`<summary>View ${id+1}`);
     if(cur_params==null && cur_filter==null)
-      nodefilter='Activate View at Least Once to Setup...'
+      nodefilter=NO_FILTER_TEXT
     if(cur_filter!=null){
       cur_filter.filters.map((fl)=>{
         if(fl.getFilterType()=='categorical')
@@ -788,12 +782,12 @@ function showTemplateSettings(eve){
     }
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
-      <img class="wload" height="250px" width="310px" src="${el!=""?el+'.png':"/newView.png"}" >
+      <img class="wload" varindex="${id}" height="250px" width="340px" src="${el!=""?el+'.png':"/newView.png"}" >
+      ${el==""?"":`<div varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></summary></div>`}
       <div class="filterboxes">
-
         <details class="scn">
           <summary class="tpb">Filters:</summary>
-          <ul>
+          <ul class="filtertcont${id}">
             ${nodefilter}
           </ul>
         </details>
@@ -818,6 +812,16 @@ function showTemplateSettings(eve){
     `
     $(`#view${id}`).append(node);
   });
+}
+function showTemplateSettings(eve){
+  eve.stopPropagation()
+  if($(panelSet).is(":visible")==true)
+    return;
+  $(".pcr-app").remove();
+  
+  createSettingsPanel();
+  pickers=[];
+  populateViewsSettings();
 
   $("#imglist").empty();
   $("#imglist").append("<summary>Images Settings</summary>");
@@ -971,9 +975,22 @@ function saveTemplateSettings(close){
   if(viewsModified==true){
     //restoreViews();
     switchTemplate(currentTemplate);
-
     viewsModified=false;
   }
+}
+function clearAView(viewIndex){
+  var arrv=parseForViews(document.getElementById('template').contentWindow);
+  arrv[viewIndex]="";
+  $(`.filtertcont${viewIndex}`).empty();
+  $(`.filtertcont${viewIndex}`).text(NO_FILTER_TEXT);
+  $(`.webedit[varindex='${viewIndex}']`).prop("checked",false);
+  $(`.action[varindex='${viewIndex}']`).prop("checked",false);
+  $(`.askdata[varindex='${viewIndex}']`).prop("value","");
+  $(`.vplace[varindex='${viewIndex}']`).attr("value","");
+  $(`.vplace[varindex='${viewIndex}']`).attr("varc","");
+  $(`.wload[varindex='${viewIndex}']`).prop("src","/newView.png");
+  $(`.deleteViewCont[varindex='${viewIndex}']`).hide();
+  viewsModified=true;
 }
 function restoreAction(){
   var w=getStorageByType("action");

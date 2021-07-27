@@ -172,15 +172,23 @@ function lengthInUtf8Bytes(str) {
   return str.length + (m ? m.length : 0);
 }
 function setViewMenuVisibility(){
+  var firstIndex=[];
   tab_server.map((s,ind)=>{
     if(s==""){
-      console.log("kllk",document.querySelector(`.vv[index='${ind+1}']`))
       document.querySelector(`.vv[index='${ind+1}']`).style.display='none';
     }
     else{
       document.querySelector(`.vv[index='${ind+1}']`).style.display='block';
+      firstIndex.push(ind);
     }
   })
+  var lower=1000;
+  firstIndex.map((el)=>{
+    lower=Math.min(lower,el)
+  })
+  if(lower!=1000)
+    document.querySelector(".divider").style.display='block';
+  return lower;
 }
 function initialize(){
   if(typeof(tab_img)!="undefined"){

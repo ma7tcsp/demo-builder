@@ -5,6 +5,7 @@
   display: flex;
   font-family: Arial, Helvetica, sans-serif;
   min-height: 35px;
+  max-height: 35px;
   white-space: nowrap;
 }
 
@@ -31,6 +32,7 @@
 .divider{
   margin-top: 8px;
   color:var(--Button-Text);
+  display: none;
 }
 .show {
   display: block!important;

@@ -4,6 +4,30 @@ html, body{
 .init{
   display: none;
 }
+.deleteViewCont i::before{
+  vertical-align: -0.4em;
+}
+.deleteViewCont {
+  margin-left: -20px;
+  margin-top: -15px;
+  z-index: 100000;
+  background-color: transparent!important;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  border-radius: 30px;
+}
+.deleteView {
+  cursor: pointer;
+  margin-right: -10px;
+  z-index: 100000;
+  background-color: #28a744;
+  color: white;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  border-radius: 30px;
+}
 .sidebar-search.topmarg{
   margin-top: 50px;
 }
@@ -19,7 +43,7 @@ html, body{
   margin-top: 4px;
 }
 
-.tpiconF:hover,.tpicon:hover{
+.tpiconF:hover,.tpicon:hover,.deleteView:hover{
   color:white;
   animation: swing ease-in-out 0.5s 1 alternate;
 }
@@ -318,7 +342,7 @@ body {
 
 @media screen and (min-width: 768px) {
   .page-wrapper.toggled .page-content {
-    padding-left: 300px;
+    padding-left: 268px;
   }
 }
 /*----------------show sidebar button----------------*/
@@ -669,9 +693,10 @@ ul.tb,ul.twb {
 .page-wrapper.toggled .page-content {
   display: inline-block;
   width: 100%;
-  padding-top:20px;
-  padding-bottom: 20px;
-  padding-right: 20px;
+  padding-top:8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+  /* padding-left: 2px; */
 }
 
 .page-wrapper .page-content {
@@ -679,7 +704,7 @@ ul.tb,ul.twb {
 }
 
 .page-wrapper .page-content {
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
 }
 
