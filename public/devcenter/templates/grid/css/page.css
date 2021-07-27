@@ -7,7 +7,7 @@
   min-height: 35px;
   max-height: 35px;
   white-space: nowrap;
-}
+} 
 
 .ButtonBar a:not(.filter-entry) {
   display: block;
@@ -25,8 +25,8 @@
   transition: all 0.5s;
 }
 .ButtonBar a:hover {
-  background-color: var(--Button-Hover-Background);
-  color: var(--Button-Hover-Text);
+  background-color: var(--Button-Background-Hover);
+  color: var(--Button-Text-Hover);
 }
 
 .divider{
@@ -67,5 +67,5 @@
   margin-right: 10px;
 }
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: var(--Button-Hover-Background)}
+.dropdown-content a:hover {background-color: var(--Button-Background-Hover)}
 
