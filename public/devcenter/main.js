@@ -37,7 +37,7 @@ async function init(){
     restoreFromFile(files);
   })
   window.onresize = function(e){
-    var marg=$("body").height()-526;
+    var marg=$("body").height()-642;
     if(marg<316)
       marg=316;
     $(".tb").css("max-height",marg);
