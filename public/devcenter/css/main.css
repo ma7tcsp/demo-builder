@@ -158,7 +158,8 @@ details[open] > summary {
   height: calc(100% - 60px);
   overflow: auto;
   padding: 10px;
-  background-color: #31363c
+  background-color: #31363c;
+  scroll-snap-type: y mandatory;
 }
 .setblock details{
   /* border-radius: 5px; */
@@ -170,6 +171,7 @@ details[open] > summary {
   border-width: 1px;
   border-color: lightgray; */
   padding: 5px;
+  scroll-snap-align: start;
 }
 .target{
   margin-top: 7px;
