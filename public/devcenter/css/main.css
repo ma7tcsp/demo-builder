@@ -161,6 +161,9 @@ details[open] > summary {
   background-color: #31363c;
   scroll-snap-type: y mandatory;
 }
+.setblock details.top{
+  scroll-snap-align: start;
+}
 .setblock details{
   /* border-radius: 5px; */
   color: #707782;
@@ -171,7 +174,6 @@ details[open] > summary {
   border-width: 1px;
   border-color: lightgray; */
   padding: 5px;
-  scroll-snap-align: start;
 }
 .target{
   margin-top: 7px;
