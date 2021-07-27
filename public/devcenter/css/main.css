@@ -161,9 +161,6 @@ details[open] > summary {
   background-color: #31363c;
   scroll-snap-type: y mandatory;
 }
-.setblock details.top{
-  scroll-snap-align: start;
-}
 .setblock details{
   /* border-radius: 5px; */
   color: #707782;
@@ -486,7 +483,6 @@ li.header-menu {
 ul.tb,ul.twb {
   max-height: 485px;
   overflow: auto;
-  scroll-snap-type: y mandatory;
   display: none;
 }
 .vdropsub,wdropsub{
