@@ -171,6 +171,17 @@ function lengthInUtf8Bytes(str) {
   var m = encodeURIComponent(str).match(/%[89ABab]/g);
   return str.length + (m ? m.length : 0);
 }
+function setViewMenuVisibility(){
+  tab_server.map((s,ind)=>{
+    if(s==""){
+      console.log("kllk",document.querySelector(`.vv[index='${ind+1}']`))
+      document.querySelector(`.vv[index='${ind+1}']`).style.display='none';
+    }
+    else{
+      document.querySelector(`.vv[index='${ind+1}']`).style.display='block';
+    }
+  })
+}
 function initialize(){
   if(typeof(tab_img)!="undefined"){
     restoreImgs();

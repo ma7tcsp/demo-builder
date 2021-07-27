@@ -2,6 +2,7 @@ var viz,workbook, activeSheet, options, placeholderDiv,selectedMarks,askindex=-1
 
 function loadVizInit () {
   initialize();
+  setViewMenuVisibility();
   loadVizByIndex(0);
 }
 function loadVizByIndex (index,force) {
