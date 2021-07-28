@@ -156,6 +156,7 @@ function getOnlyText(from, to){
 function clearFiltersMenu(){
   const removeElements = (elms) => elms.forEach(el => el.remove());
   removeElements( document.querySelectorAll(".filter_dropdown") );
+  document.querySelector(".filterdiv").style.display='none';
 }
 function restoreImgs(){
   tab_img.map((el)=>{
