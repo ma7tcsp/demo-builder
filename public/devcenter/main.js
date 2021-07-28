@@ -1011,7 +1011,7 @@ function saveTemplateSettings(close){
       document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc"), $(el).prop("value"));
       //document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc").replace("-bg-","-tx-"), contrastFontColor($(el).prop("value")));
     } catch (error) {
-      
+      console.log("err",$(el).attr("varc"), $(el).prop("value"))
     }
     saveToRepo('color',$(el).attr("varc"),$(el).prop("value"));
     restoreColorInIframes({key:$(el).attr("varc"),val:$(el).prop("value")});
