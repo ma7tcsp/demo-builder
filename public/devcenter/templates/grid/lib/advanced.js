@@ -16,13 +16,14 @@ function populateFilterMenu(fil){
   })
   var list=`
   <span class="filter_dropdown">
-    <a id="builder-text-${fil.getFieldName()}" class="editable" onclick="showFilterBox('${fil.getFieldName()}')" href="#">${fil.getFieldName()}</a>
+    <a onclick="showFilterBox('${fil.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id=builder-text-${fil.getFieldName()}" class="editable">${fil.getFieldName()}</div></a>
     <div mid="${fil.getFieldName()}" class="dropdown-content">
     ${links}
     </div>
   </span>`
   if(document.querySelector(`div[mid='${fil.getFieldName()}']`)==null){
-    document.getElementsByClassName("ButtonBar")[0].innerHTML+=list;
+    document.getElementsByClassName("filter-container")[0].innerHTML+=list;
+    document.querySelector(".filterdiv").style.display='block';
   }
   else{
     document.querySelector(`div[mid='${fil.getFieldName()}']`).innerHTML+=links;
@@ -42,13 +43,14 @@ function populateParameterMenu(param){
   })
   var list=`
   <span class="filter_dropdown">
-    <a id="builder-text-${param.getName()}" class="editable" onclick="showFilterBox('${param.getName()}')" href="#">${param.getName()}</a>
+  <a onclick="showFilterBox('${param.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id=builder-text-${param.getFieldName()}" class="editable">${param.getFieldName()}</div></a>
     <div mid="${param.getName()}" class="dropdown-content">
     ${links}
     </div>
   </span>`
   if(document.querySelector(`div[mid='${param.getName()}']`)==null){
-    document.getElementsByClassName("ButtonBar")[0].innerHTML+=list;
+    document.getElementsByClassName("filter-container")[0].innerHTML+=list;
+    document.querySelector(".filterdiv").style.display='block';
   }
   else{
     document.querySelector(`div[mid='${param.getName()}']`).innerHTML+=links;
@@ -100,7 +102,7 @@ function showActionIfExist(index){
       ids=el;
   })
   if(ids && ids.val && ids.val=="true")
-    document.getElementsByClassName("action")[0].style.display = "block";
+    document.getElementsByClassName("action")[0].style.display = "inline-flex";
 }
 function showWebEditIfExist(index){
   var ids;
@@ -109,7 +111,7 @@ function showWebEditIfExist(index){
       ids=el;
   })
   if(ids && ids.val && ids.val=="true")
-    document.getElementsByClassName("webedit")[0].style.display = "block";
+    document.getElementsByClassName("webedit")[0].style.display = "inline-flex";
 }
 function showAskButtonIfExist(index){
   var ids;
@@ -118,7 +120,7 @@ function showAskButtonIfExist(index){
       ids=el;
   })
   if(ids && ids.val && ids.val!=""){
-    document.getElementsByClassName("askdata")[0].style.display = "block";
+    document.getElementsByClassName("askdata")[0].style.display = "inline-flex";
   }
 }
 function getElementIndexByIndex(arr,index){
@@ -175,10 +177,10 @@ function setViewMenuVisibility(){
   var firstIndex=[];
   tab_server.map((s,ind)=>{
     if(s==""){
-      document.querySelector(`.vv[index='${ind+1}']`).style.display='none';
+      document.querySelector(`.viz[index='${ind+1}']`).style.display='none';
     }
     else{
-      document.querySelector(`.vv[index='${ind+1}']`).style.display='block';
+      document.querySelector(`.viz[index='${ind+1}']`).style.display='inline-flex';
       firstIndex.push(ind);
     }
   })

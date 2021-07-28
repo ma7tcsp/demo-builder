@@ -3,6 +3,7 @@
   <link rel="stylesheet" href="css/config.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/page.css">
+  <link rel="stylesheet" href="css/all.min.css">
   <script src="https://eu-west-1a.online.tableau.com/javascripts/api/tableau-2.7.0.min.js"></script>
   <script src="lib/config.js"></script>
   <script src="lib/advanced.js"></script>
@@ -28,16 +29,20 @@
   </div>
 
   <div class="ButtonBar">
-    <a index="1" id="Viz-1-text" class="vv editable" href="#" onclick="loadVizByIndex(0)">Viz 1</a>
-    <a index="2" id="Viz-2-text" class="vv editable" href="#" onclick="loadVizByIndex(1)">Viz 2</a>
-    <a index="3" id="Viz-3-text" class="vv editable" href="#" onclick="loadVizByIndex(2)">Viz 3</a>
-    <a index="4" id="Viz-4-text" class="vv editable" href="#" onclick="loadVizByIndex(3)">Viz 4</a>
+    <a class="viz" index="1" href="#" onclick="loadVizByIndex(0)"><i class="fa fa-chart-line"></i><div id="Viz-1-text" class="editable">Viz 1</div></a>
+    <a class="viz" index="2" href="#" onclick="loadVizByIndex(1)"><i class="fa fa-chart-line"></i><div id="Viz-2-text" class="editable">Viz 2</div></a>
+    <a class="viz" index="3" href="#" onclick="loadVizByIndex(2)"><i class="fa fa-chart-line"></i><div id="Viz-3-text" class="editable">Viz 3</div></a>
+    <a class="viz" index="4" href="#" onclick="loadVizByIndex(3)"><i class="fa fa-chart-line"></i><div id="Viz-4-text" class="editable">Viz 4</div></a>
+
     <div class="divider">|</div>
-    <a id="Reset-Viz-text" class="editable" href="#" onclick="resetViz(4)">Reset Viz</a>
-    <a id="Download-Data-text" class="editable" href="#" onclick="dataDownload()">Download Data</a>
-    <a id="WebEdit-text" class="editable webedit" href="#" onclick="launchEdit()">Web Edit</a>
-    <a id="AskData-text" class="editable askdata" href="#" onclick="launchAsk()">Ask Data</a>
-    <a id="Action-text" class="editable action" href="#" onclick="launchAction()">Action</a>
+    <div class="filter-container"></div>
+    <div class="divider filterdiv">|</div>
+    
+    <a href="#" onclick="resetViz()">   <i class="fa fa-undo"></i><div id="Reset-Viz-text" class="editable">Reset Viz</div></a>
+    <a href="#" onclick="dataDownload()"><i class="fa fa-file-download"></i><div id="Download-Data-text" class="editable">Download Data</div></a>
+    <a class="webedit" href="#" onclick="launchEdit()"><i class="fa fa-pencil-ruler"></i><div id="WebEdit-text" class="editable">Web Edit</div></a>
+    <a class="askdata" href="#" onclick="launchAsk()"><i class="fa fa-comment-dots"></i><div id="AskData-text" class="editable">Ask data</div></a>
+    <a class="action" href="#" onclick="launchAction()"><i class="fa fa-clipboard"></i><div id="Action-text" class="editable">Action</div></a>
   </div>
 
   <div class="Content">

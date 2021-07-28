@@ -10,7 +10,7 @@
 } 
 
 .ButtonBar a:not(.filter-entry) {
-  display: block;
+  display: inline-flex;
   font-size: 16px;
   color: var(--Button-Text);
   text-align: center;
@@ -37,8 +37,12 @@
 .show {
   display: block!important;
 }
-
-
+.filter-container {
+  display: flex;
+}
+.fa{
+  margin-right: 4px;
+}
 .dropdown {
   display: inline-block;
 }
