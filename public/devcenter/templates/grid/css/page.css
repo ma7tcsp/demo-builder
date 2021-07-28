@@ -66,6 +66,9 @@
   display: block;
 }
 
+.divider.generic{
+  display: block;;
+}
 .usrpic {
   height: 17px;
   margin-right: 10px;
