@@ -1165,22 +1165,25 @@ function getStorageByType(type){
   return ret;
 }
 function restoreViz(){
-  var isTemplateLoaded= setInterval(function(){
-    if(typeof(document.getElementById('template').contentWindow.loadVizInit)!="undefined"){
-      clearInterval(isTemplateLoaded);
-      restoreColors();
-      restoreTexts();
-      restoreImgs();
-      restoreFilters();
-      restoreViews();
-      restoreFilters();
-      restoreParameters();
-      restoreWebEdit();
-      restoreAskData();
-      restoreAction();
-      $(".page-content").css("opacity","1");
-  }
-}, 500);
+  setTimeout(() => {
+    var isTemplateLoaded= setInterval(function(){   
+      if(typeof(document.getElementById('template').contentWindow.loadVizInit)!="undefined"){
+        clearInterval(isTemplateLoaded);
+        restoreColors();
+        restoreTexts();
+        restoreImgs();
+        restoreFilters();
+        restoreViews();
+        restoreFilters();
+        restoreParameters();
+        restoreWebEdit();
+        restoreAskData();
+        restoreAction();
+        $(".page-content").css("opacity","1");
+      }
+    }, 500);
+  }, 500);
+ 
 }
 function highlightElement(id){
   injectStyle(document.getElementById('template').contentWindow.document);
