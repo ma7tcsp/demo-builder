@@ -109,7 +109,7 @@ function reportSelectedMarks(marks) {
   }
 }
 function applyFilter(filterName,value) {
-  activeSheet.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
+  activeSheet.applyFilterAsync(filterName,[value],tableau.FilterUpdateType.REPLACE);
   hideDropDownList(filterName);
 }
 function resetViz() {
