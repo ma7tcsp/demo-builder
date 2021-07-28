@@ -507,9 +507,9 @@ function drop(ev) {
   viewsModified=true;
   saveTemplateSettings();
   $(`.filtertcont${$(ev.currentTarget).attr("varindex")}`).html(`<i varindex="${$(ev.currentTarget).attr("varindex")}" title="Refresh Filter List" onclick="refreshFilters(event,'${$(ev.currentTarget).attr("varindex")}')" class="refreshFilterIcon fas fa-sync-alt"></i>`)
-  setTimeout(() => {
-    refreshFilters(null,parseInt(indx));
-  }, 4000);
+  // setTimeout(() => {
+  //   refreshFilters(null,parseInt(indx));
+  // }, 4000);
   $(`.deleteViewCont[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
     // $(`.filter${$(ev.currentTarget).attr("varindex")}`).remove();
   // $(`.refreshFilterIcon[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
