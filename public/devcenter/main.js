@@ -1045,7 +1045,7 @@ function clearAView(viewIndex){
   $(`.webedit[varindex='${viewIndex}']`).prop("checked",false);
   $(`.action[varindex='${viewIndex}']`).prop("checked",false);
   $(`.askdata[varindex='${viewIndex}']`).prop("value","");
-  $(`.viewName[varindex='${viewIndex}']`).prop("value","");
+  $(`.viewName[varindex='${viewIndex}']`).prop("value","Viz "+ viewIndex);
   $(`.vplace[varindex='${viewIndex}']`).attr("value","");
   $(`.vplace[varindex='${viewIndex}']`).attr("varc","");
   $(`.wload[varindex='${viewIndex}']`).prop("src","/newView.png");
