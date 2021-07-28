@@ -153,12 +153,31 @@ function clearItems(){
   $(".projects").empty();
 
 }
-function saveSettings(){
+function giveMeSalt(token){
+  return new Promise((resolve,reject)=>{
+    var formBody = formize({token:token})
+    fetch("/salt", {
+      method: "POST", 
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formBody
+    }).then(res => {
+      var js=res.json();
+      return js;
+    }).then((data) => {
+      console.log(data);
+      resolve(data.salted)
+    });
+  })
+}
+async function saveSettings(){
+  var tksalt=await giveMeSalt($("#tokValue").val());
   localStorage.setItem("SYNC_FILTERS",$("#sync").prop( "checked"));
   localStorage.setItem("SERVER_URL",$("#servurl").val());
   localStorage.setItem("SITE_NAME",$("#siteName").val());
   localStorage.setItem("TOKEN_NAME",$("#tokName").val());
-  localStorage.setItem("TOKEN_VALUE",$("#tokValue").val());
+  localStorage.setItem("TOKEN_VALUE",tksalt);
   localStorage.setItem("VERSION",VERSION);
   if(checkSettings()==true){
     closeAllMenu();

@@ -30,45 +30,27 @@ if (port == null || port == "") {
 app.listen(port, function () {
   console.log('Example app listening on port '+port);
 });
-app.get('/refresh', async function (req, res) {
-  try {
-    await deleteImg();
-    authenticate().then(async (resauth)=>{
-      try {
-        var v=await dumpViewPics(resauth.token,resauth.siteid);
-        res.send("Job Done !");
-      } catch (error) {
-        console.log("err in dump",error);
-      }
-    });
-  } catch (error) {
-    console.log("err in auth or dump");
-  }
-})
-app.get('/list', async function (req, res) {
-  //return list(req.get('host'),'https://eu-west-1a.online.tableau.com','alteirac',"default",'thumb','2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5',res);
-  return listWorkbooks('https://eu-west-1a.online.tableau.com','alteirac',"default",'thumb','2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5',res);
-});
+
 app.post('/list', async function (req, res) {
   var m=validateParam(req,true);
   if(m!="")
     res.send({message:m});
   else  
-    return list(req.protocol+'://' +req.get('host'),req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
+    return list(req.protocol+'://' +req.get('host'),req.body.host,req.body.site,req.body.project,req.body.tokenName,desalt(req.body.tokenValue),res);
 })
 app.post('/projects', async function (req, res) {
   var m=validateParam(req);
   if(m!="")
     res.send({message:m});
     else  
-      return listProjects(req.body.host,req.body.site,req.body.tokenName,req.body.tokenValue,res);
+      return listProjects(req.body.host,req.body.site,req.body.tokenName,desalt(req.body.tokenValue),res);
 });
 app.post('/workbooks', async function (req, res) {
   var m=validateParam(req);
   if(m!="")
     res.send({message:m});
     else  
-      return listWorkbooks(req.body.host,req.body.site,req.body.project,req.body.tokenName,req.body.tokenValue,res);
+      return listWorkbooks(req.body.host,req.body.site,req.body.project,req.body.tokenName,desalt(req.body.tokenValue),res);
 });
 app.get('/pict', function(req, res) {
   flickr.photos.search({
@@ -130,6 +112,16 @@ app.post('/zip', async function (req, res) {
   archive.directory(tmp, '');
   archive.finalize();
 });
+app.post('/salt', async function (req, res) {
+  res.send({salted:salt(req.body.token)});
+});
+
+function desalt(salted){
+  return salted.split("").reverse().join("");
+}
+function salt(token){
+  return token.split("").reverse().join("");
+}
 function validateParam(req,for_img){
   var mess=""
   if(!req.body.host){
