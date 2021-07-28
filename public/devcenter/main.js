@@ -1007,8 +1007,12 @@ function saveTemplateSettings(close){
   })
   saveToRepo('view','view',mv);
   $("#colorlist .color").each((index,el)=>{
-    document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc"), $(el).prop("value"));
-    //document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc").replace("-bg-","-tx-"), contrastFontColor($(el).prop("value")));
+    try {
+      document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc"), $(el).prop("value"));
+      //document.getElementById('template').contentWindow.document.documentElement.style.setProperty($(el).attr("varc").replace("-bg-","-tx-"), contrastFontColor($(el).prop("value")));
+    } catch (error) {
+      
+    }
     saveToRepo('color',$(el).attr("varc"),$(el).prop("value"));
     restoreColorInIframes({key:$(el).attr("varc"),val:$(el).prop("value")});
   })
