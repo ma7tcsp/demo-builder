@@ -1,3 +1,5 @@
+"2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5"
+
 var express = require('express');
 var Flickr = require('flickr-sdk');
 var app = express();
@@ -287,7 +289,7 @@ function hashCode(str) {
 }
 function getImage(protocol,port,token, host,siteid, pat,viewid,wid) {
     return new Promise((resolve, reject)=>{
-	    //optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views/" + viewid + "/image?maxAge=1&resolution=high");
+      //optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views/" + viewid + "/image?maxAge=1&resolution=high");
       optionspath = encodeURI("/api/3.9/sites/" + siteid + "/workbooks/"+wid+"/views/" + viewid + "/previewImage");
       //optionspath = encodeURI("/api/3.9/sites/" + siteid + "/views/" + viewid + "/image?maxAge=1&resolution=high");
       var imgdata = new Stream();
