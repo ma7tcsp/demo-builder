@@ -513,14 +513,20 @@ function disposeAllViz(){
   })
 }
 function drop(ev) {
+  var notauth=false;
   ev.preventDefault();
   var indx=$(ev.currentTarget).attr("varindex");
   var data = ev.dataTransfer.getData("text");
   var ur=trimURL(getCurrentServerInfo().host)+"/t/"+getCurrentServerInfo().site+"/views/"+data.replace("/sheets","");
   $(ev.currentTarget).attr("value",ur);
-  //BUG HERE IN SAFARI DOESN'T SUPPORT URI
-  $(ev.currentTarget).find("img").prop("src",ev.dataTransfer.getData("text/uri-list"));
-  // console.log(getBase64Image($(ev.currentTarget).find("img")[0]))
+  $(ev.currentTarget).find("img").on("load",()=>{
+    var cp=$(".wload[varindex='"+indx+"']")[0].complete;
+
+  })
+  $(ev.currentTarget).find("img").on("error",()=>{
+    $(".wload[varindex='"+indx+"']").prop("src","/notauth.png");
+  })
+  $(ev.currentTarget).find("img").prop("src",ur+".png");
   initFilterRepo();
   var ff=JSON.parse(getRepoVal("filter","filter").replaceAll("'",'"'));
   ff[parseInt($(ev.currentTarget).attr("varindex"))]=[];
@@ -841,7 +847,7 @@ function populateViewsSettings(){
       </summary>
       <div class="filterboxes">
         <details class="scn" open>
-          <summary class="tpb">View Name (UI):</summary>
+          <summary class="tpb">View Name:</summary>
           <input varindex="${id}" varc="" class="viewName texts input input_settings" value="">
         </details>  
         <details class="scn">
@@ -870,6 +876,9 @@ function populateViewsSettings(){
     </div>
     `
     $(`#view${id}`).append(node);
+    $(`#view${id}`).find("img.wload").on("error",()=>{
+      $(".wload[varindex='"+id+"']").prop("src","/notauth.png");
+    })
   });
 }
 function showTemplateSettings(eve){
