@@ -164,6 +164,8 @@ function saveSettings(){
     closeAllMenu();
     clearItems();
     $(".init").show();
+    $(".tdropdown").addClass("active");
+    $(".tdropsub").show();
     getProjects();
   }  
   MicroModal.close('modal-settings'); 
@@ -819,7 +821,7 @@ function populateViewsSettings(){
       <div style="${el==""?"display:none":""}" varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></div>
       </summary>
       <div class="filterboxes">
-        <details class="scn">
+        <details class="scn" open>
           <summary class="tpb">Filters:</summary>
           <ul class="filtertcont${id}">
             ${nodefilter}
@@ -957,7 +959,8 @@ function saveTemplateSettings(close){
   if(JSON.stringify(ff)!=getRepoVal("filter","filter").replaceAll("'",'"'))
     viewsModified=true;
   saveToRepo('filter','filter',JSON.stringify(ff));
-
+ 
+  $(".page-content").css("opacity","0.3");
   $("#viewlist .askdata").each((index,el)=>{
     var ask=$(el).prop("value");
     var same=getRepoVal("askdata",index);
@@ -1010,6 +1013,8 @@ function saveTemplateSettings(close){
     //restoreViews();
     switchTemplate(currentTemplate);
     viewsModified=false;
+  }else{
+    $(".page-content").css("opacity","1");
   }
 }
 function clearAView(viewIndex){
@@ -1124,6 +1129,7 @@ function restoreViz(){
       restoreWebEdit();
       restoreAskData();
       restoreAction();
+      $(".page-content").css("opacity","1");
   }
 }, 500);
 }

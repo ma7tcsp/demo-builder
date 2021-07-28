@@ -39,11 +39,11 @@ html, body{
 }
  .thumb .tpicon{
   margin-left: 10px;
-  margin-right: 10px;
   font-size: 17px;
 }
 .thumb .tpiconF{
   font-size: 17px;
+  margin-left: 10px;
 }
 .refreshFilterIcon{
   cursor: pointer;
