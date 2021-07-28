@@ -438,7 +438,9 @@ function switchTemplate(tpName,ev){
   currentTemplate=tpName;
   disposeAllViz();
   $("#container").empty();
-  restoreViz();
+  setTimeout(() => {
+    restoreViz();
+  }, 1000);
 }
 function showViews(vname,ev){
   $(".thumb.wkb").removeClass("active");
