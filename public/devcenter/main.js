@@ -770,14 +770,14 @@ function refreshFilters(ev,id){
     ev.preventDefault();
   }
   document.getElementById('template').contentWindow.loadVizByIndex(parseInt(id));
-  $('.refreshFilterIcon').addClass('spin');
+  $(`.refreshFilterIcon[varindex='${id}']`).addClass('spin');
   setTimeout(() => {
     var ct="";
     ct+=getParamDom(id);
     ct+=getFilterDom(id,ct);
     $(`.filtertcont${id}`).html(ct);
-    $('.refreshFilterIcon').removeClass('spin');
-    $('.refreshFilterIcon').hide();;
+    $(`.refreshFilterIcon[varindex='${id}']`).removeClass('spin');
+    $(`.refreshFilterIcon[varindex='${id}']`).hide();;
   }, 10000);
 }
 function getFilterDom(id,nodeParam,el){
