@@ -108,11 +108,8 @@ app.post('/zip', async function (req, res) {
   var tab_param=${pp}; 
   var tab_text=${ttr};
   var tab_img=${imr};
-  var tab_action=${acr};
-  var tab_all_filters=[[],[],[],[]];
-  var tab_all_params=[[],[],[],[]];`
+  var tab_action=${acr};`
   writeTofile(vvArr,tmp+"/lib/config.js")
-
   writeTofile(generateCSS(JSON.parse(ret.color)),tmp+"/css/config.css")
 
   var tp=req.query.tpname || 'grid';

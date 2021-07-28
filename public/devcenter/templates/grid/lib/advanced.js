@@ -56,7 +56,7 @@ function populateParameterMenu(param){
 }
 function getParametersForViz(index){
   workbook.getParametersAsync().then((current_param)=>{
-    tab_all_params[index]={parameters:current_param,viz:viz};
+    if(typeof(tab_all_params)!="undefined")tab_all_params[index]={parameters:current_param,viz:viz};
     current_param.map((f)=>{
       tab_param[index].map((cf)=>{
         if(cf==f.getName()){
@@ -69,7 +69,7 @@ function getParametersForViz(index){
 }
 function getFiltersForViz(index){
   activeSheet.getFiltersAsync().then((current_filter)=>{
-    tab_all_filters[index]={filters:current_filter,viz:viz};
+    if(typeof(tab_all_filters)!="undefined") tab_all_filters[index]={filters:current_filter,viz:viz};
     current_filter.map((f)=>{
       tab_filter[index].map((cf)=>{
         if(cf==f.getFieldName()){

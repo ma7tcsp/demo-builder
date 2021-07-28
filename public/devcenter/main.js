@@ -493,6 +493,7 @@ function disposeAllViz(){
 }
 function drop(ev) {
   ev.preventDefault();
+  var indx=$(ev.currentTarget).attr("varindex");
   var data = ev.dataTransfer.getData("text");
   var ur=trimURL(getCurrentServerInfo().host)+"/t/"+getCurrentServerInfo().site+"/views/"+data.replace("/sheets","");
   $(ev.currentTarget).attr("value",ur);
@@ -503,9 +504,15 @@ function drop(ev) {
   var ff=JSON.parse(getRepoVal("filter","filter").replaceAll("'",'"'));
   ff[parseInt($(ev.currentTarget).attr("varindex"))]=[];
   saveToRepo('filter','filter',JSON.stringify(ff));
-  $(`.filter${$(ev.currentTarget).attr("varindex")}`).remove();
-  $(`#view${$(ev.currentTarget).attr("varindex")} .filterboxes ul`).text('Activate View at Least Once to Setup...');
   viewsModified=true;
+  saveTemplateSettings();
+  $(`.filtertcont${$(ev.currentTarget).attr("varindex")}`).html(`<i varindex="${$(ev.currentTarget).attr("varindex")}" title="Refresh Filter List" onclick="refreshFilters(event,'${$(ev.currentTarget).attr("varindex")}')" class="refreshFilterIcon fas fa-sync-alt"></i>`)
+  setTimeout(() => {
+    refreshFilters(null,parseInt(indx));
+  }, 4000);
+  $(`.deleteViewCont[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
+    // $(`.filter${$(ev.currentTarget).attr("varindex")}`).remove();
+  // $(`.refreshFilterIcon[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
 }
 function storeViz(templateName,vizID,vizURL){
   var cur=localStorage.getItem(templateName)==null?{vizzes:[]}:JSON.parse(localStorage.getItem(templateName));
@@ -757,33 +764,60 @@ function addSearchListener(){
     }
   });
 }
+function refreshFilters(ev,id){
+  if(ev){
+    ev.stopPropagation();
+    ev.preventDefault();
+  }
+  document.getElementById('template').contentWindow.loadVizByIndex(parseInt(id));
+  $('.refreshFilterIcon').addClass('spin');
+  setTimeout(() => {
+    var ct="";
+    ct+=getParamDom(id);
+    ct+=getFilterDom(id,ct);
+    $(`.filtertcont${id}`).html(ct);
+    $('.refreshFilterIcon').removeClass('spin');
+    $('.refreshFilterIcon').hide();;
+  }, 10000);
+}
+function getFilterDom(id,nodeParam,el){
+  var nodeFilter=""
+  var cur_filter=parseForFilters(document.getElementById('template').contentWindow,id);
+    if(nodeParam=="" && cur_filter==null)
+      nodeFilter=`<i varindex="${id}" style="${el==""?"display:none":""}" title="Refresh Filter List" onclick="refreshFilters(event,'${id}')" class="refreshFilterIcon fas fa-sync-alt"></i>`;
+    if(cur_filter!=null){
+      cur_filter.filters.map((fl)=>{
+        if(fl.getFilterType()=='categorical')
+          nodeFilter+=`<li class="filter${id}" ><input class="filter-entry" varindex="${id}" varc="${fl.getFieldName()}" type="checkbox" ${fl.isChecked==true?"checked":""}> ${fl.getFieldName()} (${fl.getWorksheet().getName()})</li>`
+      })
+    }
+    return nodeFilter;
+}
+function getParamDom(id){
+  var nodeParam="";
+  var cur_params=parseForParameters(document.getElementById('template').contentWindow,id);
+    if(cur_params!=null){
+      cur_params.parameters.map((par)=>{
+        if(par.getAllowableValuesType()=='list')
+        nodeParam+=`<li class="param${id}" ><input class="param-entry" varindex="${id}" varc="${par.getName()}" type="checkbox" ${par.isChecked==true?"checked":""}> ${par.getName()} (Parameter)</li>`
+      })
+    }
+  return nodeParam;  
+}
 function populateViewsSettings(){
   $("#viewlist").empty();
   $("#viewlist").append("<summary>Views Settings</summary>");
   parseForViews(document.getElementById('template').contentWindow).map((el,id)=>{
     var nodefilter=''
-    var cur_params=parseForParameters(document.getElementById('template').contentWindow,id);
-    if(cur_params!=null){
-      cur_params.parameters.map((par)=>{
-        if(par.getAllowableValuesType()=='list')
-        nodefilter+=`<li class="param${id}" ><input class="param-entry" varindex="${id}" varc="${par.getName()}" type="checkbox" ${par.isChecked==true?"checked":""}> ${par.getName()} (Parameter)</li>`
-      })
-    }
+    nodefilter+=getParamDom(id);
     $("#viewlist").append(`<details id="view${id}"></details>`);
-    var cur_filter=parseForFilters(document.getElementById('template').contentWindow,id);
+    nodefilter+=getFilterDom(id,nodefilter,el);
     $(`#view${id}`).append(`<summary>View ${id+1}`);
-    if(cur_params==null && cur_filter==null)
-      nodefilter=NO_FILTER_TEXT
-    if(cur_filter!=null){
-      cur_filter.filters.map((fl)=>{
-        if(fl.getFilterType()=='categorical')
-          nodefilter+=`<li class="filter${id}" ><input class="filter-entry" varindex="${id}" varc="${fl.getFieldName()}" type="checkbox" ${fl.isChecked==true?"checked":""}> ${fl.getFieldName()} (${fl.getWorksheet().getName()})</li>`
-      })
-    }
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
       <img class="wload" varindex="${id}" height="250px" width="340px" src="${el!=""?el+'.png':"/newView.png"}" >
-      ${el==""?"":`<div varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></summary></div>`}
+      <div style="${el==""?"display:none":""}" varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></div>
+      </summary>
       <div class="filterboxes">
         <details class="scn">
           <summary class="tpb">Filters:</summary>
@@ -981,8 +1015,8 @@ function saveTemplateSettings(close){
 function clearAView(viewIndex){
   var arrv=parseForViews(document.getElementById('template').contentWindow);
   arrv[viewIndex]="";
-  $(`.filtertcont${viewIndex}`).empty();
-  $(`.filtertcont${viewIndex}`).text(NO_FILTER_TEXT);
+  $(`.filtertcont${viewIndex} *:not('.refreshFilterIcon')`).remove();
+  //$(`.filtertcont${viewIndex}`).text(NO_FILTER_TEXT);
   $(`.webedit[varindex='${viewIndex}']`).prop("checked",false);
   $(`.action[varindex='${viewIndex}']`).prop("checked",false);
   $(`.askdata[varindex='${viewIndex}']`).prop("value","");
@@ -990,6 +1024,7 @@ function clearAView(viewIndex){
   $(`.vplace[varindex='${viewIndex}']`).attr("varc","");
   $(`.wload[varindex='${viewIndex}']`).prop("src","/newView.png");
   $(`.deleteViewCont[varindex='${viewIndex}']`).hide();
+  $(`.refreshFilterIcon[varindex='${viewIndex}']`).hide();
   viewsModified=true;
 }
 function restoreAction(){
@@ -1078,7 +1113,6 @@ function getStorageByType(type){
 function restoreViz(){
   //DO PROPER DOM CHECK !
   setTimeout(() => {
-    var ifdoc=document.getElementById('template').contentWindow.document;
     restoreColors();
     restoreTexts();
     restoreImgs();
@@ -1089,14 +1123,6 @@ function restoreViz(){
     restoreWebEdit();
     restoreAskData();
     restoreAction();
-    var cur=localStorage.getItem(currentTemplate);
-    if(cur==null)
-      return;
-    cur=JSON.parse(cur);
-    cur.vizzes.map((v)=>{
-      console.log("Restoring",v.vizID,v.vizURL);
-      loadVizInit(v.vizURL,v.vizID);
-    })
   }, 1000);
 
 }
