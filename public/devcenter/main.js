@@ -438,9 +438,7 @@ function switchTemplate(tpName,ev){
   currentTemplate=tpName;
   disposeAllViz();
   $("#container").empty();
-  setTimeout(() => {
-    restoreViz();
-  }, 1000);
+  restoreViz();
 }
 function showViews(vname,ev){
   $(".thumb.wkb").removeClass("active");
@@ -1113,20 +1111,21 @@ function getStorageByType(type){
   return ret;
 }
 function restoreViz(){
-  //DO PROPER DOM CHECK !
-  setTimeout(() => {
-    restoreColors();
-    restoreTexts();
-    restoreImgs();
-    restoreFilters();
-    restoreViews();
-    restoreFilters();
-    restoreParameters();
-    restoreWebEdit();
-    restoreAskData();
-    restoreAction();
-  }, 1000);
-
+  var isTemplateLoaded= setInterval(function(){
+    if(typeof(document.getElementById('template').contentWindow.loadVizInit)!="undefined"){
+      clearInterval(isTemplateLoaded);
+      restoreColors();
+      restoreTexts();
+      restoreImgs();
+      restoreFilters();
+      restoreViews();
+      restoreFilters();
+      restoreParameters();
+      restoreWebEdit();
+      restoreAskData();
+      restoreAction();
+  }
+}, 500);
 }
 function highlightElement(id){
   injectStyle(document.getElementById('template').contentWindow.document);
@@ -1254,7 +1253,7 @@ function getSettingsTemplate(){
     </details>
 </div>
   <footer class="setfooter">
-    <button class="modal__btn modal__btn-primary" onclick="saveTemplateSettings(true)"> Save </button>
+    <button class="modal__btn modal__btn-primary" onclick="saveTemplateSettings(true)"> Close </button>
     <button class="modal__btn modal__btn-primary" onclick="saveTemplateSettings()"> Apply </button>
     <button onclick="closeSettings()" class="gogo modal__btn" data-micromodal-close aria-label="Close">Cancel</button>
   </footer>
