@@ -822,6 +822,10 @@ function populateViewsSettings(){
       </summary>
       <div class="filterboxes">
         <details class="scn" open>
+          <summary class="tpb">View Name (UI):</summary>
+          <input varindex="${id}" varc="" class="viewName texts input input_settings" value="">
+        </details>  
+        <details class="scn">
           <summary class="tpb">Filters:</summary>
           <ul class="filtertcont${id}">
             ${nodefilter}
@@ -891,12 +895,21 @@ function showTemplateSettings(eve){
   $("#textlist").empty();
   $("#textlist").append("<summary>Text Settings</summary>");
   parseForText(document.getElementById('template').contentWindow.document).map((el)=>{
-    var node=`
+    var node=""
+    let re = new RegExp(/Viz-([0-9-]+)-text/);
+    var findIndex=re.exec(el.variable);
+    if(findIndex!=null){
+      $(`.viewName[varindex='${parseInt(findIndex[1])-1}']`).prop("value",decodeURIComponent(el.text));
+      $(`.viewName[varindex='${parseInt(findIndex[1])-1}']`).attr("varc",el.variable)
+    }
+    else{
+    node=`
     <div  class="settings_block">
         <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i><label class="label_settings">${el.variable.replace(currentTemplate+'-','').replaceAll("-"," ")} </label>
         <input varc="${el.variable}" class="texts input input_settings" required="true" value="${decodeURIComponent(el.text)}">
     </div>
     `
+    }
     $("#textlist").append(node);
   })
   collapseDetailsPanelAuto();
@@ -1000,6 +1013,9 @@ function saveTemplateSettings(close){
     restoreColorInIframes({key:$(el).attr("varc"),val:$(el).prop("value")});
   })
   $("#textlist .texts").each((index,el)=>{
+    saveToRepo('text',$(el).attr("varc"),encodeURIComponent($(el).prop("value")));
+  })
+  $("#viewlist .texts").each((index,el)=>{
     saveToRepo('text',$(el).attr("varc"),encodeURIComponent($(el).prop("value")));
     restoreTexts();
   })
