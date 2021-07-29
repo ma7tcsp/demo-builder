@@ -6,8 +6,9 @@ html, body {
     font-family: sans-serif;
 }
  
-.headrer_right{
+.header_right{
   display: flex;
+  line-height: 25px;
 }
 
 .grid-container {
