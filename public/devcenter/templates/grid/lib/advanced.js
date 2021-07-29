@@ -5,7 +5,7 @@ function showFilterBox(el){
 function populateFilterMenu(fil){
   var links="";
   if(fil.getAppliedValues()==null){
-    console.log("this filiter as no applied values :"+fil.getFieldName());
+    console.log("this filter as no applied values :"+fil.getFieldName());
     return;
   }
   fil.getAppliedValues().map((val)=>{
