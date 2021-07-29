@@ -11,7 +11,8 @@ function populateFilterMenu(fil){
   fil.getAppliedValues().map((val)=>{
     var found=false;
     document.querySelectorAll(`[filName="${fil.getFieldName()}"]`).forEach((el)=>{
-      if(el.text==val.value)
+      console.log();
+      if(el.text==val.value.toString())
         found=true;
     })
     if(!found ){
