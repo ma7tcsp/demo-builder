@@ -43,7 +43,7 @@ function populateParameterMenu(param){
   })
   var list=`
   <span class="filter_dropdown">
-  <a onclick="showFilterBox('${param.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id="Filter-text-${param.getFieldName()}" class="editable">${param.getFieldName()}</div></a>
+  <a onclick="showFilterBox('${param.getName()}')" href="#"><i class="fa fa-filter"></i><div id="Filter-text-${param.getName()}" class="editable">${param.getName()}</div></a>
     <div mid="${param.getName()}" class="dropdown-content">
     ${links}
     </div>
