@@ -1,5 +1,6 @@
 var express = require('express');
 var Flickr = require('flickr-sdk');
+var gis = require('g-i-s');
 var app = express();
 var path = require('path');
 const bodyParser = require('body-parser');
@@ -52,6 +53,16 @@ app.post('/workbooks', async function (req, res) {
     else  
       return listWorkbooks(req.body.host,req.body.site,req.body.project,req.body.tokenName,desalt(req.body.tokenValue),res);
 });
+app.get('/pict2', function(req, res) {
+  gis(req.query.search, (error, results)=>{
+    var p="";
+    result.map((el)=>{
+      if(el.url)
+        p+=`<img pages="1" page="1" loading=lazy class='searchres' src=${el.url}>`
+    })
+    res.send(p);
+  });
+})
 app.get('/pict', function(req, res) {
   flickr.photos.search({
     text: decodeURIComponent(req.query.search),
