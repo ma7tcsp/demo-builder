@@ -707,7 +707,7 @@ function parseForText(docu){
   for (let i = 0; i < childNodes.length; i++) {
     if(!$(childNodes[i]).is("script")){
       var tt=$(childNodes[i]).clone().children().remove().end()
-      var text=tt[0].innerHTML.trim().replaceAll("\"","'").split("\n")[0];
+      var text=tt[0].innerHTML.trim().replaceAll("\"","'").split("\n")[0]+" ";
       if(text!=""){
         if(checkRepoKeyExist('text',childNodes[i].id)){
           texts.push({variable:childNodes[i].id,text:getRepoVal('text',childNodes[i].id)})
