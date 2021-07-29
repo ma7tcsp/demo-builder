@@ -815,7 +815,7 @@ function getFilterDom(id,nodeParam,el){
       nodeFilter=`<i varindex="${id}" style="${el==""?"display:none":""}" title="Refresh Filter List" onclick="refreshFilters(event,'${id}')" class="refreshFilterIcon fas fa-sync-alt"></i>`;
     if(cur_filter!=null){
       cur_filter.filters.map((fl)=>{
-        if(fl.getFilterType()=='categorical')
+        if(fl.getFilterType()=='categorical' && fl.getFieldName().indexOf("Action (")==-1)
           nodeFilter+=`<li class="filter${id}" ><input class="filter-entry" varindex="${id}" varc="${fl.getFieldName()}" type="checkbox" ${fl.isChecked==true?"checked":""}> ${fl.getFieldName()} (${fl.getWorksheet().getName()})</li>`
       })
     }
