@@ -109,7 +109,9 @@ function reportSelectedMarks(marks) {
   }
 }
 function applyFilter(filterName,value) {
-  activeSheet.applyFilterAsync(filterName,[value],tableau.FilterUpdateType.REPLACE);
+  activeSheet.getWorksheets().map((ws)=>{
+    ws.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
+  })
   hideDropDownList(filterName);
 }
 function resetViz() {
