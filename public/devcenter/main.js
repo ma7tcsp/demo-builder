@@ -517,6 +517,7 @@ function drop(ev) {
   ev.preventDefault();
   var indx=$(ev.currentTarget).attr("varindex");
   var data = ev.dataTransfer.getData("text");
+  clearAView(indx);
   var ur=trimURL(getCurrentServerInfo().host)+"/t/"+getCurrentServerInfo().site+"/views/"+data.replace("/sheets","");
   $(ev.currentTarget).attr("value",ur);
   $(ev.currentTarget).find("img").on("load",()=>{
@@ -531,7 +532,6 @@ function drop(ev) {
   var ff=JSON.parse(getRepoVal("filter","filter").replaceAll("'",'"'));
   ff[parseInt($(ev.currentTarget).attr("varindex"))]=[];
   saveToRepo('filter','filter',JSON.stringify(ff));
-  clearAView(indx);
   saveTemplateSettings();
   $(`.filtertcont${$(ev.currentTarget).attr("varindex")}`).html(`<i varindex="${$(ev.currentTarget).attr("varindex")}" title="Refresh Filter List" onclick="refreshFilters(event,'${$(ev.currentTarget).attr("varindex")}')" class="refreshFilterIcon fas fa-sync-alt"></i>`)
   setTimeout(() => {
