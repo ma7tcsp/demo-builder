@@ -1,5 +1,4 @@
 var express = require('express');
-var Flickr = require('flickr-sdk');
 var gis = require('g-i-s');
 var app = express();
 var path = require('path');
@@ -16,7 +15,6 @@ const PAGE_SIZE=200;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var flickr = new Flickr("9213318e4c399937cd7e87a728cb7493");
 
 
 //DEBUG
@@ -53,7 +51,7 @@ app.post('/workbooks', async function (req, res) {
     else  
       return listWorkbooks(req.body.host,req.body.site,req.body.project,req.body.tokenName,desalt(req.body.tokenValue),res);
 });
-app.get('/pict2', function(req, res) {
+app.get('/pict', function(req, res) {
   gis(req.query.search, (error, results)=>{
     var p="";
     results.map((el)=>{
@@ -61,23 +59,6 @@ app.get('/pict2', function(req, res) {
         p+=`<img pages="1" page="1" loading=lazy class='searchres' src=${el.url}>`
     })
     res.send(p);
-  });
-})
-app.get('/pict', function(req, res) {
-  flickr.photos.search({
-    text: decodeURIComponent(req.query.search),
-    extras:'url_o',
-    per_page:20,
-    page:req.query.page?req.query.page:1
-  }).then(function (result) {
-    var p="";
-    result.body.photos.photo.map((el)=>{
-      if(el.url_o)
-        p+=`<img pages="${result.body.photos.pages}" page="${result.body.photos.page}" loading=lazy class='searchres' src=${el.url_o}>`
-    })
-    res.send(p);
-  }).catch(function (err) {
-    console.error('bonk', err);
   });
 })
 app.post('/zip', async function (req, res) {
