@@ -94,9 +94,7 @@ text-align: right;
 }
 
 @media (max-width: 800px) {
-  .ButtonBar {
-    overflow:visible!important;
-    display: block!important;
-    min-height:unset!important; 
+  .editable {
+    font-size: 0px;
   }
 }
