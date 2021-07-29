@@ -225,7 +225,7 @@ function reloadMe(){
   }, 1000);
   setTimeout(() => {
     window.location.reload();
-  }, 4500);
+  }, 4100);
 }
 function restoreFromUrl(url,reload=true){
   return new Promise((resolve,reject)=>{
