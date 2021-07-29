@@ -109,9 +109,13 @@ function reportSelectedMarks(marks) {
   }
 }
 function applyFilter(filterName,value) {
-  activeSheet.getWorksheets().map((ws)=>{
-    ws.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
-  })
+  if(activeSheet.getSheetType()==tableau.SheetType.DASHBOARD)
+    activeSheet.getWorksheets().map((ws)=>{
+      ws.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
+    })
+  else{
+    activeSheet.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
+  }  
   hideDropDownList(filterName);
 }
 function resetViz() {
