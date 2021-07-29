@@ -4,6 +4,10 @@ function showFilterBox(el){
 }
 function populateFilterMenu(fil){
   var links="";
+  if(fil.getAppliedValues()==null){
+    console.log("this filiter as no applied values :"+fil.getFieldName());
+    return;
+  }
   fil.getAppliedValues().map((val)=>{
     var found=false;
     document.querySelectorAll(`[filName="${fil.getFieldName()}"]`).forEach((el)=>{
@@ -31,6 +35,10 @@ function populateFilterMenu(fil){
 }
 function populateParameterMenu(param){
   var links="";
+  if(param.getAllowableValues()==null){
+    console.log("this param as no allowable values :"+param.getName());
+    return;
+  }
   param.getAllowableValues().map((val)=>{
     var found=false;
     document.querySelectorAll(`[paramName="${param.getName()}"]`).forEach((el)=>{
