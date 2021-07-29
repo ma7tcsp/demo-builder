@@ -129,5 +129,6 @@ function saveView() {
 }
 function applyParam(paramName,value) {
   workbook.changeParameterValueAsync(paramName, value)
+  hideDropDownList(paramName);
 }
 
