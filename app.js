@@ -1,5 +1,3 @@
-"2pJRaNIRRtuzNq758AA0lg==:t8OtWIWIqLPeEZ7SFV0fl89c8kW1MxP5"
-
 var express = require('express');
 var Flickr = require('flickr-sdk');
 var app = express();
