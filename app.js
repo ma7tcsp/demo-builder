@@ -56,7 +56,7 @@ app.post('/workbooks', async function (req, res) {
 app.get('/pict2', function(req, res) {
   gis(req.query.search, (error, results)=>{
     var p="";
-    result.map((el)=>{
+    results.map((el)=>{
       if(el.url)
         p+=`<img pages="1" page="1" loading=lazy class='searchres' src=${el.url}>`
     })
