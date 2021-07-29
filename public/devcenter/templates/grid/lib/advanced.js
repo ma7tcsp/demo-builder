@@ -16,7 +16,7 @@ function populateFilterMenu(fil){
   })
   var list=`
   <span class="filter_dropdown">
-    <a onclick="showFilterBox('${fil.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id="builder-text-${fil.getFieldName()}" class="editable">${fil.getFieldName()}</div></a>
+    <a onclick="showFilterBox('${fil.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id="Filter-text-${fil.getFieldName()}" class="editable">${fil.getFieldName()}</div></a>
     <div mid="${fil.getFieldName()}" class="dropdown-content">
     ${links}
     </div>
@@ -43,7 +43,7 @@ function populateParameterMenu(param){
   })
   var list=`
   <span class="filter_dropdown">
-  <a onclick="showFilterBox('${param.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id="builder-text-${param.getFieldName()}" class="editable">${param.getFieldName()}</div></a>
+  <a onclick="showFilterBox('${param.getFieldName()}')" href="#"><i class="fa fa-filter"></i><div id="Filter-text-${param.getFieldName()}" class="editable">${param.getFieldName()}</div></a>
     <div mid="${param.getName()}" class="dropdown-content">
     ${links}
     </div>
