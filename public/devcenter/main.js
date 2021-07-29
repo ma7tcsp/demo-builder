@@ -522,11 +522,11 @@ function drop(ev) {
   $(ev.currentTarget).attr("value",ur);
   $(ev.currentTarget).find("img").on("load",()=>{
     var cp=$(".wload[varindex='"+indx+"']")[0].complete;
-    $(ev.currentTarget).find("img").css("filter",'blur(0px)')
+    $(".wload[varindex='"+indx+"']").css("filter",'blur(0px)')
   })
   $(ev.currentTarget).find("img").on("error",()=>{
     $(".wload[varindex='"+indx+"']").prop("src","/notauth.png");
-    $(ev.currentTarget).find("img").css("filter",'blur(0px)')
+    $(".wload[varindex='"+indx+"']").css("filter",'blur(0px)')
   })
   $(ev.currentTarget).find("img").css("filter",'blur(5px)')
   $(ev.currentTarget).find("img").prop("src",ur+".png");
