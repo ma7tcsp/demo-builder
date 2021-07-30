@@ -30,6 +30,9 @@
   color: var(--Button-Text-Hover);
 }
 
+html,body{
+  background-color: var(--Body-Background);
+}
 .divider{
   margin-top: 8px;
   color:var(--Button-Text);
