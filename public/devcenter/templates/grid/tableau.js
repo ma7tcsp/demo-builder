@@ -5,7 +5,7 @@ function loadVizInit () {
   var firstIndex=setViewMenuVisibility();
   loadVizByIndex(firstIndex);
 }
-function loadVizByIndex (index,force) {
+function loadVizByIndex (index,force,device ="") {
   var url = tab_server[index];
   if(url=="")
     return;
@@ -23,7 +23,7 @@ function loadVizByIndex (index,force) {
   }
   if(!isSameWorkbook){
     placeholderDiv = document.getElementById("tableauViz");
-    options = {width: '100%',height: '100%',hideTabs: true,hideToolbar: true,showShareOptions: false,
+    options = {device:device,width: '100%',height: '100%',hideTabs: true,hideToolbar: true,showShareOptions: false,
         onFirstInteractive: function () {
           workbook = viz.getWorkbook();
           activeSheet = workbook.getActiveSheet();
@@ -88,11 +88,11 @@ function launchAction(){
   }
   var textOnly=getOnlyText(selectedMarks,[]);
   if(textOnly.length==0)
-    window.open('http://google.com/search?q=There is no text values in your selection :-)');
+    window.open('http://google.com/search?q=There are no text values in your selection :-)');
   if(lengthInUtf8Bytes(textOnly.join(" "))<1024)
     window.open('http://google.com/search?q='+encodeURIComponent(textOnly.join(" ")));
   else
-    window.open('http://google.com/search?q='+"Too much elements in your selection :-) Reduce please!");  
+    window.open('http://google.com/search?q='+"Too many elements in your selection :-) Please reduce !");  
 }
 function onMarksSelection(marksEvent) {
     return marksEvent.getMarksAsync().then(reportSelectedMarks);

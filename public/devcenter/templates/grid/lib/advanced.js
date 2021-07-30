@@ -1,3 +1,23 @@
+// YOU DON'T NEED TO WORRY ABOUT THIS 
+//Few explaination on each
+var layout="";
+window.onresize = function(e){
+  var wd=document.querySelector('body').clientWidth;
+  if(wd<800 && layout!="phone"){
+    layout="phone";
+    viz.getCurrentUrlAsync().then (function(current_url){
+      var index=tab_server.indexOf(current_url.split("?")[0]);
+      loadVizByIndex(index,true,layout);
+    })
+  }
+  if(wd>=800 && layout!=""){
+    layout="";
+    viz.getCurrentUrlAsync().then (function(current_url){
+      var index=tab_server.indexOf(current_url.split("?")[0]);
+      loadVizByIndex(index,true,layout);
+    })
+  }
+};
 function showFilterBox(el){
   document.querySelector(`div[mid='${el}']`).classList.toggle("show");
   document.querySelectorAll(`.dropdown-content`).forEach((dd)=>{if(dd.getAttribute("mid")!=el)dd.classList.remove("show")});
