@@ -28,6 +28,14 @@ html, body{
   text-align: center;
   border-radius: 30px;
 }
+details.scn[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
 .spin{
   animation: .75s linear infinite spinner-border;
 }

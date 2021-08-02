@@ -832,8 +832,16 @@ function getFilterDom(id,nodeParam,el){
       nodeFilter=`<i varindex="${id}" style="${el==""?"display:none":""}" title="Refresh Filter List" onclick="refreshFilters(event,'${id}')" class="refreshFilterIcon fas fa-sync-alt"></i>`;
     if(cur_filter!=null){
       cur_filter.filters.map((fl)=>{
-        if(fl.getFilterType()=='categorical' && fl.getFieldName().indexOf("Action (")==-1 && fl.getFieldName().indexOf("Measure Names")==-1)
-          nodeFilter+=`<li class="filter${id}" ><input class="filter-entry" varindex="${id}" varc="${fl.getFieldName()}" type="checkbox" ${fl.isChecked==true?"checked":""}> ${fl.getFieldName()} (${fl.getWorksheet().getName()})</li>`
+        if(fl.getFilterType()=='categorical' && fl.getFieldName().indexOf("Action (")==-1 && fl.getFieldName().indexOf("Measure Names")==-1){
+          var repT=getRepoVal('text',"Filter-text-"+fl.getFieldName());
+          var ttx=repT!=null?repT:fl.getFieldName();
+          var filInput=`<input varindex="${id}" dumid="${fl.getFieldName().replace(/[^a-z0-9+]+/gi, '_')}" varc="${fl.getFieldName()}" class="filterText ${fl.isChecked==true?"":"hideFilterInput"} texts input input_settings" required="true" value="${decodeURIComponent(ttx)}"></input>`
+          nodeFilter+=`<li class="filter${id}" >
+                        <input onchange="$('.filterText[dumid=${fl.getFieldName().replace(/[^a-z0-9+]+/gi, '_')}]').toggle('hideFilterInput')" class="filter-entry" varindex="${id}" varc="${fl.getFieldName()}" type="checkbox" ${fl.isChecked==true?"checked":""}> 
+                        ${fl.getFieldName()} (${fl.getWorksheet().getName()})
+                        ${filInput}
+                        </li>`
+        }
       })
     }
     return nodeFilter;
@@ -843,8 +851,12 @@ function getParamDom(id){
   var cur_params=parseForParameters(document.getElementById('template').contentWindow,id);
     if(cur_params!=null){
       cur_params.parameters.map((par)=>{
-        if(par.getAllowableValuesType()=='list')
-        nodeParam+=`<li class="param${id}" ><input class="param-entry" varindex="${id}" varc="${par.getName()}" type="checkbox" ${par.isChecked==true?"checked":""}> ${par.getName()} (Parameter)</li>`
+        if(par.getAllowableValuesType()=='list'){
+          var repT=getRepoVal('text',"Filter-text-"+par.getName());
+          var ttx=repT!=null?repT:par.getName();
+          var parInput=`<input varindex="${id}" dumid="${par.getName().replace(/[^a-z0-9+]+/gi, '_')}" varc="${par.getName()}" class="filterText ${par.isChecked==true?"":"hideFilterInput"} texts input input_settings" required="true" value="${decodeURIComponent(ttx)}"></input>`
+          nodeParam+=`<li onchange="$('.filterText[dumid=${par.getName().replace(/[^a-z0-9+]+/gi, '_')}]').toggle('hideFilterInput')" class="param${id}" ><input class="param-entry" varindex="${id}" varc="${par.getName()}" type="checkbox" ${par.isChecked==true?"checked":""}> ${par.getName()} (Parameter)</li>${parInput}`
+        }
       })
     }
   return nodeParam;  
@@ -860,7 +872,7 @@ function populateViewsSettings(){
     $(`#view${id}`).append(`<summary>View ${id+1}`);
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
-      <img class="wload" varindex="${id}" height="250px" width="340px" src="${el!=""?el+'.png':"/newView.png"}" >
+      <img class="wload" varindex="${id}" height="300px" width="380px" src="${el!=""?el+'.png':"/newView.png"}" >
       <div style="${el==""?"display:none":""}" varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></div>
       </summary>
       <div class="filterboxes">
@@ -948,7 +960,7 @@ function showTemplateSettings(eve){
       $(`.viewName[varindex='${parseInt(findIndex[1])-1}']`).prop("value",decodeURIComponent(el.text));
       $(`.viewName[varindex='${parseInt(findIndex[1])-1}']`).attr("varc",el.variable)
     }
-    else{
+    else if(el.variable.indexOf("Filter-text-")==-1){
     node=`
     <div  class="settings_block">
         <i onclick="highlightElement('${el.variable.replace(currentTemplate+'-','')}')" class="fas target fa-bullseye"></i><label class="label_settings">${el.variable.replace(currentTemplate+'-','').replaceAll("-"," ")} </label>
@@ -1065,8 +1077,12 @@ function saveTemplateSettings(close){
   $("#textlist .texts").each((index,el)=>{
     saveToRepo('text',$(el).attr("varc"),encodeURIComponent($(el).prop("value")));
   })
-  $("#viewlist .texts").each((index,el)=>{
+  $("#viewlist .texts:not(.filterText)").each((index,el)=>{
     saveToRepo('text',$(el).attr("varc"),encodeURIComponent($(el).prop("value")));
+    restoreTexts();
+  })
+  $("#viewlist .filterText").each((index,el)=>{
+    saveToRepo('text',"Filter-text-"+ $(el).attr("varc"),encodeURIComponent($(el).prop("value")));
     restoreTexts();
   })
   $("#imglist .imgs").each((index,el)=>{
@@ -1306,7 +1322,7 @@ function createSettingsPanel(){
   panelSet=jsPanel.create({
     content: setts,
     headerControls: 'closeonly md',
-    contentSize: {width: '696px', height: '500px'},
+    contentSize: {width: '740px', height: '500px'},
     contentOverflow: 'hidden',
     headerTitle: "TEMPLATE SETTINGS",
     theme: "#31353D"

@@ -58,6 +58,13 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+.hideFilterInput{
+  display: none;
+}
+.filterText.input_settings {
+  width: 100%;
+}
 .input_settings {
   width: 70%;
   height: 25px;

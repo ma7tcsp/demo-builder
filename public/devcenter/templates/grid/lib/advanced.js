@@ -47,7 +47,7 @@ function populateFilterMenu(fil){
     </div>
   </span>`
   if(document.querySelector(`div[mid='${fil.getFieldName()}']`)==null){
-    document.getElementsByClassName("filter-container")[0].innerHTML+=list;
+    document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
     document.querySelector(".filterdiv").style.display='block';
   }
   else{
@@ -78,7 +78,7 @@ function populateParameterMenu(param){
     </div>
   </span>`
   if(document.querySelector(`div[mid='${param.getName()}']`)==null){
-    document.getElementsByClassName("filter-container")[0].innerHTML+=list;
+    document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
     document.querySelector(".filterdiv").style.display='block';
   }
   else{
@@ -100,7 +100,20 @@ function getParametersForViz(index){
 }
 function getFiltersForViz(index){
   activeSheet.getFiltersAsync().then((current_filter)=>{
-    if(typeof(tab_all_filters)!="undefined") tab_all_filters[index]={filters:current_filter,viz:viz};
+    if(typeof(tab_all_filters)!="undefined") {
+      tab_all_filters[index].filters=[];
+      current_filter.map((fl)=>{
+        var found=false;
+        tab_all_filters[index].filters.map(tb=>{
+          if(tb.getFieldName()==fl.getFieldName())
+            found=true;
+        })
+        if(found==false)
+          tab_all_filters[index].filters.push(fl)
+
+      })
+      tab_all_filters[index].viz=viz;
+    }
     current_filter.map((f)=>{
       tab_filter[index].map((cf)=>{
         if(cf==f.getFieldName()){
@@ -185,7 +198,6 @@ function getOnlyText(from, to){
 function clearFiltersMenu(){
   const removeElements = (elms) => elms.forEach(el => el.remove());
   removeElements( document.querySelectorAll(".filter_dropdown") );
-  document.querySelector(".filterdiv").style.display='none';
 }
 function restoreImgs(){
   tab_img.map((el)=>{
@@ -218,8 +230,6 @@ function setViewMenuVisibility(){
   firstIndex.map((el)=>{
     lower=Math.min(lower,el)
   })
-  if(lower!=1000)
-    document.querySelector(".divider").style.display='block';
   return lower;
 }
 function initialize(){

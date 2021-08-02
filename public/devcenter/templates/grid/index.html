@@ -37,12 +37,13 @@
     <a class="viz" index="4" href="#" onclick="loadVizByIndex(3)"><i class="fa fa-chart-line"></i><div id="Viz-4-text" class="editable">Viz 4</div></a>
 
     <div class="divider">|</div>
-    <div class="filter-container"></div>
-    <div class="divider filterdiv">|</div>
+    <div class="filter-container">
+      <a href="#" onclick="resetViz()">   <i class="fa fa-undo"></i><div id="Reset-Viz-text" class="editable">Reset Viz</div></a>
+    </div>
+    <div class="divider">|</div>
 
-    <a href="#" onclick="resetViz()">   <i class="fa fa-undo"></i><div id="Reset-Viz-text" class="editable">Reset Viz</div></a>
+    
     <a href="#" onclick="dataDownload()"><i class="fa fa-file-download"></i><div id="Download-Data-text" class="editable">Download Data</div></a>
-    <div class="divider generic">|</div>
     <a class="webedit" href="#" onclick="launchEdit()"><i class="fa fa-pencil-ruler"></i><div id="WebEdit-text" class="editable">Web Edit</div></a>
     <a class="askdata" href="#" onclick="launchAsk()"><i class="fa fa-comment-dots"></i><div id="AskData-text" class="editable">Ask data</div></a>
     <a class="action" href="#" onclick="launchAction()"><i class="fa fa-clipboard"></i><div id="Action-text" class="editable">Action</div></a>
