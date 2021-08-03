@@ -48,7 +48,6 @@ function populateFilterMenu(fil){
   </span>`
   if(document.querySelector(`div[mid='${fil.getFieldName()}']`)==null){
     document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
-    document.querySelector(".filterdiv").style.display='block';
   }
   else{
     document.querySelector(`div[mid='${fil.getFieldName()}']`).innerHTML+=links;
@@ -79,7 +78,6 @@ function populateParameterMenu(param){
   </span>`
   if(document.querySelector(`div[mid='${param.getName()}']`)==null){
     document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
-    document.querySelector(".filterdiv").style.display='block';
   }
   else{
     document.querySelector(`div[mid='${param.getName()}']`).innerHTML+=links;

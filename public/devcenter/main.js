@@ -1178,8 +1178,11 @@ function restoreImgs(){
 }
 function restoreTexts(){
   getStorageByType("text").map((el)=>{
-    if(document.getElementById('template').contentWindow.document.getElementById(el.key))
+    console.log(el.key,el.val);
+    if(document.getElementById('template').contentWindow.document.getElementById(el.key)){
+      console.log(el.key,el.val);
       document.getElementById('template').contentWindow.document.getElementById(el.key).innerHTML=decodeURIComponent(el.val);
+    }
   })
 }
 function restoreColors(){
