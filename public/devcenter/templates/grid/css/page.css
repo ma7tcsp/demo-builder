@@ -36,7 +36,6 @@ html,body{
 .divider{
   margin-top: 8px;
   color:var(--Button-Text);
-  display: none;
 }
 .show {
   display: block!important;
