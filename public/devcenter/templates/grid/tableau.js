@@ -1,11 +1,19 @@
+// This script contains all the Tableau JavaScript API calls needed
+// The reference manual can be found here - https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_ref.htm
+// The JS API Tutorial can be found here - https://help.tableau.com/samples/en-us/js_api/tutorial.htm
 var viz,workbook, activeSheet, options, placeholderDiv,selectedMarks,askindex=-1;
 
 function loadVizInit () {
+  // This function kicks off the process
   initialize();
   var firstIndex=setViewMenuVisibility();
   loadVizByIndex(firstIndex);
 }
 function loadVizByIndex (index,force,device ="") {
+  // This function simply loads each dashboard
+  // If all from the same workbook we can use activateSheetAsync() and method of the workbook class
+  // https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_ref.htm#workbook_class
+  // If from different workbooks we need to reload the new viz from scratch 
   var url = tab_server[index];
   if(url=="")
     return;
@@ -40,12 +48,14 @@ function loadVizByIndex (index,force,device ="") {
   }
 }
 function loadViz (placeholderDiv, url, options) {
+  // https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_concepts_initializing.htm
   if(viz)
     viz.dispose();
   viz = new tableau.Viz(placeholderDiv, url, options);
   clearFiltersMenu();
 }
 function launchAsk(){
+  // This switches between view mode and Ask Data mode
   if(askindex!=-1){
     loadVizByIndex(askindex,true);
     askindex=-1;
@@ -63,6 +73,7 @@ function launchAsk(){
   
 }
 function launchEdit() {
+  // When embedding Web Edit this is the technique used - https://medium.com/@kannanmadhav/embedding-tableau-web-edit-in-a-web-application-246ff53eee76
   var containerDiv = document.getElementById("tableauViz");
   viz.getCurrentUrlAsync().then(function(current_url){
     hideEditAskButton()
@@ -82,6 +93,9 @@ function launchEdit() {
   })
 }
 function launchAction(){
+  // Obtaining data from a Tableau dashboard via event listers 
+  // This is an example of getting data from selected marks 
+  // https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_concepts_events.htm
   if(!selectedMarks){
     window.open('http://google.com/search?q=There is no selection :-)');
     return;
@@ -109,6 +123,8 @@ function reportSelectedMarks(marks) {
   }
 }
 function applyFilter(filterName,value) {
+  // Filtering from the web page, pushing values into Tableau
+  // https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_concepts_filtering.htm
   if(activeSheet.getSheetType()==tableau.SheetType.DASHBOARD)
     activeSheet.getWorksheets().map((ws)=>{
       ws.applyFilterAsync(filterName,value,tableau.FilterUpdateType.REPLACE);
@@ -119,15 +135,18 @@ function applyFilter(filterName,value) {
   hideDropDownList(filterName);
 }
 function resetViz() {
+  // Action to rever the viz back to initial state 
+  // Method of the viz class https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_ref.htm#viz_class 
   viz.revertAllAsync();
 }
 function dataDownload() {
+  // Action to rever the viz back to initial state 
+  // Method of the viz class https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_ref.htm#viz_class 
   viz.showExportDataDialog();
 }
-function saveView() {
-  viz.showCustomViewsDialog();
-}
 function applyParam(paramName,value) {
+  // Same concept as filtering
+  // https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_ref.htm#changeParameterValueAsync
   workbook.changeParameterValueAsync(paramName, value)
   hideDropDownList(paramName);
 }
