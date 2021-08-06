@@ -104,7 +104,7 @@ function reportSelectedMarks(marks) {
     var pairs = curmarks[markIndex].getPairs();
     for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
         var pair = pairs[pairIndex]; 
-        selectedMarks.push(pair.formattedValue)
+        selectedMarks.push(pair.value)
     }
   }
 }
