@@ -1447,6 +1447,11 @@ function capitalizeIt(str) {
   var lower = str.toLowerCase();
   return str.charAt(0).toUpperCase() + lower.slice(1);
 }
+function toggleToPublic(){
+  $(".tol-section ").hide();
+  $(".tb").empty();
+  $(".tb").show();
+}
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
   if (this.length === 0) return hash;
