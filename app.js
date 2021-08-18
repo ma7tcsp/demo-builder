@@ -1,4 +1,5 @@
 var express = require('express');
+const fetch = require('node-fetch');
 var gis = require('g-i-s');
 var app = express();
 var path = require('path');
@@ -59,6 +60,13 @@ app.get('/pict', function(req, res) {
         p+=`<img pages="1" page="1" loading=lazy class='searchres' src=${el.url}>`
     })
     res.send(p);
+  });
+})
+app.get('/public', function(req, res) {
+  fetch(`https://public.tableau.com/api/search/query?count=10&language=en-us&query=${req.query.search}&start=${req.query.start}&type=vizzes`)
+  .then(response => response.json())
+  .then(data => {
+    res.send(data)
   });
 })
 app.post('/zip', async function (req, res) {

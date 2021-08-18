@@ -38,6 +38,8 @@ async function init(){
   })
   window.onresize = function(e){
     var marg=$("body").height()-642;
+    if(isTableauPublic()==true)
+      marg=$("body").height()-460;
     if(marg<316)
       marg=316;
     $(".tb").css("max-height",marg);
@@ -98,6 +100,11 @@ async function init(){
   }
   else{
     showSettings();
+    $(".tdropdown").show();
+    $(".tabpub").show();
+    $(".vdropdown").show();
+    $(".sidebar-search").show();
+    $(".tabpub input").prop("checked","true");
   }
   currentTemplate="templates/grid/index.html";  
   restoreViz();
@@ -166,7 +173,6 @@ function giveMeSalt(token){
       var js=res.json();
       return js;
     }).then((data) => {
-      console.log(data);
       resolve(data.salted)
     });
   })
@@ -179,7 +185,7 @@ async function saveSettings(){
   localStorage.setItem("TOKEN_NAME",$("#tokName").val());
   localStorage.setItem("TOKEN_VALUE",tksalt);
   localStorage.setItem("VERSION",VERSION);
-  if(checkSettings()==true){
+  if(checkSettings()==true && !isTableauPublic()){
     closeAllMenu();
     clearItems();
     $(".init").show();
@@ -382,9 +388,11 @@ async function populateWorkbook(data){
   $(".wbnum").css("background-color","")
   showViews(data[0].id,$(`#${data[0].id}`));
 }
-async function populateViews(data){
-  $(".tb").empty();
-  $(".tb").show();
+async function populateViews(data,ispublic=false){
+  if(ispublic==false){
+    $(".tb").empty();
+    $(".tb").show();
+  }
   $(".loadview").hide();
   if(data.message){
     $(".tb").append(
@@ -397,12 +405,13 @@ async function populateViews(data){
   $(".vnum").css("background-color","#28a745");
   rawvNum=data.length;
   for(var i = 0; i < data.length; i++) {
-    await chrono(i+1,$(".vnum"),data.length>30);
+    if(ispublic==false)
+      await chrono(i+1,$(".vnum"),data.length>30);
     var obj = data[i];
     $(".tb").append(
       `<div class="thumb vie"> 
           <div title="${obj.name}" class="nosel thumb_text">${obj.name}</div>
-          <img id="${obj.link}#!${obj.name}" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
+          <img id="${obj.link}#!${obj.name}#!${obj.url}" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
       </div>`
     );
   }
@@ -410,6 +419,7 @@ async function populateViews(data){
 }
 async function populateProjects(data){
   $(".projects").empty();
+  $(".loadp").hide();
   if(data.message){
     $(".projects").append(
       `<div class="thumb"> 
@@ -519,7 +529,12 @@ function drop(ev) {
   var data = ev.dataTransfer.getData("text");
   clearAView(indx);
   var ur=trimURL(getCurrentServerInfo().host)+"/t/"+getCurrentServerInfo().site+"/views/"+data.split("#!")[0].replace("/sheets","");
-  $(ev.currentTarget).attr("value",ur);
+  if(isTableauPublic()==true)
+    ur=data.split("#!")[2];
+  if(isTableauPublic()==true)
+    $(ev.currentTarget).attr("value",data.split("#!")[0]);
+  else
+    $(ev.currentTarget).attr("value",ur);
   $(ev.currentTarget).find("img").on("load",()=>{
     var cp=$(".wload[varindex='"+indx+"']")[0].complete;
     $(".wload[varindex='"+indx+"']").css("filter",'blur(0px)')
@@ -528,19 +543,22 @@ function drop(ev) {
     $(".wload[varindex='"+indx+"']").prop("src","/notauth.png");
     $(".wload[varindex='"+indx+"']").css("filter",'blur(0px)')
   })
-  $(ev.currentTarget).find("img").css("filter",'blur(5px)')
-  $(ev.currentTarget).find("img").prop("src",ur+".png");
+  $(ev.currentTarget).find("img").css("filter",'blur(5px)');
+  if(isTableauPublic()==true)
+    $(ev.currentTarget).find("img").prop("src",ur);
+  else
+    $(ev.currentTarget).find("img").prop("src",ur+".png");
   initFilterRepo();
   var ff=JSON.parse(getRepoVal("filter","filter").replaceAll("'",'"'));
-  ff[parseInt($(ev.currentTarget).attr("varindex"))]=[];
+  ff[parseInt(indx)]=[];
   saveToRepo('filter','filter',JSON.stringify(ff));
   saveTemplateSettings();
-  $(`.filtertcont${$(ev.currentTarget).attr("varindex")}`).html(`<i varindex="${$(ev.currentTarget).attr("varindex")}" title="Refresh Filter List" onclick="refreshFilters(event,'${$(ev.currentTarget).attr("varindex")}')" class="refreshFilterIcon fas fa-sync-alt"></i>`)
+  $(`.filtertcont${indx}`).html(`<i varindex="${indx}" title="Refresh Filter List" onclick="refreshFilters(event,'${indx}')" class="refreshFilterIcon fas fa-sync-alt"></i>`)
   setTimeout(() => {
     refreshFilters(null,parseInt(indx));
   }, 4000);
-  $(`.deleteViewCont[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
-  $(`input.viewName[varindex='${$(ev.currentTarget).attr("varindex")}']`).prop("value",data.split("#!")[1]);
+  $(`.deleteViewCont[varindex='${indx}']`).show();
+  $(`input.viewName[varindex='${indx}']`).prop("value",data.split("#!")[1]);
 }
 function storeViz(templateName,vizID,vizURL){
   var cur=localStorage.getItem(templateName)==null?{vizzes:[]}:JSON.parse(localStorage.getItem(templateName));
@@ -868,6 +886,14 @@ function getParamDom(id){
     }
   return nodeParam;  
 }
+function reconstructPublicViewThumb(url){
+  var ret;
+  ret=url.split("?")[0];
+  var both=ret.split("https://public.tableau.com/views/");
+  ret="https://public.tableau.com/static/images/"+both[1].substring(0,2)+"/"+both[1]+"/4_3";
+  console.log(ret)
+  return ret;
+}
 function populateViewsSettings(){
   $("#viewlist").empty();
   $("#viewlist").append("<summary>Views Settings</summary>");
@@ -877,9 +903,19 @@ function populateViewsSettings(){
     $("#viewlist").append(`<details id="view${id}"></details>`);
     nodefilter+=getFilterDom(id,nodefilter,el);
     $(`#view${id}`).append(`<summary>View ${id+1}`);
+    var isPublic=el.indexOf("https://public.tableau.com/")!=-1;
+    var imgSrc="";
+    if(el!=""){
+      imgSrc=el+".png";
+      if(isPublic)
+        imgSrc=reconstructPublicViewThumb(el)+".png";
+    }
+    else{
+      imgSrc="/newView.png";
+    }
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
-      <img class="wload" varindex="${id}" height="300px" width="380px" src="${el!=""?el+'.png':"/newView.png"}" >
+      <img class="wload" varindex="${id}" height="300px" width="380px" src="${imgSrc}" >
       <div style="${el==""?"display:none":""}" varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></div>
       </summary>
       <div class="filterboxes">
@@ -1273,7 +1309,14 @@ function getCurrentServerInfo(){
   var ret={host:localStorage.getItem("SERVER_URL"),site:localStorage.getItem("SITE_NAME")}
   return ret;
 }
-function filterViewList(){
+function filterViewList(ev){
+  if(isTableauPublic()){
+    if(ev.key=="Enter"){
+      searchPublic();
+      $(".tb").empty();
+    }
+    return;
+  }
   var fil=$("#search").val().toUpperCase();
   if(fil!=""){
     $(".pdropdown .badge").addClass("badge-warning");
@@ -1447,11 +1490,72 @@ function capitalizeIt(str) {
   var lower = str.toLowerCase();
   return str.charAt(0).toUpperCase() + lower.slice(1);
 }
-function toggleToPublic(){
-  $(".tol-section ").hide();
-  $(".tb").empty();
-  $(".tb").show();
+function togglePublic(){
+  //clear search text
+  //clear badges on view
+  $("#search").val("");
+  $(".tol-section").toggle();
+  if(isTableauPublic()){
+    $(".loadp").show();
+    $(".loadwb").show();
+    $(".vnum").text("");
+    $(".pnum").text("");
+    $(".wbnum").text("");
+    $(".tb").empty();
+    $("#search").prop("placeholder","Search in Public...");
+  }
+  else{
+    if(checkSettings()==false){
+      showSettings();
+      $(".tol-section").toggle();
+      $(".tabpub input").prop("checked","true");
+      return;
+    }
+    getProjects();
+    $("#search").prop("placeholder","Search...");
+    $(".pdropdown .badge").removeClass("badge-warning");
+    $(".vdropdown .badge").removeClass("badge-warning");
+    $(".wbdropdown .badge").removeClass("badge-warning");
+  }
+
 }
+function isTableauPublic(){
+  return !$(".tol-section").is(":visible");
+}
+function cleanURLBadChar(st){
+  return st.replaceAll(" ","").replaceAll("#","").replaceAll("/","").replaceAll("?","").replaceAll(",","")
+
+}
+function searchPublic(start=0){
+  $(".loadmr").css("display","inline-block");
+  $(".loadview").show();
+  $(".loadmore span").text("");
+  $(".vnum").text("");
+  var prf="https://public.tableau.com/static/images/";
+  console.log("search public");
+  fetch(`/public?search=${$("#search").val()}&start=${start}`)
+  .then(response => response.json())
+  .then(data => {
+    $(".loadmore").remove();
+    $(".tb").show();
+    var vs=[];
+    data.results.map((el)=>{
+      vs.push({
+        url:prf+el.workbook.workbookRepoUrl.substring(0, 2) +"/"+ cleanURLBadChar(el.workbook.workbookRepoUrl)+"/"+cleanURLBadChar(el.workbook.defaultViewName)+'/4_3.png',
+        name:el.workbook.defaultViewName.replaceAll('"',""),
+        link:"https://public.tableau.com/views/"+el.workbook.defaultViewRepoUrl.replace("/sheets","")+"?:showVizHome=no&:embed=true"
+      })
+    })
+    populateViews(vs,true);
+    $(".vnum").text($(".thumb.vie").length+"/"+data.facets.entity_type.vizzes);
+    var total=parseInt(data.facets.entity_type.vizzes);
+    if($(".thumb.vie").length<total){
+      var increment=$(".thumb.vie").length+1
+      $(".tb").append(`<div class="nosel loadmore" onclick="searchPublic(${increment})"><div class="loadmr spinner-border text-success" role="status"></div><span>Load More...</span><div>`)
+    }
+  });
+}
+
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
   if (this.length === 0) return hash;

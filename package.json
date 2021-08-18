@@ -14,6 +14,7 @@
     "express": "^4.17.1",
     "g-i-s": "^2.1.6",
     "jsxml": "0.0.2",
+    "node-fetch": "^2.6.1",
     "node-jsxml": "^0.9.0",
     "request": "^2.88.2",
     "xml-writer": "^1.7.0",
