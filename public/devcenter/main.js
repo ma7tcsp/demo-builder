@@ -373,7 +373,7 @@ async function populateWorkbook(data){
     await chrono(i+1,$(".wbnum"),data.length>30);
     var obj = data[i];
     $(".twb").append(
-      `<div id="${obj.id}" class="thumb wkb" onclick="showViews('${obj.id}',this)">
+      `<div title="${obj.name}" id="${obj.id}" class="thumb wkb" onclick="showViews('${obj.id}',this)">
       ${obj.showTabs=="false"?'<span class="badge badge-pill badge-primary wkb badge-warning" style="" title="This workbook has hidden tabs, switching views and keeping filter state could not be possible ! Consider changing to \'Tabbed Views\'.">!</span>':""}<div class="nosel thumb_text">${titleCase(obj.name)}</div>
           <i class="check fa fa-check"></i> 
       </div>`
@@ -401,7 +401,7 @@ async function populateViews(data){
     var obj = data[i];
     $(".tb").append(
       `<div class="thumb vie"> 
-          <div class="nosel thumb_text">${obj.name}</div>
+          <div title="${obj.name}" class="nosel thumb_text">${obj.name}</div>
           <img id="${obj.link}#!${obj.name}" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
       </div>`
     );
@@ -430,7 +430,7 @@ async function populateProjects(data){
     var obj = data[i];
     $(".projects").scrollTop(0);
     $(".projects").append(
-      `<div id="${obj.id}" class="thumb proj" onclick="showWorkbook('${obj.name}',this)">
+      `<div title="${obj.name}" id="${obj.id}" class="thumb proj" onclick="showWorkbook('${obj.name}',this)">
           <div class="nosel thumb_text">${titleCase(obj.name)}</div>
           <i class="check fa fa-check"></i> 
       </div>`
