@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "auto-build"
+git commit -m "v1.01"
 git push
 docker stop testemb 
 docker rm testemb 

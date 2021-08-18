@@ -600,7 +600,14 @@ function initPicker(id,col){
     $('#'+id).attr("value",color.toHEXA().toString(0));
     p.hide();
   })
+  $('#'+id).on('change',(ev)=>{
+    var newcolor=$(ev.currentTarget).val();
+    $(ev.currentTarget).css("background-color",newcolor); 
+    $(ev.currentTarget).css("color",contrastFontColor(newcolor)); 
+    p.setColor(newcolor);
+  })
   pickers.push({id:id,picker:p});
+
 }
 function collapseDetailsPanelAuto(){
   $('details.top').click(function (event) {
