@@ -402,7 +402,7 @@ async function populateViews(data){
     $(".tb").append(
       `<div class="thumb vie"> 
           <div class="nosel thumb_text">${obj.name}</div>
-          <img id="${obj.link}" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
+          <img id="${obj.link}#!${obj.name}" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
       </div>`
     );
   }
@@ -518,7 +518,7 @@ function drop(ev) {
   var indx=$(ev.currentTarget).attr("varindex");
   var data = ev.dataTransfer.getData("text");
   clearAView(indx);
-  var ur=trimURL(getCurrentServerInfo().host)+"/t/"+getCurrentServerInfo().site+"/views/"+data.replace("/sheets","");
+  var ur=trimURL(getCurrentServerInfo().host)+"/t/"+getCurrentServerInfo().site+"/views/"+data.split("#!")[0].replace("/sheets","");
   $(ev.currentTarget).attr("value",ur);
   $(ev.currentTarget).find("img").on("load",()=>{
     var cp=$(".wload[varindex='"+indx+"']")[0].complete;
@@ -540,8 +540,7 @@ function drop(ev) {
     refreshFilters(null,parseInt(indx));
   }, 4000);
   $(`.deleteViewCont[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
-    // $(`.filter${$(ev.currentTarget).attr("varindex")}`).remove();
-  // $(`.refreshFilterIcon[varindex='${$(ev.currentTarget).attr("varindex")}']`).show();
+  $(`input.viewName[varindex='${$(ev.currentTarget).attr("varindex")}']`).prop("value",data.split("#!")[1]);
 }
 function storeViz(templateName,vizID,vizURL){
   var cur=localStorage.getItem(templateName)==null?{vizzes:[]}:JSON.parse(localStorage.getItem(templateName));
