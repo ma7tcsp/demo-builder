@@ -1498,10 +1498,6 @@ function togglePublic(){
   if(isTableauPublic()){
     $(".loadp").show();
     $(".loadwb").show();
-    $(".vnum").text("");
-    $(".pnum").text("");
-    $(".wbnum").text("");
-    $(".tb").empty();
     $("#search").prop("placeholder","Search in Public...");
   }
   else{
@@ -1517,6 +1513,10 @@ function togglePublic(){
     $(".vdropdown .badge").removeClass("badge-warning");
     $(".wbdropdown .badge").removeClass("badge-warning");
   }
+  $(".vnum").text("");
+  $(".pnum").text("");
+  $(".wbnum").text("");
+  $(".tb").empty();
 
 }
 function isTableauPublic(){
