@@ -666,10 +666,3 @@ function generateCSS(arr){
 
 app.use(express.static(path.join(__dirname, "/public")));
 
-
-// FlikR
-// Key: 
-//9213318e4c399937cd7e87a728cb7493
-
-// Secret:
-// 0bbb936c78cc2575
