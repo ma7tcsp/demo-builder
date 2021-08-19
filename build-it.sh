@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.04b"
+git commit -m "v1.04c"
 git push
 docker stop testemb 
 docker rm testemb 
