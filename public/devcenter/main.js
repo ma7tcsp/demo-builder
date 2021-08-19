@@ -108,6 +108,28 @@ async function init(){
   }
   currentTemplate="templates/grid/index.html";  
   restoreViz();
+  initHelpVideo();
+}
+function initHelpVideo(){
+  $("[data-media]").on("click", function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var videoUrl = $this.attr("data-media");
+    var $popupIframe = $(".popup").find("iframe");
+    $popupIframe.attr("src", videoUrl);
+    $("body").addClass("show-popup");
+  });
+
+  $(".popup").on("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      $("body").removeClass("show-popup");
+  });
+
+  $(".popup > iframe").on("click", function(e) {
+      e.stopPropagation();
+  });
 }
 function highlightElementbyCSSColor(color) {
   var elms = document.getElementById('template').contentWindow.document.querySelectorAll("*");
