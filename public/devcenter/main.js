@@ -1545,7 +1545,8 @@ function isTableauPublic(){
   return !$(".tol-section").is(":visible");
 }
 function cleanURLBadChar(st){
-  st=st.replaceAll(" ","").replaceAll("#","").replaceAll("/","").replaceAll("?","").replaceAll(",","").replaceAll("&","").replaceAll(":","").replaceAll("(","").replaceAll(")","").replaceAll(".","_")
+  st=st.replaceAll(" ","").replaceAll("#","").replaceAll("/","").replaceAll("?","").replaceAll(",","").replaceAll("&","").replaceAll(":","").replaceAll("(","").replaceAll(")","").replaceAll(".","_").replaceAll('"',"")
+  console.log(trickyReplace(st))
   return trickyReplace(st)
 }
 function trickyReplace(text){
