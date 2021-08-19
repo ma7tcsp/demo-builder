@@ -1550,7 +1550,6 @@ function cleanURLBadChar(st){
 }
 function trickyReplace(text){
   const accentsMap = new Map([
-    ["-", "\\s|_"],
     ["a", "á|à|ã|â|ä"],
     ["e", "é|è|ê|ë"],
     ["i", "í|ì|î|ï"],
