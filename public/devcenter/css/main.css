@@ -4,6 +4,9 @@ html, body{
 .init{
   display: none;
 }
+.srch{
+  display:none;
+}
 .deleteViewCont i::before{
   vertical-align: -0.4em;
 }
