@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.06, help video support added"
+git commit -m "v1.07, clear all settings added"
 git push
 docker stop testemb 
 docker rm testemb 

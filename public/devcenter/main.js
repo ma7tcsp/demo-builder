@@ -242,7 +242,7 @@ function saveToFile(){
   d.getFullYear() + "--" + ("0" + d.getHours()).slice(-2) + "h" + ("0" + d.getMinutes()).slice(-2);
   saveAs(blob, "myConfig_"+datestring+".txt");
 }
-function reloadMe(){
+function reloadMe(nodelay=false){
   var start=4;
   $(".text_drop").css("color","#4d5ee0");
   $(".text_drop").css("font-weight","bolder");
@@ -253,7 +253,7 @@ function reloadMe(){
   }, 1000);
   setTimeout(() => {
     window.location.reload();
-  }, 4100);
+  }, nodelay==true?100:4100);
 }
 function restoreFromUrl(url,reload=true){
   return new Promise((resolve,reject)=>{
@@ -1577,7 +1577,17 @@ function searchPublic(start=0){
     }
   });
 }
-
+function clearAllSettings(){
+  MicroModal.close('modal-settings'); 
+  showModal("modal-confirm");
+}
+function clearAllDamn(b){
+  MicroModal.close('modal-confirm'); 
+  if(b==true){
+    localStorage.clear();
+    reloadMe(true);
+  }
+}
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
   if (this.length === 0) return hash;

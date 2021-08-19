@@ -74,8 +74,11 @@
 }
 .modal__btn.exportBtn{
   margin-top: 10px;
-  width: 46%;
+  width: 200px;
   text-align: inherit;
+}
+.modal__btn:hover{
+  opacity: 0.7;
 }
 .panel_border{
   border-radius: 5px;
