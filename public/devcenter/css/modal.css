@@ -370,6 +370,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.viewName{
+  width: 99%;
+}
 
 @media only screen and (max-width: 590px) {
   .nw details {

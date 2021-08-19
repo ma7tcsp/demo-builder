@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.07, clear all settings added"
+git commit -m "v1.07b, minor UI tweaks"
 git push
 docker stop testemb 
 docker rm testemb 
