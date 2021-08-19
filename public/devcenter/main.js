@@ -166,7 +166,7 @@ function dropFile(e) {
 };
 function showModal(id){
   MicroModal.show(id,{onClose:()=>{
-    $("#template").contents().find(".dropplace iframe").fadeIn(200);
+    $("#template").contents().find("iframe").fadeIn(200);
   }});
 }
 function openViewsPanel(){
@@ -223,7 +223,7 @@ function getSyncSetting(){
   return tr;
 }
 function showSettings(){
-  $("#template").contents().find(".dropplace iframe").fadeOut(200);
+  $("#template").contents().find("iframe").fadeOut(200);
   $("#sync").prop( "checked",getSyncSetting());
   $("#servurl").val(localStorage.getItem("SERVER_URL"))
   $("#siteName").val(localStorage.getItem("SITE_NAME"))
@@ -516,7 +516,7 @@ function allowDrop(ev) {
 }
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
-  $("#template").contents().find(".dropplace iframe").fadeOut(200);
+  $("#template").contents().find("iframe").fadeOut(200);
 }
 function getDataSource(activeSheet){
   activeSheet.getUnderlyingTablesAsync().then((dt)=>{
