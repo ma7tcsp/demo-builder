@@ -4,8 +4,8 @@ html, body{
 .init{
   display: none;
 }
-.srch{
-  display:none;
+#srch::-webkit-search-cancel-button{
+  display: none !important;
 }
 .deleteViewCont i::before{
   vertical-align: -0.4em;
