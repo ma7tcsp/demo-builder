@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.04d"
+git commit -m "v1.05, salting multiple times fixed"
 git push
 docker stop testemb 
 docker rm testemb 

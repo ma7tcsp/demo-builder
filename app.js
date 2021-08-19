@@ -117,10 +117,13 @@ app.post('/salt', async function (req, res) {
 });
 
 function desalt(salted){
-  return salted.split("").reverse().join("");
+  return salted.substring(4).split("").reverse().join("");
 }
 function salt(token){
-  return token.split("").reverse().join("");
+  if(token.indexOf("!SLT")==-1)
+    return "!SLT"+token.split("").reverse().join("");
+  else
+    return token;  
 }
 function validateParam(req,for_img){
   var mess=""
