@@ -1555,7 +1555,7 @@ function searchPublic(start=0){
   $(".vnum").text("");
   var prf="https://public.tableau.com/static/images/";
   console.log("search public");
-  fetch(`/public?search=${$("#search").val()}&start=${start}`)
+  fetch(`/public?search=${encodeURIComponent($("#search").val())}&start=${start}`)
   .then(response => response.json())
   .then(data => {
     $(".loadmore").remove();
