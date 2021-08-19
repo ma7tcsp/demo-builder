@@ -184,6 +184,15 @@ function navigateToSheet(workbook,sheetName,index){
     // viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
   });
 }
+function isTableauPublic(url){
+  return url.indexOf("https://public.tableau.com")!=-1;
+}
+function showPublicToolBar(){
+  document.querySelector(".public-hide-toolbar").style.display="none";
+}
+function hidePublicToolBar(){
+  document.querySelector(".public-hide-toolbar").style.display="block";
+}
 function getOnlyText(from, to){
   from.map((el)=>{
     if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){

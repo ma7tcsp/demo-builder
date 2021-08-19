@@ -21,7 +21,17 @@
   padding-top: 10px;
   min-width: 10px;
 }
-
+#tableauViz{
+  position: relative;
+}
+.public-hide-toolbar {
+  position: absolute;
+  bottom: 0px;
+  height: 27px;
+  width: 100%;
+  background-color: var(--Body-Background);
+  display: none;
+}
 .ButtonBar a{
   transition: all 0.5s;
 }
