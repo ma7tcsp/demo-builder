@@ -532,7 +532,7 @@ function getDataSource(activeSheet){
   })
 }
 function dropEnd(){
-  $("#template").contents().find(".dropplace iframe").fadeIn(200);
+  $("#template").contents().find("iframe").fadeIn(200);
 }
 function disposeFilters(vizid){
   $("div").remove(`div [vizf='${vizid}']`)
