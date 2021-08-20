@@ -88,10 +88,9 @@ function launchEdit() {
       onFirstInteractive: function () {
           var iframe = document.querySelectorAll('iframe')[0];
           iframe.onload = function(){
-              viz.getCurrentUrlAsync().then (function(current_url){
-                var index=tab_server.indexOf(current_url.split("?")[0]);
-                loadVizByIndex(index,true)
-              })
+            getIndexFromViz(viz).then (function(index){
+              loadVizByIndex(index,true)
+            })
           }
       }
     };
@@ -115,12 +114,10 @@ function launchAction(){
     window.open('http://google.com/search?q='+"Too many elements in your selection :-) Please reduce !");  
 }
 function onMarksSelection(marksEvent) {
-  try {
-    return marksEvent.getMarksAsync().then(reportSelectedMarks);
-  } catch (error) {
-    //Catching error if the workbook is not downloadable, marks are not reported and raise 401.
-    console.log(error)
-  }
+  getIndexFromViz(viz).then (function(index){
+    if(tab_action[index].val=="true")
+      return marksEvent.getMarksAsync().then(reportSelectedMarks,(err)=>{alert("You don't have right to download data thus not able to see marks. Uncheck 'Actions' in the view settings")});
+  })
 }
 function reportSelectedMarks(marks) {
   var curmarks = marks;

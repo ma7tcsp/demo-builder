@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.08, revert Public hide toolbar"
+git commit -m "v1.09, template load on last used view, improve loading a lot..."
 git push
 docker stop testemb 
 docker rm testemb 

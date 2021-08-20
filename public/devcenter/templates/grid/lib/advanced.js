@@ -240,6 +240,14 @@ function getLastPageload(index){
   return null;  
 
 }
+function getIndexFromViz(viz){
+  return new Promise((resolve,reject)=>{
+    viz.getCurrentUrlAsync().then (function(current_url){
+      var index=tab_server.findIndex(element => element.includes(current_url.split("?")[0]));
+      resolve(index);
+    })
+  })
+}
 function initialize(){
   if(typeof(tab_img)!="undefined"){
     restoreImgs();
