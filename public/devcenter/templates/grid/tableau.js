@@ -115,7 +115,12 @@ function launchAction(){
     window.open('http://google.com/search?q='+"Too many elements in your selection :-) Please reduce !");  
 }
 function onMarksSelection(marksEvent) {
+  try {
     return marksEvent.getMarksAsync().then(reportSelectedMarks);
+  } catch (error) {
+    //Catching error if the workbook is not downloadable, marks are not reported and raise 401.
+    console.log(error)
+  }
 }
 function reportSelectedMarks(marks) {
   var curmarks = marks;
