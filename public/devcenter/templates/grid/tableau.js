@@ -6,8 +6,12 @@ var viz,workbook, activeSheet, options, placeholderDiv,selectedMarks,askindex=-1
 function loadVizInit () {
   // This function kicks off the process
   initialize();
-  var firstIndex=setViewMenuVisibility();
-  loadVizByIndex(firstIndex);
+  if(getLastPageload()==null){
+    loadVizByIndex(setViewMenuVisibility());
+  }
+  else{
+    loadVizByIndex(getLastPageload());
+  }
 }
 function loadVizByIndex (index,force,device ="") {
   // This function simply loads each dashboard
@@ -43,8 +47,10 @@ function loadVizByIndex (index,force,device ="") {
           viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
         }
     }
-    if(url)
+    if(url){
       loadViz(placeholderDiv, url, options);
+      storeLastPageload(index);
+    }
   }
 }
 function loadViz (placeholderDiv, url, options) {

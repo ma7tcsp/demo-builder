@@ -230,6 +230,16 @@ function setViewMenuVisibility(){
   })
   return lower;
 }
+function storeLastPageload(index){
+  localStorage.setItem("lastpageloaded-grid",index);
+}
+function getLastPageload(index){
+  var id=localStorage.getItem("lastpageloaded-grid");
+  if(id!=null)
+    return parseInt(id);
+  return null;  
+
+}
 function initialize(){
   if(typeof(tab_img)!="undefined"){
     restoreImgs();
