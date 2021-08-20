@@ -52,10 +52,6 @@ function loadViz (placeholderDiv, url, options) {
   if(viz)
     viz.dispose();
   viz = new tableau.Viz(placeholderDiv, url, options);
-  if(isTableauPublic(url))
-    hidePublicToolBar();
-  else
-    showPublicToolBar();
   clearFiltersMenu();
 }
 function launchAsk(){

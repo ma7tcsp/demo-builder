@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.07b, minor UI tweaks"
+git commit -m "v1.08, revert Public hide toolbar"
 git push
 docker stop testemb 
 docker rm testemb 
