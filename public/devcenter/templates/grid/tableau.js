@@ -6,6 +6,7 @@ var viz,workbook, activeSheet, options, placeholderDiv,selectedMarks,askindex=-1
 function loadVizInit () {
   // This function kicks off the process
   initialize();
+  setViewMenuVisibility();
   if(getLastPageload()==null){
     loadVizByIndex(setViewMenuVisibility());
   }
@@ -115,7 +116,7 @@ function launchAction(){
 }
 function onMarksSelection(marksEvent) {
   getIndexFromViz(viz).then (function(index){
-    if(tab_action[index].val=="true")
+    if(findElement(tab_action,index) && findElement(tab_action,index).val=="true")
       return marksEvent.getMarksAsync().then(reportSelectedMarks,(err)=>{alert("You don't have right to download data thus not able to see marks. Uncheck 'Actions' in the view settings")});
   })
 }

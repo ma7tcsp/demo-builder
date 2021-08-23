@@ -248,6 +248,10 @@ function getIndexFromViz(viz){
     })
   })
 }
+function findElement(arr,keyVal){
+  var found = arr.filter(function(item) { return item.key === keyVal.toString(); });
+  return found[0] || null;
+}
 function initialize(){
   if(typeof(tab_img)!="undefined"){
     restoreImgs();

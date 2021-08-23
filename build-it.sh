@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.09, template load on last used view, improve loading a lot..."
+git commit -m "v1.10, bug fixed: actions were broken in some specific circumstances"
 git push
 docker stop testemb 
 docker rm testemb 
