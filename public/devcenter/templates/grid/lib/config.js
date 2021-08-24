@@ -1,13 +1,14 @@
 const MAX_ELEMENT=4;
 
+var title_index="Demo Builder Light";
 var tab_server=[];
-var tab_filter=[[],[],[],[]];
-var tab_web=[[],[],[],[]];
-var tab_action=[[],[],[],[]];
-var tab_ask=[[],[],[],[]];
-var tab_param=[[],[],[],[]]; 
-var tab_all_filters=[[],[],[],[]];
-var tab_all_params=[[],[],[],[]];
+var tab_filter=[];
+var tab_web=[];
+var tab_action=[];
+var tab_ask=[];
+var tab_param=[]; 
+var tab_all_filters=[];
+var tab_all_params=[];
 for (let index = 0; index < MAX_ELEMENT; index++) {
   tab_server.push("");
   tab_filter.push([]);

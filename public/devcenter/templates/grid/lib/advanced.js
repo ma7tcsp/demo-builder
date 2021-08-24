@@ -256,5 +256,7 @@ function initialize(){
   if(typeof(tab_img)!="undefined"){
     restoreImgs();
     restoreTexts();
+    if(title_index) 
+      document.querySelector("head title").text=title_index;
   }
 }

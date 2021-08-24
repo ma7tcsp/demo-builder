@@ -82,7 +82,7 @@ app.post('/zip', async function (req, res) {
   let ttr=variabilized(ret.text);
   let imr=variabilized(ret.img);
   let acr=variabilized(ret.action);
-
+  let title=ret.title;
   vvArr+=`
   var tab_filter=${ff};
   var tab_web=${war};
@@ -90,7 +90,8 @@ app.post('/zip', async function (req, res) {
   var tab_param=${pp}; 
   var tab_text=${ttr};
   var tab_img=${imr};
-  var tab_action=${acr};`
+  var tab_action=${acr};
+  var title_index="${title}";`
   writeTofile(vvArr,tmp+"/lib/config.js")
   writeTofile(generateCSS(JSON.parse(ret.color)),tmp+"/css/config.css")
 

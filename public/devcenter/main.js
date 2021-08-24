@@ -232,15 +232,17 @@ function showSettings(){
   showModal("modal-settings")
   $(".gogo").focus();
 }
-function saveToFile(){
+function saveToFile(name){
   var text=JSON.stringify(localStorage);
-  //text=text.replaceAll(",",",\r\n");
   text=text.replaceAll('\\"',"'");
   var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
   var d = new Date();
   var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
   d.getFullYear() + "--" + ("0" + d.getHours()).slice(-2) + "h" + ("0" + d.getMinutes()).slice(-2);
-  saveAs(blob, "myConfig_"+datestring+".txt");
+  if(name)
+    saveAs(blob, name.replaceAll(".zip","").replaceAll(".txt","")+".txt");
+  else
+    saveAs(blob, "myConfig_"+datestring+".txt");
 }
 function reloadMe(nodelay=false){
   var start=4;
@@ -1460,8 +1462,7 @@ function contrastFontColor(hexcolor){
 	var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	return (yiq >= 128) ? 'black' : 'white';
 };
-function exportTemplate(eve){
-  eve.stopPropagation();
+function exportTemplate(name){
   let a=getStorageByType("webedit");
   let b=getStorageByType("askdata");
   let c=getStorageByType("parameter");
@@ -1471,7 +1472,7 @@ function exportTemplate(eve){
   let g=getStorageByType("text");
   let h=getStorageByType("color");
   let j=getStorageByType("action");
-  var all={"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
+  var all={"title":name.replaceAll(".zip",""),"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
   var formBody = formize(all);
   fetch("/zip", {
     method: "POST", 
@@ -1482,7 +1483,7 @@ function exportTemplate(eve){
   }).then( res => 
     res.blob() )
     .then( blob => {
-       saveFile(blob,"grid-site.zip")
+       saveFile(blob,name.replaceAll(".zip","")+".zip")
     });
 }
 function saveFile(blob, filename) {
@@ -1601,6 +1602,21 @@ function clearAllDamn(b){
   if(b==true){
     localStorage.clear();
     reloadMe(true);
+  }
+}
+function openExportOptions(){
+  showModal('modal-export');
+  $('.gogo').focus();
+  $("#exportname").val("grid-site.zip")
+}
+function exportOptions(conf){
+  MicroModal.close('modal-export'); 
+  if (conf==true){
+    exportTemplate($("#exportname").val());
+    setTimeout(() => {
+      if($("#exportconf").prop('checked'))
+      saveToFile($("#exportname").val());
+    }, 1000);
   }
 }
 String.prototype.hashCode = function() {

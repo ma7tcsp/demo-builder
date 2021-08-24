@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.10, bug fixed: actions were broken in some specific circumstances"
+git commit -m "v1.11, export name and export config implemented"
 git push
 docker stop testemb 
 docker rm testemb 
