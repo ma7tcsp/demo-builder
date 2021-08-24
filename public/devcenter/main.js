@@ -1604,7 +1604,8 @@ function clearAllDamn(b){
     reloadMe(true);
   }
 }
-function openExportOptions(){
+function openExportOptions(ev){
+  ev.stopPropagation();
   showModal('modal-export');
   $('.gogo').focus();
   $("#exportname").val("grid-site.zip")
