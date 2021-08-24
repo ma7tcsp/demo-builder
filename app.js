@@ -63,7 +63,7 @@ app.get('/pict', function(req, res) {
   });
 })
 app.get('/public', function(req, res) {
-  fetch(`https://public.tableau.com/api/search/query?count=10&language=en-us&query=${encodeURIComponent(req.query.search)}&start=${req.query.start}&type=vizzes`)
+  fetch(`https://public.tableau.com/api/search/query?count=10&language=en-us&query=${encodeURIComponent(req.query.search.replaceAll(" ","+"))}&start=${req.query.start}&type=vizzes`)
   .then(response => response.json())
   .then(data => {
     res.send(data)
