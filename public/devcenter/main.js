@@ -42,7 +42,7 @@ async function init(){
     if(isTableauPublic()==true)
       marg=$("body").height()-460;
     else
-      marg=$("body").height()-514;  
+      marg=$("body").height()-696;  
     if(marg<316)
       marg=316;
     $(".tb").css("max-height",marg);
