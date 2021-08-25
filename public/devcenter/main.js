@@ -1529,7 +1529,8 @@ function capitalizeIt(str) {
   return str.charAt(0).toUpperCase() + lower.slice(1);
 }
 function togglePublic(){
-  
+  $(".vdropdown").removeClass("active");
+  $(".vdropsub").hide();
   $("#search").val("");
   $(".tol-section").toggle();
   if(isTableauPublic()){
