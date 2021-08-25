@@ -40,7 +40,9 @@ async function init(){
   window.onresize = function(e){
     var marg=$("body").height()-642;
     if(isTableauPublic()==true)
-      marg=$("body").height()-516;
+      marg=$("body").height()-460;
+    else
+      marg=$("body").height()-514;  
     if(marg<316)
       marg=316;
     $(".tb").css("max-height",marg);
