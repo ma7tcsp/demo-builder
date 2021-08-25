@@ -1529,8 +1529,7 @@ function capitalizeIt(str) {
   return str.charAt(0).toUpperCase() + lower.slice(1);
 }
 function togglePublic(){
-  //clear search text
-  //clear badges on view
+  
   $("#search").val("");
   $(".tol-section").toggle();
   if(isTableauPublic()){
@@ -1555,6 +1554,9 @@ function togglePublic(){
   $(".pnum").text("");
   $(".wbnum").text("");
   $(".tb").empty();
+  var ev=new Event('resize');
+  ev.fake=true;
+  window.dispatchEvent(ev);
 
 }
 function isTableauPublic(){
