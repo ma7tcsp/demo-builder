@@ -3,6 +3,7 @@
 const VERSION="1.02";
 const DEFAULT_SETTINGS="default";
 const NO_FILTER_TEXT = 'Activate View at Least Once to Setup...';
+const WARNTABS="This workbook has hidden tabs, switching views and keeping filter state could not be possible ! Consider changing to \'Tabbed Views\'."
 var currentTemplate;
 var crossMessageHandler;
 var magicGrid;
@@ -339,7 +340,7 @@ function getWorkbooks(projName){
     populateWorkbook(data);
   });
 }
-function getViews(projName){
+function getViews(projName,warn){
   var details=getData();
   details.project=projName;
   var formBody = formize(details)
@@ -354,7 +355,7 @@ function getViews(projName){
     var js=res.json();
     return js;
   }).then((data) => {
-    populateViews(data);
+    populateViews(data,false,warn);
   });
 }
 function getData(){
@@ -403,16 +404,20 @@ async function populateWorkbook(data){
     await chrono(i+1,$(".wbnum"),data.length>30);
     var obj = data[i];
     $(".twb").append(
-      `<div title="${obj.name}" id="${obj.id}" class="thumb wkb" onclick="showViews('${obj.id}',this)">
-      ${obj.showTabs=="false"?'<span class="badge badge-pill badge-primary wkb badge-warning" style="" title="This workbook has hidden tabs, switching views and keeping filter state could not be possible ! Consider changing to \'Tabbed Views\'.">!</span>':""}<div class="nosel thumb_text">${titleCase(obj.name)}</div>
+      `<div title="${obj.name}" id="${obj.id}" class="thumb wkb" onclick="showViews('${obj.id}',this,${obj.showTabs=== 'false'})">
+      <div class="nosel thumb_text">${titleCase(obj.name)}</div>
           <i class="check fa fa-check"></i> 
       </div>`
     );
   }
-  $(".wbnum").css("background-color","")
-  showViews(data[0].id,$(`#${data[0].id}`));
+  $(".wbnum").css("background-color","");
+  if(data.length>0){
+    var ww=data[0].showTabs=== 'false';
+    showViews(data[0].id,$(`#${data[0].id}`),ww);
+  }
+
 }
-async function populateViews(data,ispublic=false){
+async function populateViews(data,ispublic=false,warn){
   if(ispublic==false){
     $(".tb").empty();
     $(".tb").show();
@@ -435,7 +440,7 @@ async function populateViews(data,ispublic=false){
     $(".tb").append(
       `<div class="thumb vie"> 
           <div title="${obj.name}" class="nosel thumb_text">${obj.name}</div>
-          <img id="${obj.link}#!${obj.name}#!${obj.url}" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
+          <img id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
       </div>`
     );
   }
@@ -495,13 +500,13 @@ function switchTemplate(tpName,ev){
   $("#container").empty();
   restoreViz();
 }
-function showViews(vname,ev){
+function showViews(vname,ev,warn){
   $(".thumb.wkb").removeClass("active");
   $(".vnum").text("");
   $(".loadview").show();
   $(ev).addClass("active");
   $(".tb").scrollTop(0);
-  getViews(vname);
+  getViews(vname,warn);
 }
 function showWorkbook(vname,ev){
   $(".vnum").text("");
@@ -582,6 +587,9 @@ function drop(ev) {
     refreshFilters(null,parseInt(indx));
   }, 4000);
   $(`.deleteViewCont[varindex='${indx}']`).show();
+  if(data.split("#!")[3]!='undefined' && data.split("#!")[3]=='true'){
+    $(`.warningCont[varindex='${indx}']`).show();
+  }
   $(`input.viewName[varindex='${indx}']`).prop("value",data.split("#!")[1]);
 }
 function storeViz(templateName,vizID,vizURL){
@@ -940,6 +948,7 @@ function populateViewsSettings(){
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
       <img class="wload" varindex="${id}" height="300px" width="380px" src="${imgSrc}" >
+      <div style="${el==""?"display:none":(getRepoVal("warnings",id)=='true'?"":"display:none")}" varindex="${id}" class="warningCont"><i title="${WARNTABS}" class="warning fas fa-exclamation-triangle"></i></div>
       <div style="${el==""?"display:none":""}" varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></div>
       </summary>
       <div class="filterboxes">
@@ -1099,6 +1108,10 @@ function saveTemplateSettings(close){
   saveToRepo('filter','filter',JSON.stringify(ff));
  
   $(".page-content").css("opacity","0.3");
+  
+  $("#viewlist .warningCont").each((index,el)=>{
+      saveToRepo("warnings",index,$(el).is(":visible"));
+  })
   $("#viewlist .askdata").each((index,el)=>{
     var ask=$(el).prop("value");
     var same=getRepoVal("askdata",index);

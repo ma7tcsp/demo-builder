@@ -7,8 +7,29 @@ html, body{
 #search::-webkit-search-cancel-button{
   display: none !important;
 }
-.deleteViewCont i::before{
+.deleteViewCont i::before,.warningCont i::before{
   vertical-align: -0.4em;
+}
+.warning {
+  margin-left: 10px;
+  z-index: 100000;
+  background-color: #ffc106;
+  color: #212529;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  border-radius: 30px;
+}
+.warningCont {
+  position:absolute;
+  margin-left: -20px;
+  margin-top: -15px;
+  z-index: 100000;
+  background-color: transparent!important;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  border-radius: 30px;
 }
 .deleteViewCont {
   margin-left: -20px;
@@ -159,6 +180,7 @@ details[open] > summary {
   margin: 5px;
   width: 100%;
   display: flex;
+  position: relative;
   /* height: 165px; */
 }
 .setfooter{

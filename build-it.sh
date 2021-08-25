@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.11b, export name and export config implemented, little bug fix"
+git commit -m "v1.12, warnings are now located in the view settings"
 git push
 docker stop testemb 
 docker rm testemb 
