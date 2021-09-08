@@ -98,8 +98,8 @@ async function init(){
   }
   initModal();
   if(checkSettings()==true){
-    $(".tabpub input").prop("checked","false");
     $(".init").show();
+    $(".tabpub input").prop("checked",false);
     getProjects();
   }
   else{
@@ -108,7 +108,7 @@ async function init(){
     $(".tabpub").show();
     $(".vdropdown").show();
     $(".sidebar-search").show();
-    $(".tabpub input").prop("checked","true");
+    $(".tabpub input").prop("checked",true);
   }
   currentTemplate="templates/grid/index.html";  
   restoreViz();
@@ -211,6 +211,7 @@ async function saveSettings(){
   localStorage.setItem("TOKEN_NAME",$("#tokName").val());
   localStorage.setItem("TOKEN_VALUE",tksalt);
   localStorage.setItem("VERSION",VERSION);
+  $(".tabpub input").prop("checked",false);
   if(checkSettings()==true && !isTableauPublic()){
     closeAllMenu();
     clearItems();
@@ -219,6 +220,9 @@ async function saveSettings(){
     $(".tdropsub").show();
     getProjects();
   }  
+  else{
+    togglePublic();
+  }
   MicroModal.close('modal-settings'); 
 }
 function getSyncSetting(){
@@ -1543,7 +1547,7 @@ function togglePublic(){
     if(checkSettings()==false){
       showSettings();
       $(".tol-section").toggle();
-      $(".tabpub input").prop("checked","true");
+      $(".tabpub input").prop("checked",true);
       return;
     }
     getProjects();
