@@ -98,6 +98,7 @@ async function init(){
   }
   initModal();
   if(checkSettings()==true){
+    $(".tabpub input").prop("checked","false");
     $(".init").show();
     getProjects();
   }

@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.12, warnings are now located in the view settings"
+git commit -m "v1.13, form scratch, Tab public is off"
 git push
 docker stop testemb 
 docker rm testemb 
