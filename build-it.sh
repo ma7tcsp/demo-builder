@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.13, form scratch, Tab public is off"
+git commit -m "v1.13, try redeploy"
 git push
 docker stop testemb 
 docker rm testemb 
