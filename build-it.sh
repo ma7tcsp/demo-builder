@@ -1,6 +1,6 @@
 #! /bin/bash
 git add .
-git commit -m "v1.13, try redeploy"
+git commit -m "v1.14, new test for REST result on projects"
 git push
 docker stop testemb 
 docker rm testemb 

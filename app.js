@@ -531,7 +531,7 @@ function getWorkbooks(protocol,port,token,host,siteid,projectID,pageNumber) {
             var res = parsedXml.tsResponse.workbooks[0].workbook;
             if(res)
               res.map((w)=>{
-                if(projectID && w.$ && w.project[0].$.id==projectID){
+                if(projectID && w.$ && w.project && w.project[0] && w.project[0].$.id==projectID){
                   wkb.push({"id":w.$.id,"pid":w.project[0].$.id,"name":w.$.name,"url":w.$.contentUrl,"showTabs":w.$.showTabs});
                 }
               })
