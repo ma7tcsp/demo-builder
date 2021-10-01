@@ -1,15 +1,26 @@
 
-
+.header_right {
+  display: flex;
+  line-height: 25px;
+}
 .ButtonBar { 
   overflow: hidden;
   display: flex;
   font-family: Arial, Helvetica, sans-serif;
   min-height: 35px;
   white-space: nowrap;
+  flex-direction: column;
+  margin-top: 30px;
 }
 
+.ButtonBar a{
+  display: flex;
+}
+.ButtonBar a i{
+  margin-right: 5px;
+}
 .ButtonBar a:not(.filter-entry) {
-  display: block;
+ 
   font-size: 16px;
   color: var(--Button-Text);
   text-align: center;
@@ -31,6 +42,7 @@
 .divider{
   margin-top: 8px;
   color:var(--Button-Text);
+  text-align: center;
 }
 .show {
   display: block!important;
@@ -61,8 +73,16 @@
 }
 
 .usrpic {
-  height: 17px;
+  height: 30px;
   margin-right: 10px;
+}
+.footer{
+  background-color: var(--Footer-Background);
+  color: var(--Footer-Text);
+  display: flex;
+  line-height: 30px;
+  justify-content: space-between;
+  padding: 10px;
 }
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: var(--Button-Hover-Background)}

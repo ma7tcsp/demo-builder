@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.14, new test for REST result on projects"
+git commit -m "v1.2, New Vertical Template !"
 git push
 docker stop testemb 
 docker rm testemb 
