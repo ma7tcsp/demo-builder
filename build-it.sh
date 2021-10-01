@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.2, New Vertical Template !"
+git commit -m "v1.21, divider menu style"
 git push
 docker stop testemb 
 docker rm testemb 

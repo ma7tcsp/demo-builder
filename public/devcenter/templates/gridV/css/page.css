@@ -41,8 +41,11 @@
 
 .divider{
   margin-top: 8px;
-  color:var(--Button-Text);
+  color:var(--Button-Background);
   text-align: center;
+  border-top: grey;
+  border-top-width: 1px;
+  border-top-style: solid;
 }
 .show {
   display: block!important;
