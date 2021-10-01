@@ -71,7 +71,7 @@ app.get('/public', function(req, res) {
 })
 app.post('/zip', async function (req, res) {
   let ret=req.body;
-  let tmp=copyTemplate();
+  let tmp=copyTemplate(ret.tpname);
   let vv=JSON.parse(ret.view)[0].val;
   let vvArr='"'+vv.replace(/,/g, '","')+'"';
   vvArr="var tab_server = ["+vvArr+"];"
@@ -635,7 +635,6 @@ function authenticate(host,protocol,port,site,tokenName,tokenValue) {
   
 }
 function copyTemplate(tpname){
-  tpname=tpname||"grid";
   let from= __dirname + '/public/devcenter/templates/'+tpname;
   let to=Date.now().toString();
   copyFolderSync(from,to);

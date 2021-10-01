@@ -1492,7 +1492,7 @@ function exportTemplate(name){
   let g=getStorageByType("text");
   let h=getStorageByType("color");
   let j=getStorageByType("action");
-  var all={"title":name.replaceAll(".zip",""),"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
+  var all={"title":name.replaceAll(".zip",""),"tpname":currentTemplate.replace("templates/","").replace("/index.html",""),"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
   var formBody = formize(all);
   fetch("/zip", {
     method: "POST", 
