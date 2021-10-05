@@ -97,12 +97,17 @@ async function init(){
     var r=await restoreFromUrl(DEFAULT_SETTINGS,false);
   }
   initModal();
+  if(localStorage.getItem("WARN")==null){
+    showModal("modal-warn");
+  }
+    
   if(checkSettings()==true){
     $(".init").show();
     $(".tabpub input").prop("checked",false);
     getProjects();
   }
   else{
+    //splash here
     showSettings();
     $(".tdropdown").show();
     $(".tabpub").show();
@@ -134,6 +139,10 @@ function initHelpVideo(){
   $(".popup > iframe").on("click", function(e) {
       e.stopPropagation();
   });
+}
+function closeWarn(){
+  MicroModal.close('modal-warn'); 
+  localStorage.setItem("WARN","agree")
 }
 function highlightElementbyCSSColor(color) {
   var elms = document.getElementById('template').contentWindow.document.querySelectorAll("*");
