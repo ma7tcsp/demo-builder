@@ -142,7 +142,8 @@ function initHelpVideo(){
 }
 function closeWarn(){
   MicroModal.close('modal-warn'); 
-  localStorage.setItem("WARN","agree")
+  localStorage.setItem("WARN","agree");
+  window.location.reload();
 }
 function highlightElementbyCSSColor(color) {
   var elms = document.getElementById('template').contentWindow.document.querySelectorAll("*");
