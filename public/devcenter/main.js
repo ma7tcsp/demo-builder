@@ -508,11 +508,14 @@ function retryImage(image){
     image.retryCount = 0;
   }
   image.style.display="none"
-  if (image.retryCount < 10){
+  if (image.retryCount < 20){
     setTimeout(function (){
         image.src += '?'+ image.retryCount;
         image.retryCount += 1;
     }, 2000);
+  }
+  else{
+    image.style.display="inline-block";
   }
 }
 function closeAllMenu(){
