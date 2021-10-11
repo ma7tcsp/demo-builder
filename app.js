@@ -307,6 +307,7 @@ function getImage(protocol,port,token, host,siteid, pat,viewid,wid) {
         }
       }
       var proto=protocol=="https"?https:http;
+      fs.createReadStream('public/empty.png').pipe(fs.createWriteStream(pat+'/'+viewid+'.png'));
       const req = proto.request(options, res => {
         res.on('data', function(chunk) {
           imgdata.push(chunk)
