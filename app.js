@@ -318,6 +318,7 @@ function getImage(protocol,port,token, host,siteid, pat,viewid,wid) {
           } catch (error) {
             fs.createReadStream('public/empty.png').pipe(fs.createWriteStream(pat+'/'+viewid+'.png'));
             console.log("error ",error)
+            resolve();
           }
         })
 
