@@ -377,7 +377,7 @@ function dumpViewPics(protocol,port,token,host,site,project){
         });
         extraFiles.map((del)=>{
           try {
-            fs.unlinkSync(mypath+del);
+            //fs.unlinkSync(mypath+del);
             console.log(del,"thumbnail has been deleted!")
           } catch(err) {
             console.error(err)
