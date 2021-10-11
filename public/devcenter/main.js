@@ -457,7 +457,7 @@ async function populateViews(data,ispublic=false,warn){
     $(".tb").append(
       `<div class="thumb vie"> 
           <div title="${obj.name}" class="nosel thumb_text">${obj.name}</div>
-          <img id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
+          <img onerror="retryImage(this)" id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url +"z"}" />
       </div>`
     );
   }
@@ -498,6 +498,18 @@ async function populateProjects(data){
   $(".wbropsub").hide();
   $(".vdropdown").removeClass("active");
   $(".vdropsub").hide();
+}
+function retryImage(image){
+  if (!image.hasOwnProperty('retryCount')){
+    image.retryCount = 0;
+  }
+
+  if (image.retryCount < 10){
+    setTimeout(function (){
+        image.src += '?'+ image.retryCount;
+        image.retryCount += 1;
+    }, 2000);
+  }
 }
 function closeAllMenu(){
   $(".sidebar-dropdown").removeClass("active");
