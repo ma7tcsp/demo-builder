@@ -457,7 +457,7 @@ async function populateViews(data,ispublic=false,warn){
     $(".tb").append(
       `<div class="thumb vie"> 
           <div title="${obj.name}" class="nosel thumb_text">${obj.name}</div>
-          <img onerror="retryImage(this)" id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
+          <img onload="successImage(this)" onerror="retryImage(this)" id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
       </div>`
     );
   }
@@ -499,11 +499,15 @@ async function populateProjects(data){
   $(".vdropdown").removeClass("active");
   $(".vdropsub").hide();
 }
+
+function successImage(image){
+  image.style.display="inline-block";
+}
 function retryImage(image){
   if (!image.hasOwnProperty('retryCount')){
     image.retryCount = 0;
   }
-
+  image.style.display="none"
   if (image.retryCount < 10){
     setTimeout(function (){
         image.src += '?'+ image.retryCount;
