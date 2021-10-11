@@ -457,7 +457,7 @@ async function populateViews(data,ispublic=false,warn){
     $(".tb").append(
       `<div class="thumb vie"> 
           <div title="${obj.name}" class="nosel thumb_text">${obj.name}</div>
-          <img onerror="retryImage(this)" id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url +"z"}" />
+          <img onerror="retryImage(this)" id="${obj.link}#!${obj.name}#!${obj.url}#!${warn}"" draggable="true" ondragstart="drag(event)" ondragend="dropEnd(event)" class="thumb_pic" src="${obj.url}" />
       </div>`
     );
   }
