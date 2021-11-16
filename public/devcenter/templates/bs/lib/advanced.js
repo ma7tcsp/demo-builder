@@ -45,7 +45,7 @@ function populateFilterMenu(fil){
             </div>
     `
     if(document.querySelector(`ul[mid='${fil.getFieldName()}']`)==null){
-      document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
+      document.getElementsByClassName("filter-container")[0].innerHTML=tp+document.getElementsByClassName("filter-container")[0].innerHTML;
     }
     else{
       document.querySelector(`ul[mid='${fil.getFieldName()}']`).innerHTML+=links;
