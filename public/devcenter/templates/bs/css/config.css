@@ -1,0 +1,19 @@
+:root {
+  --Header-Background: #2d3e50;
+  --Menu-Button-Background-Active:#1abc9c;
+  --Menu-Button-Text:#ffffff;
+  --Menu-Button-Text-Hover:#1abc9c;
+  --Header-Text: #ffffff;
+
+  --Section1-Background:#1abc9c;
+  --Section2-Background:#ffffff;
+  --Section3-Background:#1abc9c;
+  --Section4-Background:#ffffff;
+  --Section1-Text:#ffffff;
+  --Section2-Text:#2d3e50;
+  --Section3-Text:#ffffff;
+  --Section4-Text:#2d3e50;
+
+  --Copyright-Background:#1a252f;
+  --Copyright-Text:#ffffff;
+  }

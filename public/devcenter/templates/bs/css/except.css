@@ -1,0 +1,139 @@
+/* a.nav-link.active.viz{
+  background-color: inherit !important;
+  color: inherit !important;
+} */
+.viz{
+  display: none;
+}
+.filter-container{
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.filter-container button{
+  margin-right: 10px;
+  background-color: var(--Menu-Button-Background-Active) !important;
+  color:var( --Menu-Button-Text) !important;
+}
+.filter-container .btn-primary, .filter-container .btn-secondary, .filter-container button:focus{
+  border-color:var( --Menu-Button-Background-Active);
+  box-shadow: 0 0 0 0 !important;
+}
+.filter-container button span{
+  margin-left: 5px;
+}
+.filter-container button:hover,  #mainNav .navbar-nav li.nav-item a.nav-link:hover{
+  opacity: 0.75;
+}
+
+.copyright{
+  background-color: var(--Copyright-Background);
+  color:var(--Copyright-Text) !important;
+}
+
+.header-bg{
+  background-color: var(--Header-Background);
+}
+footer.footer .btn-outline-light {
+  color:var(--Header-Text);
+  border-color:var(--Header-Text);
+}
+footer.footer{
+  background-color: var(--Header-Background) !important;
+  color:var(--Header-Text);
+}
+.menubtn-bck-hover.active{
+  background-color: var(--Menu-Button-Background-Active) !important;
+}
+
+#mainNav .navbar-nav li.nav-item a.nav-link{
+  color:var( --Menu-Button-Text);
+}
+#mainNav .navbar-nav li.nav-item a.nav-link:hover{
+  color:var(--Menu-Button-Text-Hover);
+}
+#mainNav .navbar-brand{
+  color:var(--Header-Text);
+}
+
+
+.masthead .bg-primary, .masthead.bg-primary{
+  background-color: var(--Section1-Background) !important;
+}
+.masthead .text-white, .masthead.text-white{
+  color:var(--Section1-Text) !important;
+}
+.masthead .text-secondary{
+  color:var(--Section1-Text) !important;
+}
+.masthead .divider-custom .divider-custom-line{
+  background-color:var(--Section1-Text) !important;
+}
+.masthead .divider-custom .divider-custom-icon{
+  color:var(--Section1-Text) !important;
+}
+
+
+
+
+section#portfolio.bg-primary{
+  background-color: var(--Section2-Background) !important;
+}
+section#portfolio .text-white{
+  color:var(--Section2-Text) !important;
+}
+section#portfolio .text-secondary{
+  color:var(--Section2-Text) !important;
+}
+section#portfolio .divider-custom .divider-custom-line{
+  background-color:var(--Section2-Text) !important;
+}
+section#portfolio .divider-custom .divider-custom-icon{
+  color:var(--Section2-Text) !important;
+}
+
+section#about.bg-primary{
+  background-color: var(--Section3-Background) !important;
+}
+section#about .text-white, section#about.text-white{
+  color:var(--Section3-Text) !important;
+}
+section#about .text-secondary{
+  color:var(--Section3-Text) !important;
+}
+section#about .divider-custom .divider-custom-line{
+  background-color:var(--Section3-Text) !important;
+}
+section#about .divider-custom .divider-custom-icon{
+  color:var(--Section3-Text) !important;
+}
+
+section#contact.bg-primary{
+  background-color: var(--Section4-Background) !important;
+}
+section#contact .text-white, section#about.text-white{
+  color:var(--Section4-Text) !important;
+}
+section#contact .text-secondary{
+  color:var(--Section4-Text) !important;
+}
+section#contact .divider-custom .divider-custom-line{
+  background-color:var(--Section4-Text) !important;
+}
+section#contact .divider-custom .divider-custom-icon{
+  color:var(--Section4-Text) !important;
+}
+section#contact .btn{
+  background-color:var(--Section4-Text) !important;
+}
+section#contact .btn.disabled{
+  opacity: 0.65;
+  background-color:var(--Section4-Text) !important;
+}
+section#contact .btn{
+  color:var(--Section4-Background) !important;
+}
+
+
+

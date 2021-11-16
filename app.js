@@ -30,7 +30,9 @@ if (port == null || port == "") {
 app.listen(port, function () {
   console.log('Example app listening on port '+port);
 });
-
+app.get('/', async function (req, res) {
+  res.redirect("/devcenter")
+})
 app.post('/list', async function (req, res) {
   var m=validateParam(req,true);
   if(m!="")

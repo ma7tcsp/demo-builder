@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.22, splash screen"
+git commit -m "v1.3, new bootstrap template !!"
 git push
 docker stop testemb 
 docker rm testemb 
