@@ -36,15 +36,20 @@ function populateFilterMenu(fil){
     }
   }) 
   var tp=`<div class="filter_dropdown dropdown">
-              <button id="Filter-text-${fil.getFieldName()}" class="text-uppercase btn btn-secondary dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <button filName="Filter-text-${fil.getFieldName()}" id="Filter-text-${fil.getFieldName()}" class="text-uppercase btn btn-secondary dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               ${fil.getFieldName().toUpperCase()}
               </button>
-              <ul class="dropdown-menu" aria-labelledby="Filter-text-${fil.getFieldName()}">
+              <ul mid="${fil.getFieldName()}" class="dropdown-menu" aria-labelledby="Filter-text-${fil.getFieldName()}">
                 ${links}
               </ul>
             </div>
     `
-    document.getElementsByClassName("filter-container")[0].innerHTML=tp+document.getElementsByClassName("filter-container")[0].innerHTML;    
+    if(document.querySelector(`ul[mid='${fil.getFieldName()}']`)==null){
+      document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
+    }
+    else{
+      document.querySelector(`ul[mid='${fil.getFieldName()}']`).innerHTML+=links;
+    }   
 }
 
 function populateParameterMenu(param){
@@ -67,16 +72,16 @@ function populateParameterMenu(param){
               <button id="Filter-text-${param.getName()}" class="text-uppercase btn btn-secondary dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               ${param.getName()}
               </button>
-              <ul class="dropdown-menu" aria-labelledby="Filter-text-${param.getName()}">
+              <ul mid="${param.getName()}" class="dropdown-menu" aria-labelledby="Filter-text-${param.getName()}">
                 ${links}
               </ul>
             </div>
     `
-  if(document.querySelector(`div[mid='${param.getName()}']`)==null){
+  if(document.querySelector(`ul[mid='${param.getName()}']`)==null){
     document.getElementsByClassName("filter-container")[0].innerHTML=list+document.getElementsByClassName("filter-container")[0].innerHTML;
   }
   else{
-    document.querySelector(`div[mid='${param.getName()}']`).innerHTML+=links;
+    document.querySelector(`ul[mid='${param.getName()}']`).innerHTML+=links;
   }
 }
 
