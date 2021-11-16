@@ -11,6 +11,10 @@
     cursor: pointer;
     margin-bottom: 10px;
 }
+navbar-toggler {
+  color:var(--Header-Text) !important;
+  border-color:var(--Header-Text) !important;
+}
 .filter-container button{
   margin-right: 10px;
   background-color: var(--Menu-Button-Background-Active) !important;
