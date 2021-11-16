@@ -11,7 +11,7 @@
     cursor: pointer;
     margin-bottom: 10px;
 }
-navbar-toggler {
+#mainNav .navbar-toggler {
   color:var(--Header-Text) !important;
   border-color:var(--Header-Text) !important;
 }
