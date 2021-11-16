@@ -983,7 +983,7 @@ function populateViewsSettings(){
     }
     var node=`
     <div ondrop="drop(event)" ondragover="allowDrop(event)" varindex="${id}" varc="${el}" value="${el}" class="views vplace">
-      <img class="wload" varindex="${id}" height="300px" width="380px" src="${imgSrc}" >
+      <img class="wload" varindex="${id}" height="280px" width="380px" src="${imgSrc}" >
       <div style="${el==""?"display:none":(getRepoVal("warnings",id)=='true'?"":"display:none")}" varindex="${id}" class="warningCont"><i title="${WARNTABS}" class="warning fas fa-exclamation-triangle"></i></div>
       <div style="${el==""?"display:none":""}" varindex="${id}" class="deleteViewCont"><i title="Clear this View" onclick="clearAView('${id}')" class="deleteView fas fa-trash-alt"></i></div>
       </summary>

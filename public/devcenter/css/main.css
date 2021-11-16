@@ -135,7 +135,7 @@ details {
 }
 
 details[open] > summary {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
 }
 .badge.wkb{
   height: 19px;
