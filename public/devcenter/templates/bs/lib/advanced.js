@@ -28,7 +28,7 @@ function populateFilterMenu(fil){
   fil.getAppliedValues().map((val)=>{
     var found=false;
     document.querySelectorAll(`div[filName="${fil.getFieldName()}"]`).forEach((el)=>{
-      if(el.text==val.value.toString())
+      if(el.innerText==val.value.toString())
         found=true;
     })
     if(!found ){
@@ -61,7 +61,7 @@ function populateParameterMenu(param){
   param.getAllowableValues().map((val)=>{
     var found=false;
     document.querySelectorAll(`div[paramName="${param.getName()}"]`).forEach((el)=>{
-      if(el.text==val.value)
+      if(el.innerText==val.value)
         found=true;
     })
     if(!found ){
