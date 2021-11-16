@@ -27,7 +27,7 @@ function populateFilterMenu(fil){
   }
   fil.getAppliedValues().map((val)=>{
     var found=false;
-    document.querySelectorAll(`[filName="${fil.getFieldName()}"]`).forEach((el)=>{
+    document.querySelectorAll(`div[filName="${fil.getFieldName()}"]`).forEach((el)=>{
       if(el.text==val.value.toString())
         found=true;
     })
@@ -60,12 +60,12 @@ function populateParameterMenu(param){
   }
   param.getAllowableValues().map((val)=>{
     var found=false;
-    document.querySelectorAll(`[paramName="${param.getName()}"]`).forEach((el)=>{
+    document.querySelectorAll(`div[paramName="${param.getName()}"]`).forEach((el)=>{
       if(el.text==val.value)
         found=true;
     })
     if(!found ){
-      links+=`<li><div filName="${param.getName()}" class="text-uppercase filter-entry dropdown-item" onclick="applyFilter('${param.getName()}','${val.value}')">${val.value}</div></li>`
+      links+=`<li><div paramName="${param.getName()}" class="text-uppercase filter-entry dropdown-item" onclick="applyFilter('${param.getName()}','${val.value}')">${val.value}</div></li>`
     }
   })
   var list=`<div class="filter_dropdown dropdown">
