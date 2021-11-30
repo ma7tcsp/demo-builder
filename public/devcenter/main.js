@@ -12,6 +12,7 @@ var panelSet;
 var viewsModified=false;
 var curSearch;
 var curSearchVarC; 
+var isTemplateLoaded;
 //WORK-AROUND FOR VIZ BEING IN IFRAME
 Window.prototype._addEventListener = Window.prototype.addEventListener;
 Window.prototype.addEventListener = function(a, b, c) {
@@ -534,6 +535,7 @@ function switchTemplate(tpName,ev){
   currentTemplate=tpName;
   disposeAllViz();
   $("#container").empty();
+  clearInterval(isTemplateLoaded);
   restoreViz();
 }
 function showViews(vname,ev,warn){
@@ -1317,7 +1319,7 @@ function getStorageByType(type){
 }
 function restoreViz(){
   setTimeout(() => {
-    var isTemplateLoaded= setInterval(function(){   
+    isTemplateLoaded= setInterval(function(){   
       if(typeof(document.getElementById('template').contentWindow.loadVizInit)!="undefined"){
         clearInterval(isTemplateLoaded);
         restoreColors();

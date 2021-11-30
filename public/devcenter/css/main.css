@@ -1,3 +1,6 @@
+.beta{
+  display:none !important;
+}
 html, body{
   overflow: hidden;
 }

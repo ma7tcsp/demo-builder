@@ -1,0 +1,14 @@
+:root{
+  --btn--hover--color:white;
+  --btn--color:#6c6d6dba;
+  --btn--hover--backcolor:#878a98;
+  --btn--backcolor:#e9eced;
+  --grid--highlight--color:gray;
+  --griditem--backcolor:white;
+  --griditem--margin:3px;
+  --griditem--bordercolor:#878a9882;
+  --gridplaceholder--bordercolor:#878a98;
+  --loader--backcolor:white;
+  --loader--spin:#878a98;
+  --dotted--color:#6c6d6dba;
+}
