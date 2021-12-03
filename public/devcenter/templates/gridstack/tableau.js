@@ -1,7 +1,8 @@
-var advGrid;
+var advGrid,tabfilters;
 
 function loadVizInit(){
   console.log("TRIGGERED FROM")
+  tabfilters = new TabFilters();
   go();
   tab_server.map((vz,index)=>{
     var url = tab_server[index];
@@ -9,7 +10,36 @@ function loadVizInit(){
       addNew(url,index);
   })
 }
-
+function resetFilters(){
+  tabfilters.embeddedVizzes.map((el)=>{
+    el.vizObject.revertAllAsync();
+  })
+}
+function applyParam(pname,val){
+  var parameterObj = {
+    scope: {
+      mode: "page"
+    },
+    parameter: {
+      parameterName: pname,
+      values: val
+    }
+  };
+  tabfilters.applyParameters(parameterObj);
+}
+function applyFilter(fname,val){
+  var filterObject = {
+    scope: {
+      mode: "page"
+    },
+    filter: {
+      fieldName: fname,
+      updateType: "replace",
+      values: [val]
+    }
+  };
+  tabfilters.applyFilters(filterObject);
+}
 function go(){
   advGrid = GridStack.init({
     float: false,
@@ -59,7 +89,7 @@ function populateParameterMenu(filpam){
         found=true;
     })
     if(!found ){
-      links+=`<li><div paramName="${filPamName}" class="text-uppercase filter-entry dropdown-item" onclick="applyFilter('${filPamName}','${val.value}')">${val.value}</div></li>`;
+      links+=`<li><div paramName="${filPamName}" class="text-uppercase filter-entry dropdown-item" onclick="applyParam('${filPamName}','${val.value}')">${val.value}</div></li>`;
     }
   })
   var list=`
@@ -78,7 +108,6 @@ function populateParameterMenu(filpam){
     document.querySelector(`ul[mid='${filPamName}']`).innerHTML+=links;
   }
 }
-
 function populateFilterMenu(fil){
   var links="";
   if(fil.getAppliedValues()==null){
@@ -111,7 +140,6 @@ function populateFilterMenu(fil){
       document.querySelector(`ul[mid='${fil.getFieldName()}']`).innerHTML+=links;
     }   
 }
-
 function addWidgetToolbar(){
   var id=makeid(10);
   var storedCoord=localStorage.getItem("f0");
@@ -149,7 +177,7 @@ function addNew(url,index){
    `<div class="move-overlay">...</div>
     <div class="widget-btn">
       <div class="move-widget btn-menu" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"><i class="ico-handle fa fa-arrows-alt"></i></div>
-      <div class="reset-widget btn-menu" onclick="tabportal.resetFilters()"><i class="ico-handle fa fa-sync"></i></div>
+      <div class="reset-widget btn-menu" onclick="resetFilters()"><i class="ico-handle fa fa-sync"></i></div>
       <div class="expand-widget btn-menu" onclick="maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-expand-alt"></i></div>
       <div class="close-widget btn-menu" onClick="removeWidget(this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-times"></i></div>
     </div>  
@@ -244,13 +272,16 @@ function load(id,url,idx){
     onFirstVizSizeKnown:function(me){
       // document.querySelector(`#${id} ~ .mask`).style.display="none";
     },
-    onFirstInteractive: function (me) {
+    onFirstInteractive: async function (me) {
       hideMask(id,1);
       var viz=me.getViz();
       var workbook = me.getViz().getWorkbook();
       var activeSheet = workbook.getActiveSheet();
-      getFiltersForViz(viz,activeSheet,idx);
-      getParametersForViz(viz,workbook,idx);
+      await tabfilters.discovery(viz);
+      var tbviz =tabfilters.embeddedVizzes.filter((el)=>{return el.vizObject==viz})
+      
+      getFiltersForViz(tbviz[0].filters,viz,idx);
+      getParametersForViz(tbviz[0].parameters,viz,idx);
     },
     width: "100%",
     height: "100%",
@@ -263,45 +294,46 @@ function load(id,url,idx){
 }
 function loadVizByIndex (index,force,device ="") {
 }
-function getParametersForViz(viz,workbook,index){
-  workbook.getParametersAsync().then((current_param)=>{
-    if(typeof(tab_all_params)!="undefined")tab_all_params[index]={parameters:current_param,viz:viz};
-    current_param.map((f)=>{
-      tab_param[index].map((cf)=>{
-        if(cf==f.getName()){
-          populateParameterMenu(f);
-        }
-      })
-    })
-    window.parent.restoreTexts();
+function getParametersForViz(params,viz,index){
+  var rawParam=[];
+  params.map((p)=>{
+    rawParam.push(p.parameterObject)
   })
+  if(typeof(tab_all_params)!="undefined")
+    tab_all_params[index]={parameters:rawParam,viz:viz};
+    params.map((f)=>{
+    tab_param[index].map((cf)=>{
+      if(cf==f.parameterObject.getName()){
+        populateParameterMenu(f.parameterObject);
+      }
+    })
+  })
+  window.parent.restoreTexts();
 }
-function getFiltersForViz(viz,activeSheet,index){
+function getFiltersForViz(filters,viz,index){
   if(document.querySelector("[gs-id='f0']")==null)
     addWidgetToolbar();
-  activeSheet.getFiltersAsync().then((current_filter)=>{
     if(typeof(tab_all_filters)!="undefined") {
       tab_all_filters[index].filters=[];
-      current_filter.map((fl)=>{
+      filters.map((fl)=>{
         var found=false;
         tab_all_filters[index].filters.map(tb=>{
-          if(tb.getFieldName()==fl.getFieldName())
+          if(tb.getFieldName()==fl.filterObject.getFieldName())
             found=true;
         })
         if(found==false)
-          tab_all_filters[index].filters.push(fl)
+          tab_all_filters[index].filters.push(fl.filterObject)
 
       })
       tab_all_filters[index].viz=viz;
     }
-    current_filter.map((f)=>{
+    filters.map((f)=>{
       tab_filter[index].map((cf)=>{
-        if(cf==f.getFieldName()){
-          populateFilterMenu(f);
-        }
+        if(cf==f.filterFieldName){
+          populateFilterMenu(f.filterObject);
+        } 
       })
     })
     window.parent.restoreTexts();
-  })
 }
 
