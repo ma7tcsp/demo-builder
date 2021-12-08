@@ -28,6 +28,7 @@ async function loadVizInit(){
   tabfilters = new TabFilters();
   await waitFor('#advanced-grid');
   go();
+  addWidgetToolbar();
   tab_server.map((vz,index)=>{
     var url = tab_server[index];
     if(url!="")
@@ -419,8 +420,6 @@ function getParametersForViz(params,viz,index){
   //window.parent.restoreTexts();
 }
 function getFiltersForViz(filters,viz,index){
-  if(document.querySelector(`[gs-id='${prefix}filters']`)==null)
-    addWidgetToolbar();
     if(typeof(tab_all_filters)!="undefined") {
       tab_all_filters[index].filters=[];
       filters.map((fl)=>{
