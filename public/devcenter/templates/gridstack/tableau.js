@@ -179,7 +179,7 @@ function populateFilterMenu(fil){
 }
 function getWidgetPosStatic(index){
   var ret=null;
-  if(widget_pos){
+  if(typeof(widget_pos)!='undefined'){
     widget_pos.map((el)=>{
       if(el.key==index)
         ret=el.val;
