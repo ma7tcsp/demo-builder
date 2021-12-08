@@ -56,15 +56,24 @@
       overflow: hidden;
       transition: all 2.8s;
     }
-    .ui-resizable-se {
+    .ui-resizable-se{
       right: 2px !important;
       bottom: 2px !important;
       background-image: none !important;
     }
-
+    .ui-resizable-sw{
+      left: 2px !important;
+      bottom: 2px !important;
+      background-image: none !important;
+    }
+    .ui-resizable-sw:hover {
+      height: 50px !important;
+      width: 100px !important;
+      transform: rotate(0deg) !important;
+    }
     .ui-resizable-se:hover {
-      height: 100px !important;
-      width: 130px !important;
+      height: 50px !important;
+      width: 100px !important;
       transform: rotate(0deg) !important;
     }
     .fa.ico-move{

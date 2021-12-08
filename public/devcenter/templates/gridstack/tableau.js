@@ -70,6 +70,7 @@ function go(){
     cellHeight:"1.5em",
     column: 60,
     verticalMargin: 10,
+    resizable:{autoHide: true, handles: 'sw,se'},
     alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     acceptWidgets: true,
     dragIn: '.newWidget',  // class that can be dragged from outside
@@ -101,6 +102,12 @@ function go(){
     document.querySelectorAll(".move-overlay").forEach(function(item) {
       item.style.height="15px";
     });
+  });
+  advGrid.on('resizestart', function(event, items) {
+    expandOverlay();
+  });
+  advGrid.on('resizestop', function(event, items) {
+    minimizeOverlay();
   });
 }
 function makeid(length) {
