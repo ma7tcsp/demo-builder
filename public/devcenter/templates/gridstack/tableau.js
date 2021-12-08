@@ -159,8 +159,6 @@ function populateParameterMenu(filpam){
   else{
     document.querySelector(`ul[mid='${filPamName}']`).innerHTML+=links;
   }
-  if(window.parent && window.parent.restoreTexts)
-    window.parent.restoreTexts();
 }
 function populateFilterMenu(fil){
   var links="";
@@ -193,8 +191,6 @@ function populateFilterMenu(fil){
     else{
       document.querySelector(`ul[mid='${fil.getFieldName()}']`).innerHTML+=links;
     }   
-    if(window.parent && window.parent.restoreTexts)
-      window.parent.restoreTexts();
 }
 function isExported(){
   return typeof(widget_pos)!='undefined';
