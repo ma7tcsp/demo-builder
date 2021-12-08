@@ -7,7 +7,7 @@ function loadVizInit () {
   // This function kicks off the process
   initialize();
   setViewMenuVisibility();
-    loadVizByIndex(0);
+  loadVizByIndex(0);
 }
 function loadVizByIndex (index,force,device ="") {
   // This function simply loads each dashboard

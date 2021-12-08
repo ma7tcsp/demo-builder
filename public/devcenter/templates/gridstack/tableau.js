@@ -1,8 +1,30 @@
-var advGrid,tabfilters;
+var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex;
+var prefix="widget---templates/gridstack/index.html-";
 
-function loadVizInit(){
+function waitFor(selector) {
+  return new Promise(resolve => {
+      if (document.querySelector(selector)) {
+          return resolve(document.querySelector(selector));
+      }
+
+      const observer = new MutationObserver(mutations => {
+          if (document.querySelector(selector)) {
+              resolve(document.querySelector(selector));
+              observer.disconnect();
+          }
+      });
+
+      observer.observe(document.body, {
+          childList: true,
+          subtree: true
+      });
+  });
+}
+
+async function loadVizInit(){
   console.log("TRIGGERED FROM")
   tabfilters = new TabFilters();
+  await waitFor('#advanced-grid');
   go();
   tab_server.map((vz,index)=>{
     var url = tab_server[index];
@@ -52,17 +74,32 @@ function go(){
     dragInOptions: { revert: 'invalid', scroll: false, appendTo: 'body', helper: 'clone' },
     removable: '#trash',
     draggable: {
-      handle: '.move-widget',
-      option:'snapTolerance'
+      handle: '.move-overlay',
+      start: function() {
+        document.getElementsByClassName("viz").style.display="none";
+      },
+      stop: function() {
+        document.getElementsByClassName("viz").style.display="block";
+      },
     },
-    removeTimeout: 2000
+    removeTimeout: 100
   }, '#advanced-grid');
   advGrid.on('change', function(event, items) {
-    items.forEach(function(item) {
-      localStorage.setItem(item.id,JSON.stringify({w:item.w,h:item.h,x:item.x,y:item.y}))
+    if(disableSaving==false)
+      items.forEach(function(item) {
+        localStorage.setItem(item.id,JSON.stringify({w:item.w,h:item.h,x:item.x,y:item.y}))
+      });
+  });
+  advGrid.on('dragstart', function(event, items) {
+    document.querySelectorAll(".move-overlay").forEach(function(item) {
+      item.style.height="100%";
     });
   });
-
+  advGrid.on('dragstop', function(event, items) {
+    document.querySelectorAll(".move-overlay").forEach(function(item) {
+      item.style.height="15px";
+    });
+  });
 }
 function makeid(length) {
   var result           = '';
@@ -140,9 +177,19 @@ function populateFilterMenu(fil){
       document.querySelector(`ul[mid='${fil.getFieldName()}']`).innerHTML+=links;
     }   
 }
+function getWidgetPosStatic(index){
+  var ret=null;
+  if(widget_pos){
+    widget_pos.map((el)=>{
+      if(el.key==index)
+        ret=el.val;
+    })
+    return ret;
+  }
+}
 function addWidgetToolbar(){
   var id=makeid(10);
-  var storedCoord=localStorage.getItem("f0");
+  var storedCoord=localStorage.getItem(prefix+"filters");
   var w=60,h=3,x=0,y=0;
   if(storedCoord!=null){
     storedCoord=JSON.parse(storedCoord);
@@ -150,13 +197,21 @@ function addWidgetToolbar(){
     h=storedCoord.h;
     x=storedCoord.x;
     y=storedCoord.y
+  }else{
+    var pos=getWidgetPosStatic("filters");
+    if(pos!=null){
+      w=pos.w;
+      h=pos.h;
+      x=pos.x;
+      y=pos.y;
+    }
+    localStorage.setItem(prefix+"filters",JSON.stringify({w:w,h:h,x:x,y:y}))
   }
-  advGrid.addWidget({id:"f0",w:w,h:h,x:x,y:y, minH:3,content: 
-   `<div class="move-overlay">...</div>
-    <div class="widget-btn">
-      <div class="move-widget btn-menu" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"><i class="ico-handle fa fa-arrows-alt"></i></div>
-    </div>  
-    <div class="filter-container" id="f0"> </div>
+  advGrid.addWidget({id:prefix+"filters",w:w,h:h,x:x,y:y, minH:4,content: 
+   `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div> 
+    <div class="filter-container" id="f0">
+    <button class="btn btn-primary filter_dropdown" onclick="resetFilters()">RESET</button>
+    </div>
     `
   });
   document.getElementById("f0").parentElement.classList.add("filter-widget");
@@ -164,7 +219,7 @@ function addWidgetToolbar(){
 }
 function addNew(url,index){
   var id=makeid(10);
-  var storedCoord=localStorage.getItem("v"+index);
+  var storedCoord=localStorage.getItem(prefix+""+index);
   var w=30,h=25,x=advGrid.getRow(),y=0;
   if(storedCoord!=null){
     storedCoord=JSON.parse(storedCoord);
@@ -172,16 +227,29 @@ function addNew(url,index){
     h=storedCoord.h;
     x=storedCoord.x;
     y=storedCoord.y
+  }else{
+    var pos=getWidgetPosStatic(""+index);
+    if(pos!=null){
+      w=pos.w;
+      h=pos.h;
+      x=pos.x;
+      y=pos.y;
+    }
+    localStorage.setItem(prefix+""+index,JSON.stringify({w:w,h:h,x:x,y:y}));
   }
-  advGrid.addWidget({id:"v"+index,w:w,h:h,x:x,y:y, content: 
-   `<div class="move-overlay">...</div>
+  advGrid.addWidget({id:prefix+""+index,w:w,h:h,x:x,y:y, content: 
+   `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div>
     <div class="widget-btn">
-      <div class="move-widget btn-menu" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"><i class="ico-handle fa fa-arrows-alt"></i></div>
-      <div class="reset-widget btn-menu" onclick="resetFilters()"><i class="ico-handle fa fa-sync"></i></div>
-      <div class="expand-widget btn-menu" onclick="maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-expand-alt"></i></div>
-      <div class="close-widget btn-menu" onClick="removeWidget(this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-times"></i></div>
+      <div class="close-widget btn-menu" onClick="removeWidget(this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-ban"></i></div>
+      <div class="dl-widget btn-menu" onClick="downloadData('${index}')"><i class="ico-handle fa fa-database"></i></div>
+      <div class="action-widget btn-menu" onClick="launchAction('${index}')"><i class="ico-handle fa fa-search"></i></div>
+      <div class="ask-widget btn-menu" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-comment-dots"></i></div>
+      <div class="askclose-widget btn-menu" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-times"></i></div>
+      <div class="webeditclose-widget btn-menu" onClick="closeEdit('${index}')"><i class="ico-handle fa fa-times"></i></div>
+      <div class="webedit-widget btn-menu" onClick="launchEdit('${index}')"><i class="ico-handle fa fa-pencil-alt"></i></div>
+      <div class="expand-widget btn-menu" onclick="maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle minmax fa fa-expand-alt"></i></div>
     </div>  
-    <div id="${id}" class="viz" id="tab1"></div>
+    <div id="${id}" class="viz"></div>
     <div class="mask">
       <div class="loading-wrapper">
         <div class="loading-devover">
@@ -202,12 +270,10 @@ function removeClassAll(all,cls){
   });
 }
 function minimizeOverlay(me,ev){
-  me.classList.remove("extended-btn");
   removeClassAll(document.querySelectorAll(".grid-stack-item-content"),"highlight");
   removeClassAll(document.querySelectorAll(".grid-stack"),"highlight");
 }
 function expandOverlay(me,ev){
-  me.classList.add("extended-btn");
   addClassAll(document.querySelectorAll(".grid-stack-item-content"),"highlight");
   addClassAll(document.querySelectorAll(".grid-stack"),"highlight");
 }
@@ -229,10 +295,26 @@ function hideMask(id,time){
     }, 1000); 
   }, time);
 }
+function hideClose(){
+  document.querySelectorAll(".close-widget").forEach(function(item) {
+    item.style.display="none";
+  });
+}
+function showClose(){
+  document.querySelectorAll(".close-widget").forEach(function(item) {
+    item.style.display="block";
+  });
+}
 function maximize(id,elem,ev){
   showMask(id);
   hideMask(id,3800);
   if(typeof(elem.max)=='undefined' || elem.max=="n"){
+    disableSaving=true;
+    document.querySelectorAll(".minmax").forEach(function(item) {
+      item.classList.remove("fa-expand-alt");
+      item.classList.add("fa-compress-alt");
+    });
+    hideClose();
     var nr=advGrid.getRow();
     advGrid.float(true);
     advGrid.engine.nodes.map((el)=>{
@@ -253,6 +335,11 @@ function maximize(id,elem,ev){
     return;
   }
   if(elem.max=="y"){
+    document.querySelectorAll(".minmax").forEach(function(item) {
+      item.classList.add("fa-expand-alt");
+      item.classList.remove("fa-compress-alt");
+    });
+    showClose();
     document.querySelectorAll(".grid-stack-item").forEach(function (it) {
       if(it!=elem){
         advGrid.makeWidget(it);
@@ -262,6 +349,9 @@ function maximize(id,elem,ev){
     })
     advGrid.update(elem,{w:parseInt(elem.getAttribute("ow")),h:parseInt(elem.getAttribute("oh")),x:parseInt(elem.getAttribute("ox")),y:parseInt(elem.getAttribute("oy"))});
     elem.max="n";
+    setTimeout(() => {
+      disableSaving=false;
+    }, 1000);
     return;
   }
 }
@@ -275,13 +365,17 @@ function load(id,url,idx){
     onFirstInteractive: async function (me) {
       hideMask(id,1);
       var viz=me.getViz();
+      allviz.push({"viz":viz,"index":idx,"id":id});
       var workbook = me.getViz().getWorkbook();
       var activeSheet = workbook.getActiveSheet();
       await tabfilters.discovery(viz);
       var tbviz =tabfilters.embeddedVizzes.filter((el)=>{return el.vizObject==viz})
-      
+      viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
       getFiltersForViz(tbviz[0].filters,viz,idx);
       getParametersForViz(tbviz[0].parameters,viz,idx);
+      showActionIfExist(idx);
+      showWebEditIfExist(idx);
+      showAskButtonIfExist(idx);
     },
     width: "100%",
     height: "100%",
@@ -291,8 +385,6 @@ function load(id,url,idx){
   };
   var v=new tableau.Viz(placeholderView, urlView, options);
   hideMask(id,5000);
-}
-function loadVizByIndex (index,force,device ="") {
 }
 function getParametersForViz(params,viz,index){
   var rawParam=[];
@@ -308,10 +400,10 @@ function getParametersForViz(params,viz,index){
       }
     })
   })
-  window.parent.restoreTexts();
+  //window.parent.restoreTexts();
 }
 function getFiltersForViz(filters,viz,index){
-  if(document.querySelector("[gs-id='f0']")==null)
+  if(document.querySelector(`[gs-id='${prefix}filters']`)==null)
     addWidgetToolbar();
     if(typeof(tab_all_filters)!="undefined") {
       tab_all_filters[index].filters=[];
@@ -334,6 +426,208 @@ function getFiltersForViz(filters,viz,index){
         } 
       })
     })
-    window.parent.restoreTexts();
+    //window.parent.restoreTexts();
 }
+function showActionIfExist(index){
+  var ids;
+  tab_action.map((el,id)=>{
+    if(el.key==String(index))
+      ids=el;
+  })
+  if(ids && ids.val && ids.val=="true")
+    document.querySelector(`[gs-id="${prefix}${index}"] .action-widget`).style.display = "inline-block";
+}
+function showWebEditIfExist(index){
+  var ids;
+  tab_web.map((el,id)=>{
+    if(el.key==String(index))
+      ids=el;
+  })
+  if(ids && ids.val && ids.val=="true")
+    document.querySelector(`[gs-id="${prefix}${index}"] .webedit-widget`).style.display = "inline-block";
+}
+function showAskButtonIfExist(index){
+  var ids;
+  tab_ask.map((el,id)=>{
+    if(el.key==String(index))
+      ids=el;
+  })
+  if(ids && ids.val && ids.val!=""){
+    document.querySelector(`[gs-id="${prefix}${index}"] .ask-widget`).style.display = "inline-block";
+  }
+}
+function closeEdit(index){
+  var containerDiv=document.querySelector(`[gs-id="${prefix}${index}"] .viz`);
+  var id=document.querySelector(`[gs-id="${prefix}${index}"] .viz`).id
+  showMask(id);
+  var mv=getVizFromIndex(index).viz;
+  containerDiv.classList.remove("edit");
+  var url = tab_server[index];
+  getVizFromIndex(index).viz.dispose();
+  removeViz(index);
+  load(id,url,index);
+  setEditModeButtonVisibility(index,"inline-block");
+}
+function launchEdit(index) {
+  var id=document.querySelector(`[gs-id="${prefix}${index}"] .viz`).id
+  showMask(id);
+  var mv=getVizFromIndex(index).viz;
+  var containerDiv=document.querySelector(`[gs-id="${prefix}${index}"] .viz`);
+  containerDiv.classList.add("edit");
+  setEditModeButtonVisibility(index,"none");
+  mv.getCurrentUrlAsync().then(function(current_url){
+    edit_url = current_url.split('?')[0].replace('/views', '/authoring');                  
+    edit_options = {hideTabs: true,hideToolbar: true,width: '100%',height: '100%',
+      onFirstInteractive: function () {
+        hideMask(id,100);
+      }
+    };
+    mv.dispose();
+    removeViz(index);
+    var nn=new tableau.Viz(containerDiv, edit_url, edit_options); 
+    hideMask(id,5000);
+    allviz.push({"viz":nn,"index":index,"id":id});         
+  })
+}
+
+function launchAsk(index){
+  var mv=getVizFromIndex(index);
+  var id=document.querySelector(`[gs-id="${prefix}${index}"] .viz`).id
+  showMask(id);
+  if(mv.ask && mv.ask=="true"){
+    mv.viz.dispose();
+    removeViz(index);
+    var url = tab_server[index];
+    load(id,url,index);
+    setEditModeButtonVisibility(index,"inline-block");
+    return;
+  }
+  setEditModeButtonVisibility(index,"none");
+  var containerDiv=document.querySelector(`[gs-id="${prefix}${index}"] .viz`);
+  var ask_options = {width: '100%',height: '100%',onFirstInteractive: function () {
+    hideMask(id,1000);
+  }
+  };
+  mv.viz.dispose();
+  removeViz(index);
+  var nn=new tableau.Viz(containerDiv, getAskURLByIndex(index), ask_options); 
+  allviz.push({"viz":nn,"ask":"true","index":index,"id":id});   
+  
+}
+function getAskURLByIndex(index){
+  var ret;
+  tab_ask.map((v)=>{
+    if(v.key==index){
+      ret= v.val;
+    }
+  })
+  return ret;
+}
+function setEditModeButtonVisibility(index,cmd){
+  document.querySelector(`[gs-id="${prefix}${index}"] .widget-btn`).style.display="none";
+  document.querySelector(`[gs-id="${prefix}${index}"] .action-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .dl-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .webedit-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .webeditclose-widget`).style.display=cmd=="none"?"inline-block":"none";
+  document.querySelector(`[gs-id="${prefix}${index}"] .close-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .expand-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .ask-widget`).style.display=cmd;
+  setTimeout(() => {
+    document.querySelector(`[gs-id="${prefix}${index}"] .widget-btn`).style.display="flex";
+  }, 2000);
+}
+function setAskDataButtonVisibility(index,cmd){
+  document.querySelector(`[gs-id="${prefix}${index}"] .widget-btn`).style.display="none";
+  ocument.querySelector(`[gs-id="${prefix}${index}"] .action-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .dl-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .webedit-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .askclose-widget`).style.display=cmd=="none"?"inline-block":"none";
+  document.querySelector(`[gs-id="${prefix}${index}"] .close-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .expand-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .ask-widget`).style.display=cmd;
+  setTimeout(() => {
+    document.querySelector(`[gs-id="${prefix}${index}"] .widget-btn`).style.display="flex";
+  }, 2000);
+}
+function removeViz(index){
+  var ret;
+  allviz.map((v,i)=>{
+    if(v.index==index){
+      ret=i;
+    }
+  })
+  return allviz.splice(ret,1);
+}
+function getVizFromIndex(index){
+  var ret;
+  allviz.map((v)=>{
+    if(v.index==index){
+      ret= v;
+    }
+  })
+  return ret;
+}
+function getIndexFromViz(viz){
+  var ret;
+  allviz.map((v)=>{
+    if(v.viz==viz){
+      ret= v.index;
+    }
+  })
+  return ret;
+}
+function onMarksSelection(marksEvent) {
+  var index=getIndexFromViz(marksEvent.getViz());
+  curSelIndex=index;
+  if(findElement(tab_action,index) && findElement(tab_action,index).val=="true")
+    return marksEvent.getMarksAsync().then(reportSelectedMarks,(err)=>{alert("You don't have right to download data thus not able to see marks. Uncheck 'Actions' in the view settings")});
+}
+function reportSelectedMarks(marks) {
+  var curmarks = marks;
+  var mv=getVizFromIndex(curSelIndex);
+  mv.selectedMarks=[];
+  for (var markIndex = 0; markIndex < curmarks.length; markIndex++) {
+    var pairs = curmarks[markIndex].getPairs();
+    for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+        var pair = pairs[pairIndex]; 
+        mv.selectedMarks.push(pair.value)
+    }
+  }
+}
+function launchAction(index){
+  var mv=getVizFromIndex(index);
+  if(typeof(mv.selectedMarks)=='undefined' || (mv.selectedMarks && mv.selectedMarks.length==0)){
+    window.open('http://google.com/search?q=There is no selection :-)');
+    return;
+  }
+  var textOnly=getOnlyText(mv.selectedMarks,[]);
+  if(textOnly.length==0)
+    window.open('http://google.com/search?q=There are no text values in your selection :-)');
+  if(lengthInUtf8Bytes(textOnly.join(" "))<1024)
+    window.open('http://google.com/search?q='+encodeURIComponent(textOnly.join(" ")));
+  else
+    window.open('http://google.com/search?q='+"Too many elements in your selection :-) Please reduce !");  
+}
+function downloadData(index){
+  var mv=getVizFromIndex(index);
+  mv.viz.showExportDataDialog();
+}
+function getOnlyText(from, to){
+  from.map((el)=>{
+    if(isNaN(el) && !/^(\d+|(\.\d+))(\.\d+)?%$/.test(el)){
+      if(!to.includes(el))
+        to.push(el);
+    }
+  })
+  return to;
+}
+function lengthInUtf8Bytes(str) {
+  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  return str.length + (m ? m.length : 0);
+}
+function findElement(arr,keyVal){
+  var found = arr.filter(function(item) { return item.key === keyVal.toString(); });
+  return found[0] || null;
+}
+
 

@@ -1308,6 +1308,7 @@ function restoreColors(){
     restoreColorInIframes(el);
   })
 }
+
 function getStorageByType(type){
   var ret=[];
   var pref=type+"---"+currentTemplate+'-';
@@ -1522,8 +1523,9 @@ function exportTemplate(name){
   let f=getStorageByType("img");
   let g=getStorageByType("text");
   let h=getStorageByType("color");
+  let i=getStorageByType("widget");
   let j=getStorageByType("action");
-  var all={"title":name.replaceAll(".zip",""),"tpname":currentTemplate.replace("templates/","").replace("/index.html",""),"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
+  var all={"title":name.replaceAll(".zip",""),"widget":JSON.stringify(i),"tpname":currentTemplate.replace("templates/","").replace("/index.html",""),"view":JSON.stringify(e),"filter":JSON.stringify(d),"parameter":JSON.stringify(c),"webedit":JSON.stringify(a),"askdata":JSON.stringify(b),"text":JSON.stringify(g),"img":JSON.stringify(f),"color":JSON.stringify(h),"action":JSON.stringify(j)}
   var formBody = formize(all);
   fetch("/zip", {
     method: "POST", 

@@ -74,16 +74,17 @@ app.get('/public', function(req, res) {
 app.post('/zip', async function (req, res) {
   let ret=req.body;
   let tmp=copyTemplate(ret.tpname);
-  let vv=JSON.parse(ret.view)[0].val;
+  let vv=JSON.parse(ret.view).length>0?JSON.parse(ret.view)[0].val:"";
   let vvArr='"'+vv.replace(/,/g, '","')+'"';
   vvArr="var tab_server = ["+vvArr+"];"
-  let ff=JSON.parse(ret.filter)[0].val;
-  let pp=JSON.parse(ret.parameter)[0].val;
+  let ff=JSON.parse(ret.filter).length>0?JSON.parse(ret.filter)[0].val:"[]";
+  let pp=JSON.parse(ret.parameter).length>0?JSON.parse(ret.parameter)[0].val:"[]";
   let war=variabilized(ret.webedit);
   let aar=variabilized(ret.askdata);
   let ttr=variabilized(ret.text);
   let imr=variabilized(ret.img);
   let acr=variabilized(ret.action);
+  let wid=JSON.parse(ret.widget);
   let title=ret.title;
   vvArr+=`
   var tab_filter=${ff};
@@ -94,6 +95,14 @@ app.post('/zip', async function (req, res) {
   var tab_img=${imr};
   var tab_action=${acr};
   var title_index="${title}";`
+  if(wid.length>0){
+    wid.map((el)=>{
+      el.val=JSON.parse(el.val);
+    })
+    vvArr+=`
+    var widget_pos=${JSON.stringify(wid)}
+    `
+  }
   writeTofile(vvArr,tmp+"/lib/config.js")
   writeTofile(generateCSS(JSON.parse(ret.color)),tmp+"/css/config.css")
 
