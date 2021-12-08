@@ -1,5 +1,5 @@
 var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex;
-var prefix="widget---templates/gridstack/index.html-"+isExported()==true?unique_exportID+"-":"";
+var prefix="widget---templates/gridstack/index.html-";
 
 function waitFor(selector) {
   return new Promise(resolve => {
@@ -22,6 +22,8 @@ function waitFor(selector) {
 }
 
 async function loadVizInit(){
+  if(isExported()==true)
+    prefix=prefix+String(unique_exportID)+"-";
   console.log("TRIGGERED FROM")
   tabfilters = new TabFilters();
   await waitFor('#advanced-grid');
