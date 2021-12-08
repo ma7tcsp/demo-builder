@@ -1,5 +1,5 @@
 var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex;
-var prefix="widget---templates/gridstack/index.html-"+isExported==true?unique_exportID+"-":"";
+var prefix="widget---templates/gridstack/index.html-"+isExported()==true?unique_exportID+"-":"";
 
 function waitFor(selector) {
   return new Promise(resolve => {
