@@ -28,7 +28,8 @@ async function loadVizInit(){
   tabfilters = new TabFilters();
   await waitFor('#advanced-grid');
   go();
-  addWidgetToolbar();
+  if(document.querySelector(`[gs-id='${prefix}filters']`)==null)
+    addWidgetToolbar();
   tab_server.map((vz,index)=>{
     var url = tab_server[index];
     if(url!="")
