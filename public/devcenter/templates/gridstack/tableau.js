@@ -249,7 +249,7 @@ function addNew(url,index){
     }
     localStorage.setItem(prefix+""+index,JSON.stringify({w:w,h:h,x:x,y:y}));
   }
-  advGrid.addWidget({id:prefix+""+index,w:w,h:h,x:x,y:y, content: 
+  advGrid.addWidget({id:prefix+""+index,w:w,h:h,x:x,y:y,minH:4,minW:10, content: 
    `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div>
     <div class="widget-btn">
       <div class="close-widget btn-menu" onClick="removeWidget(this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-ban"></i></div>
