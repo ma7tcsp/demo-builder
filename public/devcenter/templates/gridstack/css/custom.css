@@ -36,7 +36,7 @@
 
     .grid-stack-item-content {
       overflow-y: hidden !important;
-      margin: var(--griditem--margin) !important;
+      margin: var(--griditem--margin--ui) !important;
       background-color: var(--griditem--backcolor);
       text-align: center;
       transition: border 1.4s;

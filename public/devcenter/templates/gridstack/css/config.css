@@ -1,14 +1,14 @@
 :root{
-  --btn--hover--color:white;
+  --btn--hover--color:#FFFFFF;
   --btn--color:#6c6d6dba;
   --btn--hover--backcolor:#878a98;
   --btn--backcolor:#e9eced;
-  --grid--highlight--color:gray;
-  --griditem--backcolor:white;
-  --griditem--margin:3px;
+  --grid--highlight--color:#7E7E7E;
+  --griditem--backcolor:#FFFFFF;
   --griditem--bordercolor:#878a9882;
   --gridplaceholder--bordercolor:#878a98;
-  --loader--backcolor:white;
+  --loader--backcolor:#FFFFFF;
   --loader--spin:#878a98;
   --dotted--color:#6c6d6dba;
+  --griditem--margin--ui:3px;
 }

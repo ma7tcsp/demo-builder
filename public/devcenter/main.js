@@ -1052,17 +1052,18 @@ function showTemplateSettings(eve){
   })
   addSearchListener();
   $("#colorlist").empty();
-  $("#colorlist").append("<summary>Colour Settings</summary>");
+  $("#colorlist").append("<summary>Colour & UI Settings</summary>");
   parseForCSSVar(document.getElementById('template').contentWindow.document).map((el,index)=>{
     //<i onclick="highlightElementbyCSSColor('${el.value}')" class="fas target fa-bullseye"></i>
     var node=`
     <div class="settings_block">
       <label class="label_settings">${el.variable.replaceAll("-"," ")} </label>
-      <input varc="${el.variable}" style="background-color:${el.value};" id="color${index}" class="color input input_settings" required="true" value="${el.value}">
+      <input varc="${el.variable}" style="background-color:${el.variable.indexOf("--ui")!=-1?"white":el.value};" id="color${index}" class="color input input_settings" required="true" value="${el.value}">
     </div>
     `
     $("#colorlist").append(node);
-    initPicker("color"+index,el.value);
+    if(el.variable.indexOf("--ui")==-1)
+      initPicker("color"+index,el.value);
   })
   $("#textlist").empty();
   $("#textlist").append("<summary>Text Settings</summary>");
