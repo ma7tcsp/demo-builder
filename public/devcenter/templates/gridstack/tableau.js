@@ -69,6 +69,7 @@ function go(){
     float: false,
     cellHeight:"1.5em",
     column: 60,
+    animate:false,
     verticalMargin: 10,
     resizable:{autoHide: true, handles: 'sw,se'},
     alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
