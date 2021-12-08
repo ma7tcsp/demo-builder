@@ -489,7 +489,6 @@ function launchEdit(index) {
     allviz.push({"viz":nn,"index":index,"id":id});         
   })
 }
-
 function launchAsk(index){
   var mv=getVizFromIndex(index);
   var id=document.querySelector(`[gs-id="${prefix}${index}"] .viz`).id

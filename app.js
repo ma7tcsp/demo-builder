@@ -100,7 +100,8 @@ app.post('/zip', async function (req, res) {
       el.val=JSON.parse(el.val);
     })
     vvArr+=`
-    var widget_pos=${JSON.stringify(wid)}
+    var unique_exportID=${new Date.now()};
+    var widget_pos=${JSON.stringify(wid)};
     `
   }
   writeTofile(vvArr,tmp+"/lib/config.js")
