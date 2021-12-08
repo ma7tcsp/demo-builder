@@ -33,7 +33,7 @@ async function loadVizInit(){
     if(url!="")
       addNew(url,index);
   })
-  advGrid.opts.animate=true;
+  advGrid.setAnimation(true);
 }
 function resetFilters(){
   tabfilters.embeddedVizzes.map((el)=>{
