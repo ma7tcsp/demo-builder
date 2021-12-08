@@ -1201,6 +1201,7 @@ function saveTemplateSettings(close){
     restoreTexts();
   })
   $("#viewlist .filterText").each((index,el)=>{
+    console.log("ACHTUNG",$(el).closest( ".filter-entry" ).prop("checked"));
     saveToRepo('text',"Filter-text-"+ $(el).attr("varc"),encodeURIComponent($(el).prop("value")));
     restoreTexts();
   })
