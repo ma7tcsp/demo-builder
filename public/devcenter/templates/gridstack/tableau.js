@@ -418,7 +418,8 @@ function getParametersForViz(params,viz,index){
       }
     })
   })
-  //window.parent.restoreTexts();
+  if(window.parent && window.parent.restoreTexts)
+    window.parent.restoreTexts();
 }
 function getFiltersForViz(filters,viz,index){
     if(typeof(tab_all_filters)!="undefined") {
@@ -442,7 +443,8 @@ function getFiltersForViz(filters,viz,index){
         } 
       })
     })
-    //window.parent.restoreTexts();
+    if(window.parent && window.parent.restoreTexts)
+      window.parent.restoreTexts();
 }
 function showActionIfExist(index){
   var ids;
