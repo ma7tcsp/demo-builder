@@ -100,7 +100,7 @@ app.post('/zip', async function (req, res) {
       el.val=JSON.parse(el.val);
     })
     vvArr+=`
-    var unique_exportID=${new Date.now()};
+    var unique_exportID=${new Date().now()};
     var widget_pos=${JSON.stringify(wid)};
     `
   }
