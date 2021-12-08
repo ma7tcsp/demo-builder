@@ -1,5 +1,5 @@
 var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex;
-var prefix="widget---templates/gridstack/index.html-";
+var prefix="widget---templates/gridstack/index.html-"+isExported==true?unique_exportID+"-":"";
 
 function waitFor(selector) {
   return new Promise(resolve => {
@@ -176,6 +176,9 @@ function populateFilterMenu(fil){
     else{
       document.querySelector(`ul[mid='${fil.getFieldName()}']`).innerHTML+=links;
     }   
+}
+function isExported(){
+  return typeof(widget_pos)!='undefined';
 }
 function getWidgetPosStatic(index){
   var ret=null;
