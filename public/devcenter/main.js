@@ -13,6 +13,12 @@ var viewsModified=false;
 var curSearch;
 var curSearchVarC; 
 var isTemplateLoaded;
+var firiendlyTpName={"templates/grid/index.html":"Horizontal",
+                    "templates/gridV/index.html":"Vertical",
+                    "templates/bs/index.html":"BootStrap",
+                    "templates/gridstack/index.html":"Widgets",
+                    "templates/lightboot/examples/dashboard.html":"Creative",
+                    "templates/amd/index.html":"AMD"}
 //WORK-AROUND FOR VIZ BEING IN IFRAME
 Window.prototype._addEventListener = Window.prototype.addEventListener;
 Window.prototype.addEventListener = function(a, b, c) {
@@ -1683,7 +1689,7 @@ function openExportOptions(ev){
   ev.stopPropagation();
   showModal('modal-export');
   $('.gogo').focus();
-  $("#exportname").val("grid-site.zip")
+  $("#exportname").val(firiendlyTpName[currentTemplate])
 }
 function exportOptions(conf){
   MicroModal.close('modal-export'); 
