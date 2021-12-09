@@ -1297,7 +1297,7 @@ function restoreViews(){
   if (v.length>0){
     var all=v[0].val.split(",");
     document.getElementById('template').contentWindow.tab_server=all;
-    document.getElementById('template').contentWindow.loadVizInit();
+    document.getElementById('template').contentWindow.loadVizInit(true);
   }
 }
 function restoreImgs(){

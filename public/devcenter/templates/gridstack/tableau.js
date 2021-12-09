@@ -21,8 +21,8 @@ function waitFor(selector) {
       });
   });
 }
-async function loadVizInit(){
-  if(first==false)
+async function loadVizInit(force){
+  if(first==false && typeof(force)=='undefined')
     return;
   first=false
   document.querySelector(".page-section.main").style.minHeight = (document.documentElement.clientHeight-133) +"px";
