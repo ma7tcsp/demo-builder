@@ -566,7 +566,7 @@ function launchAsk(index){
     removeViz(index);
     var url = tab_server[index];
     load(id,url,index);
-    setEditModeButtonVisibility(index,"inline-block");
+    setAskDataButtonVisibility(index,"inline-block");
     return;
   }
   setAskDataButtonVisibility(index,"none");
