@@ -8,7 +8,7 @@ html, body{
   display: none;
 }
 .templateList{
-  margin-left: 45px;
+  margin-left: 45px !important;
 }
 #search::-webkit-search-cancel-button{
   display: none !important;
