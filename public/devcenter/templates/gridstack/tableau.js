@@ -218,7 +218,13 @@ function hasHiddenWidget(){
   })
 }
 function showHiddenWidgets(){
-  document.querySelectorAll(`[gs-id]`).forEach(element => {
+  var elems=Array.prototype.slice.call(document.querySelectorAll(`[gs-id]`), 0);
+    elems.sort((a,b)=>{//sort from higher to lower to avoid unmanageable reorg :-)
+      if(parseInt(a.getAttribute("oy"))>parseInt(b.getAttribute("oy")))
+        return 1;
+      return -1;  
+    })
+  elems.forEach(element => {
     if(element.style.display=="none"){
       element.style.display="unset";
       advGrid.makeWidget(element);
