@@ -22,7 +22,7 @@ function waitFor(selector) {
   });
 }
 async function loadVizInit(){
-  if(first==true)
+  if(first==false)
     return;
   first=false
   document.querySelector(".page-section.main").style.minHeight = (document.documentElement.clientHeight-133) +"px";
