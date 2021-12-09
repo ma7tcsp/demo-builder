@@ -21,6 +21,7 @@ function waitFor(selector) {
   });
 }
 async function loadVizInit(){
+  document.querySelector(".page-section.main").style.minHeight = document.documentElement.clientHeight;
   if(isExported()==true)
     prefix=prefix+String(unique_exportID)+"-";
   console.log("TRIGGERED FROM")
