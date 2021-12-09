@@ -216,7 +216,6 @@ function giveMeSalt(token){
 }
 async function saveSettings(){
   var tksalt=await giveMeSalt($("#tokValue").val());
-  localStorage.setItem("SYNC_FILTERS",$("#sync").prop( "checked"));
   localStorage.setItem("SERVER_URL",$("#servurl").val());
   localStorage.setItem("SITE_NAME",$("#siteName").val());
   localStorage.setItem("TOKEN_NAME",$("#tokName").val());
@@ -236,14 +235,8 @@ async function saveSettings(){
   }
   MicroModal.close('modal-settings'); 
 }
-function getSyncSetting(){
-  var tr=localStorage.getItem("SYNC_FILTERS");
-  tr=="true"?tr=true:tr=false;
-  return tr;
-}
 function showSettings(){
   $("#template").contents().find("iframe").fadeOut(200);
-  $("#sync").prop( "checked",getSyncSetting());
   $("#servurl").val(localStorage.getItem("SERVER_URL"))
   $("#siteName").val(localStorage.getItem("SITE_NAME"))
   $("#tokName").val(localStorage.getItem("TOKEN_NAME"))
@@ -524,12 +517,12 @@ function closeAllMenu(){
   $(".sidebar-submenu").hide();
 }
 function switchTemplate(tpName,ev){
+  closeSettings();
   if(ev){
     $(".thumb.templ").removeClass("active");
     $(ev).addClass("active");
     $(".sidebar-menu .sidebar-submenu details .fas").hide();
     $(ev).find("i").show();
-
   }
   $("#template").prop("src",tpName);
   currentTemplate=tpName;
@@ -931,7 +924,7 @@ function getFilterDom(id,nodeParam,el){
           var repT=getRepoVal('text',"Filter-text-"+fl.getFieldName());
           var ttx=repT!=null?repT:fl.getFieldName();
           var filInput=`<input varindex="${id}" dumid="${fl.getFieldName().replace(/[^a-z0-9+]+/gi, '_')}" varc="${fl.getFieldName()}" class="filterText ${fl.isChecked==true?"":"hideFilterInput"} texts input input_settings" required="true" value="${decodeURIComponent(ttx)}"></input>`
-          nodeFilter+=`<li class="filter${id}" >
+          nodeFilter+=`<li class="filter${id}">
                         <input onchange="$('.filterText[dumid=${fl.getFieldName().replace(/[^a-z0-9+]+/gi, '_')}]').toggle('hideFilterInput')" class="filter-entry" varindex="${id}" varc="${fl.getFieldName()}" type="checkbox" ${fl.isChecked==true?"checked":""}> 
                         ${fl.getFieldName()} (${fl.getWorksheet().getName()})
                         ${filInput}
@@ -950,7 +943,12 @@ function getParamDom(id){
           var repT=getRepoVal('text',"Filter-text-"+par.getName());
           var ttx=repT!=null?repT:par.getName();
           var parInput=`<input varindex="${id}" dumid="${par.getName().replace(/[^a-z0-9+]+/gi, '_')}" varc="${par.getName()}" class="filterText ${par.isChecked==true?"":"hideFilterInput"} texts input input_settings" required="true" value="${decodeURIComponent(ttx)}"></input>`
-          nodeParam+=`<li onchange="$('.filterText[dumid=${par.getName().replace(/[^a-z0-9+]+/gi, '_')}]').toggle('hideFilterInput')" class="param${id}" ><input class="param-entry" varindex="${id}" varc="${par.getName()}" type="checkbox" ${par.isChecked==true?"checked":""}> ${par.getName()} (Parameter)</li>${parInput}`
+          nodeParam+=`<div class="filter${id}">
+                        <li onchange="$('.filterText[dumid=${par.getName().replace(/[^a-z0-9+]+/gi, '_')}]').toggle('hideFilterInput')" class="param${id}">
+                          <input class="param-entry" varindex="${id}" varc="${par.getName()}" type="checkbox" ${par.isChecked==true?"checked":""}> ${par.getName()} (Parameter)
+                        </li>
+                      ${parInput}
+                      </div>`
         }
       })
     }
@@ -1201,11 +1199,12 @@ function saveTemplateSettings(close){
     restoreTexts();
   })
   $("#viewlist .filterText").each((index,el)=>{
-    var ck=$(el.parentElement).find(`.filter-entry[varc='${$(el).attr("varc")}']`).prop("checked")
-    // if(ck==true){
+    var ckf=$(el.parentElement).find(`.filter-entry[varc='${$(el).attr("varc")}']`).prop("checked");
+    var ckp=$(el.parentElement).find(`.param-entry[varc='${$(el).attr("varc")}']`).prop("checked");
+    if(ckf==true || ckp==true){
       saveToRepo('text',"Filter-text-"+ $(el).attr("varc"),encodeURIComponent($(el).prop("value")));
       restoreTexts();
-    // }
+    }
   })
   $("#imglist .imgs").each((index,el)=>{
     saveToRepo('img',$(el).attr("varc"),$(el).prop("value"));
@@ -1312,7 +1311,6 @@ function restoreColors(){
     restoreColorInIframes(el);
   })
 }
-
 function getStorageByType(type){
   var ret=[];
   var pref=type+"---"+currentTemplate+'-';
@@ -1660,7 +1658,19 @@ function clearAllSettings(){
 function clearAllDamn(b){
   MicroModal.close('modal-confirm'); 
   if(b==true){
+    var ve=localStorage.getItem("VERSION");
+    var su=localStorage.getItem("SERVER_URL");
+    var sn=localStorage.getItem("SITE_NAME");
+    var tn=localStorage.getItem("TOKEN_NAME");
+    var tv=localStorage.getItem("TOKEN_VALUE");
+    var wa=localStorage.getItem("WARN");
     localStorage.clear();
+    localStorage.setItem("VERSION",ve);
+    localStorage.setItem("SERVER_URL",su);
+    localStorage.setItem("SITE_NAME",sn);
+    localStorage.setItem("TOKEN_NAME",tn);
+    localStorage.setItem("TOKEN_VALUE",tv);
+    localStorage.setItem("WARN",wa);
     reloadMe(true);
   }
 }

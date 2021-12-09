@@ -20,7 +20,6 @@ function waitFor(selector) {
       });
   });
 }
-
 async function loadVizInit(){
   if(isExported()==true)
     prefix=prefix+String(unique_exportID)+"-";
@@ -125,6 +124,9 @@ function makeid(length) {
     charactersLength));
   }
   return result;
+}
+function loadVizByIndex(){
+
 }
 function populateParameterMenu(filpam){
   var links="";
