@@ -1201,9 +1201,11 @@ function saveTemplateSettings(close){
     restoreTexts();
   })
   $("#viewlist .filterText").each((index,el)=>{
-    console.log("ACCCHHCH",$(el.parentElement).find(`.filter-entry[varc='${$(el).attr("varc")}']`).prop("checked"))
-    saveToRepo('text',"Filter-text-"+ $(el).attr("varc"),encodeURIComponent($(el).prop("value")));
-    restoreTexts();
+    var ck=$(el.parentElement).find(`.filter-entry[varc='${$(el).attr("varc")}']`).prop("checked")
+    if(ck==true){
+      saveToRepo('text',"Filter-text-"+ $(el).attr("varc"),encodeURIComponent($(el).prop("value")));
+      restoreTexts();
+    }
   })
   $("#imglist .imgs").each((index,el)=>{
     saveToRepo('img',$(el).attr("varc"),$(el).prop("value"));
