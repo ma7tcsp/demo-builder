@@ -34,6 +34,7 @@ async function loadVizInit(){
     if(url!="")
       addNew(url,index);
   })
+  initialize();
   setTimeout(() => {
     advGrid.setAnimation(true);
   }, 5000);
@@ -683,6 +684,26 @@ function lengthInUtf8Bytes(str) {
 function findElement(arr,keyVal){
   var found = arr.filter(function(item) { return item.key === keyVal.toString(); });
   return found[0] || null;
+}
+function restoreImgs(){
+  tab_img.map((el)=>{
+    if(document.getElementById(el.key))
+      document.getElementById(el.key).setAttribute('src',el.val);
+  })
+}
+function restoreTexts(){
+  tab_text.map((el)=>{
+    if(document.getElementById(el.key))
+      document.getElementById(el.key).innerHTML=decodeURIComponent(el.val);
+  })
+}
+function initialize(){
+  if(typeof(tab_img)!="undefined"){
+    restoreImgs();
+    restoreTexts();
+    if(title_index) 
+      document.querySelector("head title").text=title_index;
+  }
 }
 
 
