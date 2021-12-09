@@ -19,7 +19,6 @@
     }
     .copyright {
       background-color: var(--header--backcolor) !important;
-      position: fixed;
       width: 100%;
       bottom: 0;
       z-index: 3000;
