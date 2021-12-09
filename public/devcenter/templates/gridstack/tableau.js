@@ -565,7 +565,7 @@ function launchAsk(index){
     setEditModeButtonVisibility(index,"inline-block");
     return;
   }
-  setEditModeButtonVisibility(index,"none");
+  setAskDataButtonVisibility(index,"none");
   var containerDiv=document.querySelector(`[gs-id="${prefix}${index}"] .viz`);
   var ask_options = {width: '100%',height: '100%',onFirstInteractive: function () {
     hideMask(id,1000);
