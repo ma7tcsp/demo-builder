@@ -11,9 +11,12 @@
     }
     .dropdown-item {
       color:rgb(69, 69, 69) !important;
-  }
+    }
+    .navbar-shrink .log{
+      max-height: 40px;
+    }
     .log{
-      max-height: 50px;
+      max-height: 60px;
       width: auto;
       margin: 10px;
     }
