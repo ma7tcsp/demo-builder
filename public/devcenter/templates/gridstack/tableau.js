@@ -207,6 +207,25 @@ function getWidgetPosStatic(index){
     return ret;
   }
 }
+function hasHiddenWidget(){
+  document.querySelector(".hiddenW").style.display="none";
+  document.querySelectorAll(`[gs-id]`).forEach(element => {
+    if(element.style.display=="none"){
+      document.querySelector(".hiddenW").style.display="inline-block";
+    }
+  })
+}
+function showHiddenWidgets(){
+  document.querySelectorAll(`[gs-id]`).forEach(element => {
+    if(element.style.display=="none"){
+      element.style.display="unset";
+      advGrid.makeWidget(element);
+      var id=element.getAttribute("gs-id");
+      localStorage.setItem(id+"-visibility","true");
+    }
+  });
+  hasHiddenWidget();
+}
 function addWidgetToolbar(){
   var id=makeid(10);
   var storedCoord=localStorage.getItem(prefix+"filters");
@@ -231,6 +250,7 @@ function addWidgetToolbar(){
    `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div> 
     <div class="filter-container" id="f0">
     <button class="btn btn-secondary btn-default filter_dropdown" onclick="resetFilters()">RESET</button>
+    <button class="btn btn-secondary btn-default filter_dropdown hiddenW" onclick="showHiddenWidgets()">SHOW HIDDEN</button>
     </div>
     `
   });
@@ -278,6 +298,11 @@ function addNew(url,index){
     </div>`
   });
   load(id,url,index);
+  if(localStorage.getItem(prefix+""+index+"-visibility")=="false"){
+      advGrid.removeWidget(document.querySelector(`[gs-id="${prefix}${index}"]`),false,false);
+      document.querySelector(`[gs-id="${prefix}${index}"]`).style.display="none";
+  }
+  hasHiddenWidget();
 }
 function addClassAll(all,cls){
   all.forEach(function(item) {
@@ -298,7 +323,10 @@ function expandOverlay(me,ev){
   addClassAll(document.querySelectorAll(".grid-stack"),"highlight");
 }
 function removeWidget(el,ev){
-  advGrid.removeWidget(el);
+  localStorage.setItem(el.gridstackNode.id+"-visibility","false")
+  advGrid.removeWidget(el,false,false);
+  el.style.display="none";
+  hasHiddenWidget();
 }
 function showMask(id){
   document.querySelector(`#${id} ~ .mask`).style.opacity=0;
