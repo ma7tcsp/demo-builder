@@ -13,7 +13,7 @@ var viewsModified=false;
 var curSearch;
 var curSearchVarC; 
 var isTemplateLoaded;
-var firiendlyTpName={"templates/grid/index.html":"Horizontal",
+var friendlyTpName={"templates/grid/index.html":"Horizontal",
                     "templates/gridV/index.html":"Vertical",
                     "templates/bs/index.html":"BootStrap",
                     "templates/gridstack/index.html":"Widgets",
@@ -1689,7 +1689,7 @@ function openExportOptions(ev){
   ev.stopPropagation();
   showModal('modal-export');
   $('.gogo').focus();
-  $("#exportname").val(firiendlyTpName[currentTemplate])
+  $("#exportname").val(friendlyTpName[currentTemplate]+".zip")
 }
 function exportOptions(conf){
   MicroModal.close('modal-export'); 
