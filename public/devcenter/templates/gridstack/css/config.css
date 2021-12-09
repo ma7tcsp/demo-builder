@@ -1,4 +1,8 @@
 :root{
+
+  --filter--btn--radius--ui:10px;
+  
+
   --btn--hover--color:#FFFFFF;
   --btn--color:#6c6d6dba;
   --btn--hover--backcolor:#878a98;

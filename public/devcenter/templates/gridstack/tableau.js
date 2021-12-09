@@ -148,7 +148,7 @@ function populateParameterMenu(filpam){
   })
   var list=`
   <div class="filter_dropdown dropdown">
-    <button paramName="Filter-text-${filPamName}" id="Filter-text-${filPamName}" class="text-uppercase btn btn-secondary dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <button paramName="Filter-text-${filPamName}" id="Filter-text-${filPamName}" class="text-uppercase btn btn-secondary btn-default dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     ${filPamName.toUpperCase()}
     </button>
     <ul mid="${filPamName}" class="dropdown-menu" aria-labelledby="Filter-text-${filPamName}">
@@ -179,7 +179,7 @@ function populateFilterMenu(fil){
     }
   }) 
   var tp=`<div class="filter_dropdown dropdown">
-              <button filName="Filter-text-${fil.getFieldName()}" id="Filter-text-${fil.getFieldName()}" class="text-uppercase btn btn-secondary dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <button filName="Filter-text-${fil.getFieldName()}" id="Filter-text-${fil.getFieldName()}" class="text-uppercase btn btn-secondary btn-default dropdown-toggle editable" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               ${fil.getFieldName().toUpperCase()}
               </button>
               <ul mid="${fil.getFieldName()}" class="dropdown-menu" aria-labelledby="Filter-text-${fil.getFieldName()}">
@@ -230,7 +230,7 @@ function addWidgetToolbar(){
   advGrid.addWidget({id:prefix+"filters",w:w,h:h,x:x,y:y, minH:4,content: 
    `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div> 
     <div class="filter-container" id="f0">
-    <button class="btn btn-primary filter_dropdown" onclick="resetFilters()">RESET</button>
+    <button class="btn btn-secondary btn-default filter_dropdown" onclick="resetFilters()">RESET</button>
     </div>
     `
   });
@@ -336,12 +336,14 @@ function maximize(id,elem,ev){
     });
     hideClose();
     var nr=advGrid.getRow();
-    advGrid.float(true);
     advGrid.engine.nodes.map((el)=>{
       el.el.setAttribute("ow",el.w);
       el.el.setAttribute("oh",el.h);
       el.el.setAttribute("ox",el.x);
       el.el.setAttribute("oy",el.y);
+    })
+    advGrid.float(true);
+    advGrid.engine.nodes.map((el)=>{
       if(el.el!=elem){
         advGrid.removeWidget(el.el,false,false);
         el.el.style.display="none";
@@ -360,18 +362,24 @@ function maximize(id,elem,ev){
       item.classList.remove("fa-compress-alt");
     });
     showClose();
-    document.querySelectorAll(".grid-stack-item").forEach(function (it) {
+    advGrid.update(elem,{w:parseInt(elem.getAttribute("ow")),h:parseInt(elem.getAttribute("oh")),x:parseInt(elem.getAttribute("ox")),y:parseInt(elem.getAttribute("oy"))});
+    var elems=Array.prototype.slice.call(document.querySelectorAll(".grid-stack-item"), 0);
+    elems.sort((a,b)=>{//sort from higher to lower to avoid unmanageable reorg :-)
+      if(parseInt(a.getAttribute("oy"))>parseInt(b.getAttribute("oy")))
+        return 1;
+      return -1;  
+    })
+    elems.forEach(function (it) {
       if(it!=elem){
         advGrid.makeWidget(it);
         it.style.display="block";
         advGrid.update(it,{w:it.getAttribute("ow"),h:it.getAttribute("oh"),x:it.getAttribute("ox"),y:it.getAttribute("oy")});
       }
     })
-    advGrid.update(elem,{w:parseInt(elem.getAttribute("ow")),h:parseInt(elem.getAttribute("oh")),x:parseInt(elem.getAttribute("ox")),y:parseInt(elem.getAttribute("oy"))});
     elem.max="n";
     setTimeout(() => {
       disableSaving=false;
-    }, 1000);
+    }, 3000);
     return;
   }
 }

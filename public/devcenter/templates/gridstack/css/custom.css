@@ -2,12 +2,23 @@
     body{
       user-select: none;
     }
+    .btn-default{
+      color:var(--btn--color) !important;
+      background-color: var(--btn--backcolor) !important;
+      border-color:unset;
+      border-radius:var(--filter--btn--radius--ui) !important;
+    }
+    .btn-default:hover{
+      color:var(--btn--hover--color) !important;
+      background-color: var(--btn--hover--backcolor) !important;
+      border-color:unset;
+    }
     .viz.edit {
       height: calc(100% + 25px) !important;
       position: absolute !important;
       top: -25px !important;
       transition: none;
-  }
+    }
     .action-widget,.webedit-widget,.ask-widget,.webeditclose-widget,.askclose-widget{
       display:none;
     }
