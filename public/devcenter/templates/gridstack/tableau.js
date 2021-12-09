@@ -220,7 +220,7 @@ function hasHiddenWidget(){
 function showHiddenWidgets(){
   var elems=Array.prototype.slice.call(document.querySelectorAll(`[gs-id]`), 0);
     elems.sort((a,b)=>{//sort from higher to lower to avoid unmanageable reorg :-)
-      if(parseInt(a.getAttribute("oy"))>parseInt(b.getAttribute("oy")))
+      if(parseInt(a.getAttribute("gs-y"))>parseInt(b.getAttribute("gs-y")))
         return 1;
       return -1;  
     })
