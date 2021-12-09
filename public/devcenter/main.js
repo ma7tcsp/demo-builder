@@ -1202,10 +1202,10 @@ function saveTemplateSettings(close){
   })
   $("#viewlist .filterText").each((index,el)=>{
     var ck=$(el.parentElement).find(`.filter-entry[varc='${$(el).attr("varc")}']`).prop("checked")
-    if(ck==true){
+    // if(ck==true){
       saveToRepo('text',"Filter-text-"+ $(el).attr("varc"),encodeURIComponent($(el).prop("value")));
       restoreTexts();
-    }
+    // }
   })
   $("#imglist .imgs").each((index,el)=>{
     saveToRepo('img',$(el).attr("varc"),$(el).prop("value"));
