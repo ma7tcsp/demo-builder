@@ -1,5 +1,6 @@
 var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex;
 var prefix="widget---templates/gridstack/index.html-";
+var first=true;
 
 function waitFor(selector) {
   return new Promise(resolve => {
@@ -21,6 +22,9 @@ function waitFor(selector) {
   });
 }
 async function loadVizInit(){
+  if(first==true)
+    return;
+  first=false
   document.querySelector(".page-section.main").style.minHeight = (document.documentElement.clientHeight-133) +"px";
   if(isExported()==true)
     prefix=prefix+String(unique_exportID)+"-";
