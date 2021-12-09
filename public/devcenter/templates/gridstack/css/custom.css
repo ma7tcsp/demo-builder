@@ -1,6 +1,31 @@
 
     body{
       user-select: none;
+      background-color: var(--main--backcolor) !important;
+    }
+    .log{
+      max-height: 50px;
+      width: auto;
+      margin: 10px;
+    }
+    .page-section.main{
+      background-color: var(--main--backcolor) !important;
+      color: var(--main-color) !important;
+      margin-top: 60px;
+      padding-bottom: 0.1em;
+    }
+    .header-bg#mainNav a, .copyright.text-white .editable{
+      color: var(--header--color) !important;
+    }
+    .copyright {
+      background-color: var(--header--backcolor) !important;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      z-index: 3000;
+  }
+    .header-bg{
+      background-color: var(--header--backcolor);
     }
     .btn-default{
       color:var(--btn--color) !important;
