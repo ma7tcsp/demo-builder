@@ -601,7 +601,7 @@ function setEditModeButtonVisibility(index,cmd){
 }
 function setAskDataButtonVisibility(index,cmd){
   document.querySelector(`[gs-id="${prefix}${index}"] .widget-btn`).style.display="none";
-  ocument.querySelector(`[gs-id="${prefix}${index}"] .action-widget`).style.display=cmd;
+  document.querySelector(`[gs-id="${prefix}${index}"] .action-widget`).style.display=cmd;
   document.querySelector(`[gs-id="${prefix}${index}"] .dl-widget`).style.display=cmd;
   document.querySelector(`[gs-id="${prefix}${index}"] .webedit-widget`).style.display=cmd;
   document.querySelector(`[gs-id="${prefix}${index}"] .askclose-widget`).style.display=cmd=="none"?"inline-block":"none";
