@@ -117,7 +117,7 @@ async function init(){
     $(".tabpub input").prop("checked",true);
   }
   currentTemplate="templates/grid/index.html";  
-  switchTemplate(currentTemplate);
+  //switchTemplate(currentTemplate);
   restoreViz();
   initHelpVideo();
 }
