@@ -293,8 +293,8 @@ function addNew(url,index){
       <div class="action-widget btn-menu" onClick="launchAction('${index}')"><i class="ico-handle fa fa-search"></i></div>
       <div class="ask-widget btn-menu" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-comment-dots"></i></div>
       <div class="askclose-widget btn-menu" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-times"></i></div>
-      <div class="webeditclose-widget btn-menu" onClick="closeEdit('${index}')"><i class="ico-handle fa fa-times"></i></div>
-      <div class="webedit-widget btn-menu" onClick="launchEdit('${index}')"><i class="ico-handle fa fa-pencil-alt"></i></div>
+      <div class="webeditclose-widget btn-menu" onClick="closeEdit('${index}');maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-times"></i></div>
+      <div class="webedit-widget btn-menu" onClick="launchEdit('${index}');maximize('${id}',this.parentNode.parentNode.parentNode,event)""><i class="ico-handle fa fa-pencil-alt"></i></div>
       <div class="expand-widget btn-menu" onclick="maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle minmax fa fa-expand-alt"></i></div>
     </div>  
     <div id="${id}" class="viz"></div>
