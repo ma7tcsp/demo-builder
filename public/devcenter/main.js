@@ -1441,8 +1441,11 @@ function filterViewList(ev){
   $(".wbnum").text(fw);
 }
 function closeSettings(){
-  if(panelSet)
-    panelSet.close();
+  try {
+    if(panelSet)
+      panelSet.close();
+  } catch (error) {
+  }
 }
 function createSettingsPanel(){
   $( "body" ).append(getSettingsTemplate());
