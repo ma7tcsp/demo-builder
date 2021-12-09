@@ -517,7 +517,8 @@ function closeAllMenu(){
   $(".sidebar-submenu").hide();
 }
 function switchTemplate(tpName,ev){
-  closeSettings();
+  if(ev)
+    closeSettings();
   if(ev){
     $(".thumb.templ").removeClass("active");
     $(ev).addClass("active");
