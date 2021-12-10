@@ -97,6 +97,7 @@ app.post('/zip', async function (req, res) {
   var title_index="${title}";`
   if(wid.length>0){
     wid.map((el)=>{
+      el.val=el.val.replace(/'/g, '"');
       el.val=JSON.parse(el.val);
     })
     vvArr+=`
