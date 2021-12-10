@@ -243,6 +243,7 @@ function addWidgetToolbar(){
   var storedCoord=localStorage.getItem(prefix+"filters");
   var w=60,h=3,x=0,y=0;
   if(storedCoord!=null){
+    storedCoord=storedCoord.replaceAll("'",'"');
     storedCoord=JSON.parse(storedCoord);
     w=storedCoord.w;
     h=storedCoord.h;
@@ -274,6 +275,7 @@ function addNew(url,index){
   var storedCoord=localStorage.getItem(prefix+""+index);
   var w=30,h=25,x=advGrid.getRow(),y=0;
   if(storedCoord!=null){
+    storedCoord=storedCoord.replaceAll("'",'"');
     storedCoord=JSON.parse(storedCoord);
     w=storedCoord.w;
     h=storedCoord.h;
