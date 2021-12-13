@@ -7,6 +7,18 @@ html, body{
 .init{
   display: none;
 }
+.help:hover{
+  color:white
+}
+.help i{
+  margin-left: 10px;
+}
+.help {
+  color: #a7adbc;
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+}
 .templateList{
   margin-left: 45px !important;
 }
