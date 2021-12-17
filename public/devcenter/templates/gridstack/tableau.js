@@ -292,16 +292,16 @@ function addNew(url,index){
     localStorage.setItem(prefix+""+index,JSON.stringify({w:w,h:h,x:x,y:y}));
   }
   advGrid.addWidget({id:prefix+""+index,w:w,h:h,x:x,y:y,minH:4,minW:10, content: 
-   `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div>
+   `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"><div class="dot">...</div></div>
     <div class="widget-btn">
-      <div class="close-widget btn-menu" onClick="removeWidget(this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-ban"></i></div>
-      <div class="dl-widget btn-menu" onClick="downloadData('${index}')"><i class="ico-handle fa fa-database"></i></div>
-      <div class="action-widget btn-menu" onClick="launchAction('${index}')"><i class="ico-handle fa fa-search"></i></div>
-      <div class="ask-widget btn-menu" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-comment-dots"></i></div>
-      <div class="askclose-widget btn-menu" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-times"></i></div>
-      <div class="webeditclose-widget btn-menu" onClick="closeEdit('${index}');maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-times"></i></div>
-      <div class="webedit-widget btn-menu" onClick="launchEdit('${index}');maximize('${id}',this.parentNode.parentNode.parentNode,event)""><i class="ico-handle fa fa-pencil-alt"></i></div>
-      <div class="expand-widget btn-menu" onclick="maximize('${id}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle minmax fa fa-expand-alt"></i></div>
+      <div class="close-widget btn-menu" title="Hide Widget" onClick="removeWidget(this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-ban"></i></div>
+      <div class="dl-widget btn-menu" title="Download Data" onClick="downloadData('${index}')"><i class="ico-handle fa fa-database"></i></div>
+      <div class="action-widget btn-menu" title="Trigger Action, you have to select element on the viz" onClick="launchAction('${index}')"><i class="ico-handle fa fa-search"></i></div>
+      <div class="ask-widget btn-menu" title="Launch Ask Data" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-comment-dots"></i></div>
+      <div class="askclose-widget btn-menu" title="Close" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-times"></i></div>
+      <div class="webeditclose-widget btn-menu" title="Close" onClick="closeEdit('${index}');maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-times"></i></div>
+      <div class="webedit-widget btn-menu" title="Launch Web Edit" onClick="launchEdit('${index}');maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event)""><i class="ico-handle fa fa-pencil-alt"></i></div>
+      <div class="expand-widget btn-menu" title="Expand Widget" onclick="maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle minmax fa fa-expand-alt"></i></div>
     </div>  
     <div id="${id}" class="viz"></div>
     <div class="mask">
@@ -367,7 +367,7 @@ function showClose(){
     item.style.display="block";
   });
 }
-function maximize(id,elem,ev){
+function maximize(id,index,elem,ev){
   showMask(id);
   hideMask(id,3800);
   if(typeof(elem.max)=='undefined' || elem.max=="n"){
@@ -413,9 +413,13 @@ function maximize(id,elem,ev){
     })
     elems.forEach(function (it) {
       if(it!=elem){
-        advGrid.makeWidget(it);
-        it.style.display="block";
-        advGrid.update(it,{w:it.getAttribute("ow"),h:it.getAttribute("oh"),x:it.getAttribute("ox"),y:it.getAttribute("oy")});
+        var key=it.getAttribute("gs-id");
+        console.log(key);
+        if(localStorage.getItem(key+"-visibility")!="false"){
+          advGrid.makeWidget(it);
+          it.style.display="block";
+          advGrid.update(it,{w:it.getAttribute("ow"),h:it.getAttribute("oh"),x:it.getAttribute("ox"),y:it.getAttribute("oy")});
+        }
       }
     })
     elem.max="n";

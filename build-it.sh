@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.3.3, widget beta almost ready, need regression test"
+git commit -m "v1.4, widget V1 ready !"
 git push
 docker stop testemb 
 docker rm testemb 
