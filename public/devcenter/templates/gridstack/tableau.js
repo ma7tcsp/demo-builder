@@ -76,7 +76,7 @@ function applyFilter(fname,val){
 }
 function go(){
   advGrid = GridStack.init({
-    dragInOptions:{scroll:false},
+    dragInOptions:{scroll:true},
     float: false,
     cellHeight:"1.5em",
     column: 60,
