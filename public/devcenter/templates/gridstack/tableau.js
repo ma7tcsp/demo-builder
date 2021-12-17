@@ -383,7 +383,7 @@ function maximize(id,index,elem,ev){
       window.scrollTo(0,0);
     }, 400);
     //var nr=advGrid.getRow();
-    var nr=Math.round((window.innerHeight - document.querySelector("nav").offsetHeight)/(advGrid.getCellHeight()*16))
+    var nr=Math.round((window.innerHeight - document.querySelector("nav").offsetHeight - 20)/(advGrid.getCellHeight()*16))
     advGrid.engine.nodes.map((el)=>{
       el.el.setAttribute("ow",el.w);
       el.el.setAttribute("oh",el.h);
