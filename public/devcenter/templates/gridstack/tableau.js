@@ -1,4 +1,4 @@
-var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex;
+var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex,lastScrollY=0;
 var prefix="widget---templates/gridstack/index.html-";
 var first=true;
 
@@ -377,7 +377,10 @@ function maximize(id,index,elem,ev){
       item.classList.add("fa-compress-alt");
     });
     hideClose();
-    var nr=advGrid.getRow();
+    lastScrollY=window.scrollY;
+    window.scrollTo(0,0);
+    //var nr=advGrid.getRow();
+    var nr=Math.round((window.innerHeight - document.querySelector("nav").offsetHeight)/(advGrid.getCellHeight()*16))
     advGrid.engine.nodes.map((el)=>{
       el.el.setAttribute("ow",el.w);
       el.el.setAttribute("oh",el.h);
@@ -424,7 +427,11 @@ function maximize(id,index,elem,ev){
     })
     elem.max="n";
     setTimeout(() => {
+      window.scrollTo(0,lastScrollY);
+    }, 1200);
+    setTimeout(() => {
       disableSaving=false;
+      window.scrollTo(0,lastScrollY);
     }, 3000);
     return;
   }
