@@ -378,7 +378,9 @@ function maximize(id,index,elem,ev){
     });
     hideClose();
     lastScrollY=window.scrollY;
-    window.scrollTo(0,0);
+    setTimeout(() => {
+      window.scrollTo(0,0);
+    }, 400);
     //var nr=advGrid.getRow();
     var nr=Math.round((window.innerHeight - document.querySelector("nav").offsetHeight)/(advGrid.getCellHeight()*16))
     advGrid.engine.nodes.map((el)=>{
@@ -428,7 +430,7 @@ function maximize(id,index,elem,ev){
     elem.max="n";
     setTimeout(() => {
       window.scrollTo(0,lastScrollY);
-    }, 1200);
+    }, 200);
     setTimeout(() => {
       disableSaving=false;
       window.scrollTo(0,lastScrollY);
