@@ -189,7 +189,7 @@
     .move-overlay{
       width: 100%;
       height:15px;
-      position: absolute;
+      /* position: absolute; */
       z-index: 99;
       font-size: 25px;
       font-weight: bolder;

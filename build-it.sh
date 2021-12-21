@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.4.2, widget template with management"
+git commit -m "v1.4.3, widget template, new move handle"
 git push
 docker stop testemb 
 docker rm testemb 
