@@ -128,10 +128,12 @@
       padding: 0 15px 0 15px;
     }
     .viz{
-      height: calc(100% - 0px);
+      height: calc(100% - 15px);
       width: 100%;
       overflow: hidden;
       transition: all 2.8s;
+      top: 15px;
+      position: absolute;
     }
     .ui-resizable-se{
       right: 2px !important;
