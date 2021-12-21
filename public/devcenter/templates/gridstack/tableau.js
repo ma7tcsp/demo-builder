@@ -14,23 +14,68 @@ function waitFor(selector) {
               observer.disconnect();
           }
       });
-
-      observer.observe(document.body, {
+      try {
+        observer.observe(document.body, {
           childList: true,
           subtree: true
-      });
+        });
+      } catch (error) {
+         resolve("err")
+      }
   });
 }
-async function loadVizInit(force){
+function initModal(){
+  MicroModal.init({
+    openTrigger: "data-custom-open", 
+    closeTrigger: "data-custom-close", 
+    disableScroll: true,
+    disableFocus: false, 
+    awaitCloseAnimation: true, 
+    awaitOpenAnimation: true, 
+    debugMode: false
+  });
+}
+function loadPredefined(){
+  document.querySelector("#predefined").innerHTML="";
+  tab_server.map((vz,index)=>{
+    var addbtn=`<div class="thumb_btn thumb_btn_txt" onclick="showHiddenWidgets('${index}')"> Show</div>`;
+    var rembtn=`<div class="thumb_btn thumb_btn_txt" onclick="removeWidgetbyIndex('${index}')"> Hide</div> `
+    if(localStorage.getItem(prefix+""+index+"-visibility")!="false"){
+      addbtn=rembtn;
+    }
+    if(vz && vz!="")
+    $("#predefined").append(
+      `<div class="thumbn"> 
+         <!-- <div class="thumb_text">${"titi"}</div> -->
+          <img class="thumb_pic" src="${vz}.png"/>
+          ${addbtn}
+      </div>`
+    );
+  });
+  // $('details').click(function (event) {
+  //   $('details').not(this).removeAttr("open");  
+  // });
+}
+function showModal(id){
+  MicroModal.show(id,{onClose:()=>{
+    //$("#template").contents().find("iframe").fadeIn(200);
+  }});
+}
+function loadVizInit(force){
+  setTimeout(() => {
+    _loadVizInit(force)
+  }, 1000);
+}
+async function _loadVizInit(force){
+  var ret=await waitFor('#advanced-grid');
   if(first==false && typeof(force)=='undefined')
     return;
   first=false
-  document.querySelector(".page-section.main").style.minHeight = (document.documentElement.clientHeight-133) +"px";
   if(isExported()==true)
     prefix=prefix+String(unique_exportID)+"-";
   console.log("TRIGGERED FROM")
   tabfilters = new TabFilters();
-  await waitFor('#advanced-grid');
+  document.querySelector(".page-section.main").style.minHeight = (document.documentElement.clientHeight-133) +"px";
   go();
   if(document.querySelector(`[gs-id='${prefix}filters']`)==null)
     addWidgetToolbar();
@@ -40,6 +85,8 @@ async function loadVizInit(force){
       addNew(url,index);
   })
   initialize();
+  initModal();
+  loadPredefined();
   setTimeout(() => {
     advGrid.setAnimation(true);
   }, 5000);
@@ -222,7 +269,7 @@ function hasHiddenWidget(){
     }
   })
 }
-function showHiddenWidgets(){
+function showHiddenWidgets(index){
   var elems=Array.prototype.slice.call(document.querySelectorAll(`[gs-id]`), 0);
     elems.sort((a,b)=>{//sort from higher to lower to avoid unmanageable reorg :-)
       if(parseInt(a.getAttribute("gs-y"))>parseInt(b.getAttribute("gs-y")))
@@ -230,14 +277,14 @@ function showHiddenWidgets(){
       return -1;  
     })
   elems.forEach(element => {
-    if(element.style.display=="none"){
+    if(element.style.display=="none" && element.getAttribute("gs-id")==prefix+""+index){
       element.style.display="unset";
       advGrid.makeWidget(element);
       var id=element.getAttribute("gs-id");
       localStorage.setItem(id+"-visibility","true");
     }
   });
-  hasHiddenWidget();
+  loadPredefined();
 }
 function addWidgetToolbar(){
   var id=makeid(10);
@@ -264,7 +311,6 @@ function addWidgetToolbar(){
    `<div class="move-overlay" onmouseup="minimizeOverlay(this,event)" onmousedown="expandOverlay(this,event)"></div> 
     <div class="filter-container" id="f0">
     <button class="btn btn-secondary btn-default filter_dropdown" onclick="resetFilters()">RESET</button>
-    <button class="btn btn-secondary btn-default filter_dropdown hiddenW" onclick="showHiddenWidgets()">SHOW HIDDEN</button>
     </div>
     `
   });
@@ -301,7 +347,7 @@ function addNew(url,index){
       <div class="ask-widget btn-menu" title="Launch Ask Data" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-comment-dots"></i></div>
       <div class="askclose-widget btn-menu" title="Close" onClick="launchAsk('${index}')"><i class="ico-handle fa fa-times"></i></div>
       <div class="webeditclose-widget btn-menu" title="Close" onClick="closeEdit('${index}');maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle fa fa-times"></i></div>
-      <div class="webedit-widget btn-menu" title="Launch Web Edit" onClick="launchEdit('${index}');maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event)""><i class="ico-handle fa fa-pencil-alt"></i></div>
+      <div class="webedit-widget btn-menu" title="Launch Web Edit" onClick="launchEdit('${index}');maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event,'edit')"><i class="ico-handle fa fa-pencil-alt"></i></div>
       <div class="expand-widget btn-menu" title="Expand Widget" onclick="maximize('${id}','${index}',this.parentNode.parentNode.parentNode,event)"><i class="ico-handle minmax fa fa-expand-alt"></i></div>
     </div>  
     <div id="${id}" class="viz"></div>
@@ -317,7 +363,6 @@ function addNew(url,index){
       advGrid.removeWidget(document.querySelector(`[gs-id="${prefix}${index}"]`),false,false);
       document.querySelector(`[gs-id="${prefix}${index}"]`).style.display="none";
   }
-  hasHiddenWidget();
 }
 function addClassAll(all,cls){
   all.forEach(function(item) {
@@ -341,7 +386,14 @@ function removeWidget(el,ev){
   localStorage.setItem(el.gridstackNode.id+"-visibility","false")
   advGrid.removeWidget(el,false,false);
   el.style.display="none";
-  hasHiddenWidget();
+  loadPredefined();
+}
+function removeWidgetbyIndex(index){
+  var el=document.querySelector(`[gs-id="${prefix}${index}"]`)
+  localStorage.setItem(el.gridstackNode.id+"-visibility","false")
+  advGrid.removeWidget(el,false,false);
+  el.style.display="none";
+  loadPredefined();
 }
 function showMask(id){
   document.querySelector(`#${id} ~ .mask`).style.opacity=0;
@@ -368,7 +420,7 @@ function showClose(){
     item.style.display="block";
   });
 }
-function maximize(id,index,elem,ev){
+function maximize(id,index,elem,ev,from){
   showMask(id);
   hideMask(id,3800);
   if(typeof(elem.max)=='undefined' || elem.max=="n"){
@@ -404,7 +456,7 @@ function maximize(id,index,elem,ev){
     elem.max="y";
     return;
   }
-  if(elem.max=="y"){
+  if(elem.max=="y" && from!="edit"){
     document.querySelectorAll(".minmax").forEach(function(item) {
       item.classList.add("fa-expand-alt");
       item.classList.remove("fa-compress-alt");

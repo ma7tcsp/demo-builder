@@ -10,6 +10,13 @@
       left: 50%;
       position: absolute;
     }
+    .setico{
+      line-height: 2.8 !important;
+      cursor: pointer;
+    }
+    .settings-menu{
+      display: inline-flex !important;
+    }
     .bg-primary .dropdown-menu {
       background-color: white !important;
     }
