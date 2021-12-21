@@ -69,14 +69,10 @@
           </h2>
           <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
         </header>
-        <!-- <details open>
-          <summary>
-            Widgets:
-          </summary> -->
-          <!-- <input type="text" id="search" onkeyup="tabportal.filterWidgetList()" placeholder="Search..."> -->
-          <div name="wid" id="predefined">
-          </div>
-        <!-- </details>   -->
+        <div name="wid" id="predefined">
+        </div>
+        <input type="checkbox" onclick='setFloating(this);' id="float" name="scales">
+        <label for="float">Floating Grid</label>
         <footer class="modal__footer">
           <button class="btn-default modal__btn modal__btn-primary gogo editable" id="popup-btn-close" data-micromodal-close aria-label="Close">Close</button>
         </footer>
