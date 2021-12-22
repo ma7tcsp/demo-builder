@@ -497,7 +497,6 @@ function maximize(id,index,elem,ev,from){
     }, 200);
     setTimeout(() => {
       disableSaving=false;
-      window.scrollTo(0,lastScrollY);
     }, 3000);
     advGrid.commit();
     return;
