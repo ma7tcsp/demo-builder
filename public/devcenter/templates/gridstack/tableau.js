@@ -429,6 +429,7 @@ function showClose(){
   });
 }
 function maximize(id,index,elem,ev,from){
+  advGrid.float(true);
   showMask(id);
   hideMask(id,3800);
   if(typeof(elem.max)=='undefined' || elem.max=="n"){
@@ -462,6 +463,7 @@ function maximize(id,index,elem,ev,from){
     })
     advGrid.float(false);
     elem.max="y";
+    advGrid.float(getFloatSetting());
     return;
   }
   if(elem.max=="y" && from!="edit"){
@@ -496,6 +498,7 @@ function maximize(id,index,elem,ev,from){
       disableSaving=false;
       window.scrollTo(0,lastScrollY);
     }, 3000);
+    advGrid.float(getFloatSetting());
     return;
   }
 }
