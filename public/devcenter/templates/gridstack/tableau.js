@@ -72,9 +72,15 @@ function showModal(id){
   }});
 }
 function loadVizInit(force){
-  setTimeout(() => {
-    if(isExported()==true || typeof(force)!='undefined')
+  setTimeout(async() => {
+    if(isExported()==true || typeof(force)!='undefined'){
+      window.addEventListener("message", (event) => {
+        if(event.data=="tableau.completed"){
+          hideAllMask()
+        }
+      }, false);
       _loadVizInit(force);
+    }
   }, 800);
 }
 async function _loadVizInit(force){
@@ -409,13 +415,26 @@ function showMask(id){
   document.querySelector(`#${id} ~ .mask`).style.opacity=1;
   document.querySelector(`#${id}`).style.opacity=0.1;
 }
+function hideAllMask(){
+  document.querySelectorAll(".mask").forEach(function(item) {
+    item.style.opacity=0;
+  });
+  document.querySelectorAll(".viz").forEach(function(item) {
+    item.style.opacity=1;
+  });
+  setTimeout(() => {
+    document.querySelectorAll(".mask").forEach(function(item) {
+      item.style.display="none";
+    });
+  }, 1000); 
+}
 function hideMask(id,time){
   setTimeout(() => {
     document.querySelector(`#${id} ~ .mask`).style.opacity=0;
     document.querySelector(`#${id}`).style.opacity=1;
     setTimeout(() => {
       document.querySelector(`#${id} ~ .mask`).style.display="none";
-    }, 1000); 
+    }, 2000); 
   }, time);
 }
 function hideClose(){
@@ -531,7 +550,6 @@ function load(id,url,idx){
     device:"desktop"
   };
   var v=new tableau.Viz(placeholderView, urlView, options);
-  hideMask(id,5000);
 }
 function getParametersForViz(params,viz,index){
   var rawParam=[];
@@ -796,4 +814,20 @@ function initialize(){
   }
 }
 
+// function isAuthenticated(vurl){
+//   return new Promise((resolve,reject)=>{
+//     vurl=vurl+".png";
+//       var newImg = new Image;
+//       newImg.onload = function() {
+//         console.log("AUTHENTICATED !!");
+//         authenticated=true;
+//         resolve(true);
+//       }
+//       newImg.onerror = function(err) {
+//         console.log("NOT AUTHENTICATED !!");
+//         resolve(false);
+//       }
+//       newImg.src = vurl;
+//   })    
+// }
 
