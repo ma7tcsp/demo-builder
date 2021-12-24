@@ -83,6 +83,7 @@ function loadVizInit(force){
         }
         else if(event.data.split(",")[0]=="tableau.listening"){
           authenticated=true;
+          showAllMask();
           loadPredefined();
         }
       }, false);
@@ -421,6 +422,15 @@ function showMask(id){
   document.querySelector(`#${id} ~ .mask`).style.display="flex";
   document.querySelector(`#${id} ~ .mask`).style.opacity=1;
   document.querySelector(`#${id}`).style.opacity=0.1;
+}
+function showAllMask(){
+  document.querySelectorAll(".mask").forEach(function(item) {
+    item.style.opacity=1;
+    item.style.display="flex";
+  });
+  document.querySelectorAll(".viz").forEach(function(item) {
+    item.style.opacity=0;
+  });
 }
 function hideAllMask(){
   document.querySelectorAll(".mask").forEach(function(item) {
