@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.4.4, widget template, better loader management if authentication or not"
+git commit -m "v1.4.5, widget template, predefined loaded correctly when arriving not authenticated..."
 git push
 docker stop testemb 
 docker rm testemb 

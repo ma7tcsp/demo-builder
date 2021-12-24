@@ -1,6 +1,6 @@
 var advGrid,tabfilters,allviz=[],disableSaving=false,curSelIndex,lastScrollY=0;
 var prefix="widget---templates/gridstack/index.html-";
-var first=true;
+var first=true;var authenticated=false;
 
 function waitFor(selector) {
   return new Promise(resolve => {
@@ -75,8 +75,15 @@ function loadVizInit(force){
   setTimeout(async() => {
     if(isExported()==true || typeof(force)!='undefined'){
       window.addEventListener("message", (event) => {
+        if(authenticated==true)
+          return;
         if(event.data=="tableau.completed"){
+          authenticated=false;
           hideAllMask()
+        }
+        else if(event.data.split(",")[0]=="tableau.listening"){
+          authenticated=true;
+          loadPredefined();
         }
       }, false);
       _loadVizInit(force);
