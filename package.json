@@ -28,10 +28,13 @@
     "xml2js": "^0.4.23"
   },
   "build": {
-    "asar": true,
+    "asar": false,
     "appId": "Tableau.Demo.Builer",
     "win": {
-      "target": "NSIS"
+      "publisherName": "MyCompany Ltd"
+    },
+    "nsis": {
+      "perMachine": false
     },
     "mac": {
       "category": "demo.builder"
