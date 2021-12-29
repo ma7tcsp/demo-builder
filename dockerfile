@@ -1,5 +1,5 @@
 
-FROM mhart/alpine-node:slim-12
+FROM mhart/alpine-node:latest
 
 
 COPY package*.json ./
