@@ -1,5 +1,5 @@
 
-FROM node:stretch-slim
+FROM mhart/alpine-node:slim-12
 
 
 COPY package*.json ./
