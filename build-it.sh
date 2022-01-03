@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "Fixing build..."
+git commit -m "Testing build..."
 git push
 docker stop testemb 
 docker rm testemb 

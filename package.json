@@ -29,15 +29,17 @@
   },
   "build": {
     "asar": false,
-    "appId": "Tableau.Demo.Builer",
+    "appId": "Tableau.Demo.Builder",
     "win": {
-      "publisherName": "MyCompany Ltd"
+      "icon": "build/ico.png",
+      "requestedExecutionLevel": "requireAdministrator"
     },
     "nsis": {
-      "perMachine": false
+      "perMachine": true
     },
     "mac": {
-      "category": "demo.builder"
+      "category": "demo.builder",
+      "icon": "build/ico.png"
     }
   }
 }
