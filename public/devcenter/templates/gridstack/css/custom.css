@@ -18,6 +18,7 @@
     .setico{
       line-height: 2.9 !important;
       cursor: pointer;
+      color: var(--header--color)
     }
     .settings-menu{
       display: inline-flex !important;
