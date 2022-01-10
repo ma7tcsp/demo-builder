@@ -9,4 +9,5 @@ docker image rm alteirac/emb
 docker build . -t alteirac/emb
 docker run -p 80:3000 -d --name testemb alteirac/emb
 docker push alteirac/emb
-
+npm run dist
+electron-builder --windows nsis:x64
