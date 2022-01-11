@@ -652,6 +652,7 @@ function initPicker(id,col){
     theme: 'nano',
     useAsButton: true,
     default: col,
+    showAlways:true,
     i18n: {
       'btn:save': 'OK'
     },
@@ -685,8 +686,24 @@ function initPicker(id,col){
   }).on('save', color => {
     $('#'+id).css("background-color",color.toRGBA().toString(0)); 
     $('#'+id).css("color",contrastFontColor(color.toHEXA().toString(0))); 
-    $('#'+id).attr("value",color.toHEXA().toString(0));
+    $('#'+id).prop("value",color.toHEXA().toString(0));
     p.hide();
+  }).on('init', instance => {
+    instance.hide();
+  }).on('cancel', color => {
+    p.hide();
+  })
+  $('#'+id).on('focus',(ev)=>{
+    var oneOpened=false
+    pickers.forEach(el =>{
+      if(el.picker.isOpen()==true){
+        $('#'+el.id).css("background-color",el.picker.getColor().toRGBA().toString(0)); 
+        $('#'+el.id).css("color",contrastFontColor(el.picker.getColor().toHEXA().toString(0))); 
+        $('#'+el.id).prop("value",el.picker.getColor().toHEXA().toString(0));
+        el.picker.hide();
+      }
+    })  
+      p.show();
   })
   $('#'+id).on('change',(ev)=>{
     var newcolor=$(ev.currentTarget).val();
@@ -1218,8 +1235,9 @@ function saveTemplateSettings(close){
     saveToRepo('img',$(el).attr("varc"),$(el).prop("value"));
     restoreImgs();
   })
-  if(close)
+  if(close){
     closeSettings();
+  }
   if(viewsModified==true){
     //restoreViews();
     switchTemplate(currentTemplate);
@@ -1452,6 +1470,7 @@ function closeSettings(){
   try {
     if(panelSet)
       panelSet.close();
+    pickers.forEach(el =>el.picker.hide())  
   } catch (error) {
   }
 }
@@ -1465,8 +1484,11 @@ function createSettingsPanel(){
     contentSize: {width: '740px', height: '500px'},
     contentOverflow: 'hidden',
     headerTitle: "TEMPLATE SETTINGS",
-    theme: "#31353D"
-});
+    theme: "#31353D",
+    onclosed: function(panel, closedByUser) {
+      pickers.forEach(el =>el.picker.hide())  
+    }
+  });
 }
 function getSettingsTemplate(){
   return ` <main class="" id="settings" style="height:100%;width: 100%;">

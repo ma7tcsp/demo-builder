@@ -25,7 +25,7 @@ function loadVizByIndex (index,force,device ="") {
   hideEditAskButton();
   hideActionButton();
   var isSameWorkbook=false;
-  if(workbook && !force){
+  if(workbook && !force && askindex==-1){
     var sheets = workbook.getPublishedSheetsInfo();
     sheets.map((sh)=>{
       if(sh.getUrl()==url){
@@ -53,6 +53,7 @@ function loadVizByIndex (index,force,device ="") {
       storeLastPageload(index);
     }
   }
+  askindex=-1;
 }
 function loadViz (placeholderDiv, url, options) {
   // https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_concepts_initializing.htm
