@@ -1,0 +1,19 @@
+.card-img-top{
+  height: 300px;
+}
+
+.theviz{
+  opacity:0;
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  top: 0px;
+}
+
+#img-logo{
+  left: 50px;
+  top: 95px;
+  position: absolute;
+  max-width: 450px;
+  height: auto;
+}

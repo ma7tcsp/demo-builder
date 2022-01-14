@@ -97,6 +97,7 @@ async function _loadVizInit(force){
     prefix=prefix+String(unique_exportID)+"-";
   console.log("TRIGGERED FROM",force)
   tabfilters = new TabFilters();
+  tabfilters.tab_public=true;
   document.querySelector(".page-section.main").style.minHeight = (document.documentElement.clientHeight-133) +"px";
   go();
   if(document.querySelector(`[gs-id='${prefix}filters']`)==null)

@@ -3308,6 +3308,7 @@
 
 	    // future: option to add additional metadata (e.g. label, index, etc.) to filter values in order to satisfy any interesting 3rd-party UI button requirements
 	    this.option;
+			this.tab_public=false;
 	    this.embeddedVizzes = [];
 	    this.vizUpdateMode = {
 	      PAGE: "page",
@@ -3555,9 +3556,16 @@
 	                  _loop(_i);
 	                } // parameters discovery
 
-
+									if(this.tab_public==true){
+										embeddedViz.parameters = [];
+										embeddedViz.filters = filters;
+										this.embeddedVizzes.push(embeddedViz);
+										return _context.abrupt("return", this);
+									}
+									else{
 	                _context.next = 45;
 	                return this._getParameters(workbookObject);
+									}
 
 	              case 45:
 	                parametersArray = _context.sent;

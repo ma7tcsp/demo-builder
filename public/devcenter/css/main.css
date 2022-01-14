@@ -626,7 +626,7 @@ ul.tb,ul.twb {
   width: 100%;
   text-decoration: none;
   position: relative;
-  padding: 8px 30px 8px 20px;
+  padding: 8px 10px 8px 20px;
   cursor: pointer;
   scroll-snap-align: start;
 }

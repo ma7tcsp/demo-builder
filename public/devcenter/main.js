@@ -17,8 +17,8 @@ var friendlyTpName={"templates/grid/index.html":"Horizontal",
                     "templates/gridV/index.html":"Vertical",
                     "templates/bs/index.html":"BootStrap",
                     "templates/gridstack/index.html":"Widgets",
-                    "templates/lightboot/examples/dashboard.html":"Creative",
-                    "templates/amd/index.html":"AMD"}
+                    "templates/marketplace/index.html":"Market_Place"
+                  }
 //WORK-AROUND FOR VIZ BEING IN IFRAME
 Window.prototype._addEventListener = Window.prototype.addEventListener;
 Window.prototype.addEventListener = function(a, b, c) {

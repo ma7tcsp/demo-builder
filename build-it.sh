@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "Askdata navigation improved, colour picker improved..."
+git commit -m "v1.5.1, fixing Tableau public filters not working with jrunrun tabfilters... Beta MarketPlace template"
 git push
 docker stop testemb 
 docker rm testemb 

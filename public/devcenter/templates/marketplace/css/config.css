@@ -1,0 +1,13 @@
+:root {
+  --Body-Background: #FFFFFF;
+  --Header-Background: #35588C;
+  --Header-Text: #FFFFFF;
+  --Button-Background: #6883A9;
+  --Button-Text: #FFFFFF;
+  --Button-Background-Hover:#ff6d02;
+  --Button-Text-Hover:#FFFFFF;
+  --Content-Background: #FFFFFF;
+  --Content-Text: #FFFFFF;
+  --Footer-Background: #35588C;
+  --Footer-Text: #FFFFFF
+  }
