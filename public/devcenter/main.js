@@ -524,6 +524,7 @@ function closeAllMenu(){
   $(".sidebar-submenu").hide();
 }
 function switchTemplate(tpName,ev){
+  $("#template").prop("src",tpName);
   if(ev)
     closeSettings();
   if(ev){
@@ -532,7 +533,6 @@ function switchTemplate(tpName,ev){
     $(".sidebar-menu .sidebar-submenu details .fas").hide();
     $(ev).find("i").show();
   }
-  $("#template").prop("src",tpName);
   currentTemplate=tpName;
   disposeAllViz();
   $("#container").empty();
