@@ -1352,7 +1352,6 @@ function restoreViz(){
       if(typeof(document.getElementById('template').contentWindow.loadVizInit)!="undefined"){
         clearInterval(isTemplateLoaded);
         setTimeout(() => {
-          restoreColors();
           restoreTexts();
           restoreImgs();
           restoreFilters();
@@ -1362,6 +1361,7 @@ function restoreViz(){
           restoreWebEdit();
           restoreAskData();
           restoreAction();
+          restoreColors();
         }, 500);
         $(".page-content").css("opacity","1");
       }
