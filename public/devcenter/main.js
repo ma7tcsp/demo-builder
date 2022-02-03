@@ -1364,7 +1364,7 @@ function restoreViz(){
         $(".page-content").css("opacity","1");
       }
     }, 500);
-  }, 500);
+  }, 1500);
  
 }
 function highlightElement(id){
