@@ -1351,20 +1351,22 @@ function restoreViz(){
     isTemplateLoaded= setInterval(function(){   
       if(typeof(document.getElementById('template').contentWindow.loadVizInit)!="undefined"){
         clearInterval(isTemplateLoaded);
-        restoreColors();
-        restoreTexts();
-        restoreImgs();
-        restoreFilters();
-        restoreViews();
-        restoreFilters();
-        restoreParameters();
-        restoreWebEdit();
-        restoreAskData();
-        restoreAction();
+        setTimeout(() => {
+          restoreColors();
+          restoreTexts();
+          restoreImgs();
+          restoreFilters();
+          restoreViews();
+          restoreFilters();
+          restoreParameters();
+          restoreWebEdit();
+          restoreAskData();
+          restoreAction();
+        }, 500);
         $(".page-content").css("opacity","1");
       }
     }, 500);
-  }, 1500);
+  }, 1100);
  
 }
 function highlightElement(id){
