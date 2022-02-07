@@ -525,19 +525,19 @@ function closeAllMenu(){
 }
 function switchTemplate(tpName,ev){
   $("#template").prop("src",tpName);
+  currentTemplate=tpName;
+  disposeAllViz();
   if(ev)
     closeSettings();
+  $("#container").empty();
+  clearInterval(isTemplateLoaded);
+  restoreViz();
   if(ev){
     $(".thumb.templ").removeClass("active");
     $(ev).addClass("active");
     $(".sidebar-menu .sidebar-submenu details .fas").hide();
     $(ev).find("i").show();
   }
-  currentTemplate=tpName;
-  disposeAllViz();
-  $("#container").empty();
-  clearInterval(isTemplateLoaded);
-  restoreViz();
 }
 function showViews(vname,ev,warn){
   $(".thumb.wkb").removeClass("active");
