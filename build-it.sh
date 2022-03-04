@@ -1,7 +1,7 @@
 #! /bin/bash
 node prepdeploy.js
 git add .
-git commit -m "v1.5.2, restore text/img is sometimes not working, Beta MarketPlace template"
+git commit -m "v1.6.0, issues with images"
 git push
 docker stop testemb 
 docker rm testemb 
