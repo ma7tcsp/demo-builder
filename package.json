@@ -35,7 +35,11 @@
     "appId": "Tableau.Demo.Builder",
     "win": {
       "icon": "build/ico.png",
-      "requestedExecutionLevel": "requireAdministrator"
+      "requestedExecutionLevel": "requireAdministrator",
+      "target": ["portable"]
+    },
+    "portable": {
+      "artifactName": "test.exe"
     },
     "nsis": {
       "perMachine": true
