@@ -1,4 +1,4 @@
-node prepdeploy.js
+node .\prepdeploy.js
 git add .
 git commit -m "v1.6.0, issues with images"
 git push
