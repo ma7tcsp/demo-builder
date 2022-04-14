@@ -9,4 +9,4 @@ docker build . -t ma7tcsp/emb
 docker run -p 3001:3000 -d --name testemb ma7tcsp/emb
 docker push ma7tcsp/emb
 npm run dist
-# electron-builder --windows nsis:x64
+electron-builder --windows nsis:x64

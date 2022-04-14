@@ -13,7 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^16.0.5",
-    "electron-builder": "^22.14.5"
+    "electron-builder": "^23.0.3"
   },
   "dependencies": {
     "archiver": "^5.3.0",
@@ -27,7 +27,8 @@
     "node-minify": "^3.6.0",
     "request": "^2.88.2",
     "xml-writer": "^1.7.0",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "yarn": "^1.22.18"
   },
   "build": {
     "asar": false,
