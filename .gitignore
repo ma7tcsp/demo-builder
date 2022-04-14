@@ -3,4 +3,5 @@
 /package-lock.json
 /store.js
 /.vscode
-/dist 
+/dist
+/build
