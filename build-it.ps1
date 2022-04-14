@@ -1,11 +1,10 @@
-#! /bin/bash
 node prepdeploy.js
 git add .
 git commit -m "v1.6.0, issues with images"
 git push
-docker stop testemb 
-docker rm testemb 
-docker image rm ma7tcsp/emb
+rem docker stop testemb 
+rem docker rm testemb 
+rem docker image rm ma7tcsp/emb
 docker build . -t ma7tcsp/emb
 docker run -p 80:3000 -d --name testemb ma7tcsp/emb
 docker push ma7tcsp/emb

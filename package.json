@@ -11,7 +11,7 @@
   },
   "author": "Anthony Alteirac",
   "license": "ISC",
-  "devDependencies":{
+  "devDependencies": {
     "electron": "^16.0.5",
     "electron-builder": "^22.14.5"
   },
@@ -21,8 +21,10 @@
     "express": "^4.17.1",
     "g-i-s": "^2.1.6",
     "jsxml": "0.0.2",
+    "node": "^17.7.2",
     "node-fetch": "^2.6.1",
     "node-jsxml": "^0.9.0",
+    "node-minify": "^3.6.0",
     "request": "^2.88.2",
     "xml-writer": "^1.7.0",
     "xml2js": "^0.4.23"
